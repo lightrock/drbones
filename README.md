@@ -64,6 +64,22 @@ AI-readable architecture cognition is the operating substrate.
 
 Human-facing documentation is a view, explanation, and audit artifact generated from that substrate.
 
+## Architecture-first folder philosophy
+
+This skeleton is not trying to make every project look like a legacy MVC app, a generic CRUD app, or a framework demo.
+
+Project folder hierarchy should reflect the semantics of the project.
+
+For AI-assisted work, folders are not just places to put files. They are part of the cognition layer. They tell humans and AI assistants what kinds of things exist, what distinctions matter, and what should not be collapsed.
+
+We are architectures first, not "look mom, I made an app" UI CRUD type things.
+
+That does not mean MVC, frontend/backend, services, components, or framework-default folders are always wrong. It means they are not automatically right.
+
+Use folders that express the real project concepts: doctrine, architecture, contracts, schemas, workorders, checks, examples, demos, lessons learned, handoffs, and intent records.
+
+A longer note lives at [`docs/architecture/semantic-folder-hierarchy.md`](docs/architecture/semantic-folder-hierarchy.md).
+
 ----------------------------------------------------------------------------------------
 
 See?
