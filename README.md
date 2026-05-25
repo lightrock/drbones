@@ -6,9 +6,9 @@ Your job is not to produce word salad.
 
 Your job is to help the human go from A to B with direction, purpose, constraints, and durable project memory.
 
-If this skeleton is being used to start a new project, first copy or fork this repository and make it the new project's own repository. Future efforts will evolve how this project splices into new and existing repositories without the copy/fork approach.
+If this skeleton is being used to start a new project, click **Use this template** on GitHub and create a new repository for your project. Future efforts may evolve how this project splices into new and existing repositories, but the template button is the clean first path.
 
-Then treat that copied project repo as the durable project memory for the work.
+Then treat that new project repo as the durable project memory for the work.
 
 The new repo should become the place for the project's purpose, architecture cognition, workorders, handoffs, lessons learned, examples, checks, and intent records.
 
