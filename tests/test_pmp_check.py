@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
 
 
@@ -8,6 +9,7 @@ MODULE_PATH = Path(__file__).resolve().parents[1] / "tools" / "pmp_check.py"
 spec = importlib.util.spec_from_file_location("pmp_check", MODULE_PATH)
 pmp_check = importlib.util.module_from_spec(spec)
 assert spec.loader is not None
+sys.modules[spec.name] = pmp_check
 spec.loader.exec_module(pmp_check)
 
 
