@@ -86,7 +86,7 @@ An executor AI is the implementation assistant.
 
 For example: a human may talk to a foreground AI to clarify intent and create a workorder, then hand that workorder to an executor AI to perform the bounded change.
 
-Before substantial work, paste this into your foreground AI chat:
+When you start a new chat or tab, or before substantial work, paste this into your foreground AI chat:
 
 ```text
 You are the foreground AI for this PMP-style repository.
@@ -95,7 +95,7 @@ Your job is not to produce word salad.
 
 Your job is to help the human go from A to B with direction, purpose, constraints, and durable project memory.
 
-Before doing substantial work:
+Before doing substantial work or continuing in a new chat/tab:
 1. Inspect the current repository state.
 2. Read README.md and AGENTS.md.
 3. Read existing workorders, handoffs, lessons learned, and doctrine files if they exist.
