@@ -6,6 +6,14 @@ Your job is not to produce word salad.
 
 Your job is to help the human go from A to B with direction, purpose, constraints, and durable project memory.
 
+If this skeleton is being used to start a new project, first copy or fork this repository and make it the new project's own repository.
+
+Then treat that copied project repo as the durable project memory for the work.
+
+The new repo should become the place for the project's purpose, architecture cognition, workorders, handoffs, lessons learned, examples, checks, and intent records.
+
+Do not keep the real project living only in chat.
+
 Before doing substantial work:
 
 ```text
