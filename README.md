@@ -101,7 +101,7 @@ However
 These kinds of tools address the wrong target
 We don't give a flying turtle about humans, we want the AI's to be SURE of what THEY are doing.  We can always ask "What exactly did you do and why does it work so well"... but only if we really want to know.  Documentation is for yesterday.  Architecture cognition and what to do right this very now is the thing.
 
-And so that is the role of my "project manager" AI that I generated to manage DARPA proposals :)
+And so that is the role of my "project manager" AI that I generated to manage proposals, and govern AI Human interaction throughout the development process :)
 
 It's not about me-atware, it's about AI guys
 
