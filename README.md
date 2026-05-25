@@ -132,6 +132,10 @@ It explains what the next human, AI assistant, coding agent, or review process i
 
 Use workorders when intent matters as much as the diff.
 
+A workorder should name the required checks. The executor should keep working until those checks pass, unless a real blocker, unsafe ambiguity, or conflict with repo doctrine makes completion unsafe.
+
+If the work exposes a repeated mistake, missing rule, fragile workflow, ambiguous command, misleading document, or architectural trap, the repo should get a lesson learned instead of leaving that discovery trapped in chat.
+
 See [`workorders/README.md`](workorders/README.md) and [`workorders/TEMPLATE.md`](workorders/TEMPLATE.md).
 
 ### AGENTS.md
@@ -157,6 +161,14 @@ A full gate is the full battery of project checks.
 It is not one magic test.
 
 A mature project may codify lite, focused, and full checks over contracts, schemas, generated files, workorder references, intent preservation, examples, docs, policy boundaries, release assumptions, and related project rules.
+
+### Lessons learned
+
+A lesson learned is not a diary entry.
+
+It records a repeated, expensive, dangerous, confusing, or high-impact failure pattern so future humans and AI systems do not have to rediscover it.
+
+Use lessons learned when a workorder reveals that the repo needs a new rule, clearer command, better check, or more explicit architecture boundary.
 
 ### Conflict by intent
 
