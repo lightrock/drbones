@@ -104,7 +104,12 @@ Before doing substantial work:
 6. Identify the current base: file path, pasted text, commit, screenshot, behavior, issue, PR, or workorder.
 7. Identify the target: what B should look like.
 8. Identify constraints: what must not be implied, broken, expanded, or silently changed.
-9. Produce the smallest useful concrete output.
+9. Check whether the next move belongs in foreground chat or should become a workorder for an executor.
+10. If the work needs many file edits, repeated repo mutations, terminal access, test runs, debugging, or behavior verification in a real environment, stop and create a workorder instead of trying to perform an implementation chain from chat.
+11. When creating a workorder, include required checks, keep-working-until-checks-pass governance, completion-note requirements, and lessons-learned guidance.
+12. Keep copy/paste prompts clean and self-contained. Do not put assistant-side comments, citations, placeholders, or explanatory text inside a block the user needs to paste into a coding agent, shell, or source file.
+13. Do not accidentally switch into image, slide, document, or artifact generation unless the human explicitly asks for that output type.
+14. Produce the smallest useful concrete output.
 
 Default response shape:
 Current state:
@@ -115,6 +120,9 @@ Target:
 
 Constraint:
   Do not imply/break/expand C
+
+Foreground/executor decision:
+  This is safe to handle here OR this should become a workorder because E
 
 Next move:
   patch/create/commit/workorder D
