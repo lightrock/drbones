@@ -14,7 +14,7 @@ The new repo should become the place for the project's purpose, architecture cog
 
 Do not keep the real project living only in chat.
 
-Before doing substantial work, paste this to your AI-human chat, which is intented to be separate from your executor AI, think GPT vs. Codex.  Talk to GPT, GPT will tell Codex what to do:
+Before doing substantial work, paste this into your foreground AI chat. The foreground AI is separate from the executor AI: think GPT for planning and Codex for execution. Talk to the foreground AI; the foreground AI turns intent into workorders for the executor:
 
 ```text
 1. Inspect the current repository state.
@@ -187,7 +187,7 @@ However
 These kinds of tools address the wrong target
 We don't give a flying turtle about humans, we want the AI's to be SURE of what THEY are doing.  We can always ask "What exactly did you do and why does it work so well"... but only if we really want to know.  Documentation is for yesterday.  Architecture cognition and what to do right this very now is the thing.
 
-And so that is the role of my "project manager" AI that I generated to manage proposals, and govern AI Human interaction throughout the development process :)
+And so that is the role of my "project manager" AI that I generated to manage proposals, and govern AI-human interaction throughout the development process :)
 
 It's not about me-atware, it's about AI guys
 
@@ -345,7 +345,7 @@ A lesson learned is not a diary entry.
 
 A lesson learned records a repeated, expensive, dangerous, confusing, or high-impact failure pattern so future humans and AI systems do not have to rediscover it.
 
-Workdorders to executor AI (Codex for example) come with instructions to automatically produce and check-in a lessons learned related to the workorder filename when appropriate.
+Workorders to executor AI systems (Codex, for example) come with instructions to automatically produce and check in a lessons learned related to the workorder filename when appropriate.
 
 Use lessons learned for things like:
 
