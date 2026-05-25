@@ -8,5 +8,5 @@ The examples are intentionally simple and easy to inspect. They are communicatio
 
 ## Current examples
 
-- `webgl-demo-3/` — a placeholder folder for a WebGL architecture-cognition demo. The HTML example will be added later.
-- `hobbyist-mechanic-57-chevy/` — a WebGL concept demo for a hobbyist mechanic restoring a 1957 Chevy while tracking parts, work, decisions, and next actions.
+- `webgl-demo-3/` — a WebGL architecture-cognition demo. This demonstrates the cognition approach to disciplined Human-AI cognition framework, this referenced the PFEM/PFCOMM highly disciplined architectures and automatically knew what to do for a demo based on the cognition and a simple prompt "go make me a webgl demo that shows..."
+- `hobbyist-mechanic-57-chevy/` — a WebGL concept demo for a hobbyist mechanic restoring a 1957 Chevy while tracking parts, work, decisions, and next actions. It followed the previous example and showed the agents working to resolve restoration project actions. If it can make a 3D demo of what is going on, it can generate a typical old-school CRUD workflow... correctly...
