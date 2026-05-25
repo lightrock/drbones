@@ -822,3 +822,13 @@ We believe this kind of project management and architecture cognition is crucial
 It has already been highly effective for our own work.
 
 We are sharing this first pass with the community at large so other people can fork it, adapt it, argue with it, simplify it, harden it, and use it as a starting point for their own AI-governed project workflows.
+
+## Examples
+
+See [`examples/README.md`](examples/README.md).
+
+This folder is for examples of what you can do when your AI has full cognition-first context about your projects.
+
+The examples are not meant to prove that a finished system exists.
+
+They are meant to show how project memory, architecture cognition, constraints, roles, intent, and concrete artifacts can work together when the AI knows what kind of project it is helping with.
