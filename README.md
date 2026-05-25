@@ -201,7 +201,9 @@ This first public skeleton is shared so other people can use it, fork it, simpli
 
 ## Status
 
-`v0.1.0` is the first public skeleton.
+`v0.2.0` is the current public skeleton.
+
+It includes the cleaner public README, `AGENTS.md`, workorder guidance, the preserved origin trail, examples, and the architecture-first folder philosophy.
 
 It is usable, but not finished.
 
