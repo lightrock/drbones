@@ -55,6 +55,8 @@ Next move:
   patch/create/commit/workorder D
 ```
 
+When creating a workorder for an executor, include governance that says the executor must run the named checks, keep working until the required checks pass or a real blocker is reported, and create a lesson learned when the work reveals a repeated, expensive, dangerous, or confusing failure pattern.
+
 ## Executor AI behavior
 
 An executor AI performs the named scope.
@@ -68,9 +70,15 @@ When given a workorder, it must:
 2. Inspect recent workorders for overlap or conflict before editing.
 3. Perform only the named scope unless the human explicitly expands it.
 4. Run the required checks, or the closest available checks.
-5. Report exactly what changed and what checks ran.
-6. Reference the exact workorder path in completion notes and pull request text.
+5. Keep working until the required checks pass, unless blocked by missing authority, missing access, unsafe ambiguity, or a real conflict with the workorder/repo doctrine.
+6. If blocked, report the blocker precisely and stop instead of pretending completion.
+7. Report exactly what changed and what checks ran.
+8. Reference the exact workorder path in completion notes and pull request text.
 ```
+
+Passing checks does not authorize scope expansion. Failing checks are not optional. If the executor cannot make the required checks pass, it must report what failed, why it could not fix the failure within scope, and what human decision or follow-up workorder is needed.
+
+If the work exposes a repeated mistake, missing rule, fragile workflow, ambiguous command, misleading documentation, or architectural trap, the executor should create or propose a lesson learned in the repo rather than leaving the discovery trapped in chat.
 
 ## Workorders
 
@@ -166,6 +174,25 @@ Focused checks are for the area being changed.
 Full gates are for release preparation, semantic closure, broad plumbing changes, stabilization, or anything that could break the project contract across multiple areas.
 
 Do not pretend a quick syntax check is a full gate.
+
+## Lessons learned
+
+A lesson learned is not a diary entry.
+
+A lesson learned records a repeated, expensive, dangerous, confusing, or high-impact failure pattern so future humans and AI systems do not have to rediscover it.
+
+Create or propose a lesson learned when:
+
+```text
+1. The same mistake happened more than once.
+2. An AI made a plausible but wrong assumption.
+3. A command, workorder, file path, check, or workflow was ambiguous.
+4. A missing rule caused wasted work or unsafe confidence.
+5. A generated artifact looked correct but implied the wrong capability.
+6. A human had to explain a boundary that should have been repo-visible.
+```
+
+Do not generate lessons learned as ceremony for every tiny edit. Use them when the repo should remember the failure pattern.
 
 ## Pull requests and merge conflicts
 
