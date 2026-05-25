@@ -132,7 +132,7 @@ It explains what the next human, AI assistant, coding agent, or review process i
 
 Use workorders when intent matters as much as the diff.
 
-A workorder should name the required checks. The executor should keep working until those checks pass, unless a real blocker, unsafe ambiguity, or conflict with repo doctrine makes completion unsafe.
+A workorder should name the required checks. The executor should keep working until those checks pass, unless a real blocker, ambiguity, or conflict with repo doctrine makes completion unsafe.
 
 If the work exposes a repeated mistake, missing rule, fragile workflow, ambiguous command, misleading document, or architectural trap, the repo should get a lesson learned instead of leaving that discovery trapped in chat.
 
@@ -166,7 +166,11 @@ A mature project may codify lite, focused, and full checks over contracts, schem
 
 A lesson learned is not a diary entry.
 
-It records a repeated, expensive, dangerous, confusing, or high-impact failure pattern so future humans and AI systems do not have to rediscover it.
+It records a repeated, expensive, confusing, or high-impact failure pattern so future humans and AI systems do not have to rediscover it.
+
+When a foreground AI creates a workorder, it should automatically tell the coding agent or executor to record lessons learned when the work reveals a missing rule, repeated mistake, fragile workflow, ambiguous command, misleading document, questionable assumption, or architecture boundary that the repo should remember.
+
+The human should not have to remember to ask for that every time. The lesson-learned instruction belongs in the workorder governance by default.
 
 Use lessons learned when a workorder reveals that the repo needs a new rule, clearer command, better check, or more explicit architecture boundary.
 
