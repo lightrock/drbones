@@ -58,7 +58,7 @@ human-facing documentation
 or:
 
 human-readable project memory
-The open-source idea is good. But I would not make it “PFEM DARPA PMP” as the first public product. I’d make the open-source core more general:
+The open-source idea is good. But I would not make it “PFEM PMP” (not yet public repos) as the first public product. I’d make the open-source core more general:
 
 AI Project Manager Kernel
 or:
