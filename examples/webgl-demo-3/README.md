@@ -20,8 +20,3 @@ For this example, the important cognition is:
 - A role is not necessarily a species of node.
 - A visual demo can be useful without pretending it is a deployed system.
 
-The HTML file for this example will be added later.
-
-Keep it proposal-safe and concept-safe.
-
-Do not turn the demo into a claim of implemented capability.
