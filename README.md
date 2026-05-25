@@ -37,6 +37,33 @@ It is a repository pattern for making AI-assisted projects more durable, inspect
 
 The repository becomes the shared operating substrate. A human may use ChatGPT, Codex, Copilot, Claude, Gemini, local models, contractor tooling, or future AI systems, but the project memory, workorders, intent records, checks, and architecture doctrine should live in the repo instead of being trapped inside one vendor's chat window.
 
+## Relationship to AI coding tools
+
+PMP is not another AI coding tool.
+
+PMP is the repo-native operating discipline that makes AI coding tools interchangeable.
+
+AI coding tools still matter. They provide editors, terminals, file access, runtime environments, model access, task orchestration, and workflow polish.
+
+PMP does not replace those tools.
+
+PMP gives those tools a durable project memory and task-contract layer to work against.
+
+A prompt wrapper, chat memory feature, agent mode, IDE panel, or proprietary project notebook is not enough by itself. The repo should contain the durable operating memory. The workorder should be the task contract. The AI vendor should be replaceable. The chat window should be disposable.
+
+The useful discipline is:
+
+```text
+intent captured
+scope bounded
+constraints preserved
+executor instructed
+checks required
+completion tied back to source intent
+```
+
+In that model, tools such as Codex, Roo Code, Cursor, Copilot, Claude, ChatGPT, Gemini, local agents, and future systems are executors or assistants. PMP is the portable project memory and operating discipline they consume.
+
 ## Core idea
 
 Human-readable documentation still matters.
