@@ -147,12 +147,12 @@ Current repo state beats chat memory. Inspect the current repository state befor
 Read README.md and AGENTS.md first. Then identify current state, target, constraints, foreground/executor decision, and the smallest useful next move.
 ```
 
-### Make a workorder
+### Make a workorder with preview
 
-Use this when the next change should be handed to an executor AI or coding agent:
+Use this when the next change should be handed to an executor AI or coding agent, and the human should see the workorder before it is saved or handed off:
 
 ```text
-Create a bounded workorder for this repository.
+Create a bounded workorder for this repository and show me a clean preview first.
 
 Repository:
   https://github.com/lightrock/pmp-ai-project-skeleton
@@ -169,7 +169,28 @@ Include:
   - completion-note requirements
   - lessons-learned instruction if the work exposes a repeated mistake, fragile workflow, missing rule, or architecture boundary
 
-Keep the workorder copy/paste ready for an executor AI. Do not include chat-only commentary inside the workorder body.
+Preview rules:
+  - Put only the workorder body in one clean copy/paste block.
+  - Do not put citations, assistant notes, explanations, links, or commentary inside the workorder block.
+  - After the preview, ask whether to save it to the repository or revise it.
+```
+
+### Make a workorder quietly
+
+Use this when the workorder should be saved directly and the human only wants the link to paste into an executor AI:
+
+```text
+Create a bounded workorder for this repository quietly.
+
+Repository:
+  https://github.com/lightrock/pmp-ai-project-skeleton
+
+Task:
+  <describe the exact task>
+
+Include the same governance payload as the preview mode: current repo state assumptions to verify, exact scope, constraints, what not to do, required checks, keep-working-until-checks-pass instruction, completion-note requirements, and lessons-learned instruction.
+
+Save the workorder file in the repository using the repo's workorder naming rules. Do not paste the full workorder into chat. Reply with only a short confirmation and the repository link to the saved workorder.
 ```
 
 ### Decide whether this belongs in foreground chat or executor work
