@@ -62,13 +62,7 @@ python -m pytest
 
 Doctor Bones is an AI Vendor Agnostic repo-native operating discipline for AI-assisted projects. The short version:
 
-architecture(s) defined and disciplined for AI
-intent captured
-scope bounded
-constraints preserved
-executor instructed
-checks required
-completion tied back to source intent
+architecture(s) defined and disciplined for AI, intent captured, scope bounded, constraints preserved, executor instructed, checks required, completion tied back to source intent
 
 
 The full explanation is in [`readme_pmp.md`](readme_pmp.md).
