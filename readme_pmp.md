@@ -101,7 +101,7 @@ durable context
 
 Before asking AI to operate in a domain, give it a workspace where state, rules, evidence, decisions, checks, and outputs can be inspected and corrected.
 
-This is why many useful PMP workflows are invocable workflows, not resident autonomous agents. A human or foreground AI can invoke a vigilance check, contradiction scan, release-surface map, project-wiki build, project-knowledge-bank build, workorder creation, or context-assembly pass when needed.
+This is why many useful PMP workflows are invocable workflows, not resident autonomous agents. A human or foreground AI can invoke a vigilance check, contradiction scan, release-surface map, project-wiki build, project-knowledge-bank build, playbook-packaging pass, workorder creation, or context-assembly pass when needed.
 
 The goal is not to pretend the AI knows everything.
 
@@ -298,6 +298,16 @@ It is the machine-facing discipline layer.
 
 The README is the human landing page.
 
+### Playbooks
+
+[`playbooks/`](playbooks/README.md) contains vendor-independent, repo-owned instructions for reusable workflows.
+
+Playbooks are not one-time workorders and they are not vendor-specific skills.
+
+Use a playbook when a workflow has become reusable enough that future workorders should reference stable task-specific guidance.
+
+A playbook does not override `AGENTS.md`, workorders, required checks, source authority rules, human approval gates, or safety constraints.
+
 ### Break words
 
 Break words are caution lights.
@@ -384,6 +394,7 @@ If `pytest` is not installed, install it in your local development environment. 
 AGENTS.md                                  AI/executor operating instructions
 README.md                                  human landing page
 readme_pmp.md                              full PMP / AI Project Skeleton guide
+playbooks/README.md                        vendor-independent reusable workflow guidance
 workorders/README.md                       workorder operating notes
 workorders/TEMPLATE.md                     starter workorder template
 schemas/workorder-contract.json            machine-readable workorder governance contract
@@ -399,6 +410,7 @@ examples/day-in-the-life-7/                invocable vigilance-check workflow ex
 examples/day-in-the-life-8/                invocable contradiction-scan workflow example
 examples/day-in-the-life-9/                invocable project-wiki-build workflow example
 examples/day-in-the-life-10/               invocable project-knowledge-bank workflow example
+examples/day-in-the-life-11/               vendor-independent playbook packaging workflow example
 examples/webgl-demo-3/                     architecture-cognition WebGL example
 examples/hobbyist-mechanic-57-chevy/       everyday project-cognition WebGL example
 ```
@@ -413,7 +425,7 @@ They are not claims that a finished system exists.
 
 They are communication artifacts showing how project memory, architecture cognition, constraints, roles, intent, and concrete artifacts can work together.
 
-Some examples are invocable workflows rather than always-on agents. A human or foreground AI can run them when needed, such as a release-surface map, vigilance check, contradiction scan, project-wiki build, or project-knowledge-bank build.
+Some examples are invocable workflows rather than always-on agents. A human or foreground AI can run them when needed, such as a release-surface map, vigilance check, contradiction scan, project-wiki build, project-knowledge-bank build, or playbook-packaging pass.
 
 ## Origin trail
 
