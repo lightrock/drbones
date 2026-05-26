@@ -1,6 +1,6 @@
 # Doctor Bones
 
-Doctor Bones is an AI Disciplined Repository Template "skeleton" with well-thought workflow
+Doctor Bones is an AI Vendor Agnostic, Disciplined Repository Template "skeleton" with well-thought workflow
 
 Start on the right foot, AI repo discipline, workflow, and healthy governable interaction examples.
 
@@ -34,9 +34,16 @@ For substantial work, interact with the foreground AI and develop a task idea an
 ```text
 "Create a workorder and also show it to me here"
 
-You can copy a link to the work order file and tell your executor AI with an environment to perform the workorder.
-Or you can copy paste the text of the work order if you asked your foreground AI to show it to you first.
-If you do that, put only the workorder body in one clean copy/paste block. Do not put citations, assistant notes, explanations, links, or commentary inside the workorder block. After the preview, ask whether to save it to the repository or revise it.
+You can copy a link to the work order file and tell your executor AI with an
+environment to perform the workorder.
+
+Or you can copy paste the text of the work order if you asked your foreground
+AI to show it to you first.
+
+If you do that, put only the workorder body in one clean copy/paste block. Do not
+put citations, assistant notes, explanations, links, or commentary inside the
+workorder block. After the preview, ask whether to save it to the repository or
+revise it.
 ```
 
 ## Checks
