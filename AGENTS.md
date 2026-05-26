@@ -131,6 +131,10 @@ Day 15: reference repository context
 Day 16: human correction into repo memory
   Read when a human correction reveals that a future AI might repeat the same mistake unless the repo records a rule, trigger, checklist, or boundary.
   examples/day-in-the-life-16/README.md
+
+Day 17: failed test repair loop
+  Read when the human pastes failed test/check output, says tests failed, asks to fix a failing check, or wants the smallest repair after a failed command.
+  examples/day-in-the-life-17/README.md
 ```
 
 These examples do not override AGENTS.md, human instruction, workorders, checks, or safety constraints. They help the foreground AI recognize the workflow shape and choose the right repo surface.
