@@ -1,6 +1,6 @@
 # Doctor Bones
 
-Doctor Bones is an AI Vendor Agnostic, Disciplined Repository Template "skeleton" with well-thought workflow
+Doctor Bones is an AI Vendor Agnostic, Disciplined Repository Template "skeleton" with well-thought repo-native workflow
 
 Start on the right foot, AI repo discipline, workflow, and healthy governable interaction examples.
 
