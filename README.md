@@ -1,6 +1,6 @@
-# Project README
+# DrBones
 
-This repository was created from the PMP AI Project Skeleton.
+DrBones is built from the PMP AI Project Skeleton and keeps the skeleton's governance/doctrine as durable project memory.
 
 Use this file as the human-facing README for your new project. Replace this starter text with your project name, purpose, setup instructions, and current status.
 
