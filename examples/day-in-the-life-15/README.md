@@ -1,46 +1,56 @@
-# Day in the life 15: make your foreground AI smarter with PFEM and PFCOMM
+# Day in the life 15: make your foreground AI smarter with reference repos
 
-This example is about giving a foreground AI focused architecture context before it writes advice or workorders.
+This example is about giving a foreground AI focused architecture context before it writes advice, plans, or repo changes.
 
-Use only these source repositories for this default pattern:
+The point is simple:
+
+```text
+Load relevant reference repositories on purpose.
+Keep the current repo boundary clear.
+```
+
+## Human request
+
+```text
+Before you give architecture advice for this repo, load up on the following reference repositories.
+```
+
+Example reference repositories:
 
 - `lightrock/PFEM`
 - `lightrock/PFCOMM`
 
-Do not include legal billing, SkyWrong, Friction Diction, Mission Program Mesh, or other project repositories unless the human explicitly names them.
-
-## Human request
-
-Ask the foreground AI to read PFEM and PFCOMM before giving architecture advice for DrBones.
+These are examples. A different project may name different reference repositories.
 
 ## Source roles
 
-DrBones is the current repo. It owns the workorders, playbooks, examples, checks, and handoff rules.
+Current repo:
 
-PFEM is the evidence architecture source. Use it for evidence boundaries, provenance, normalization, findings, reports, packages, rollups, and proof discipline.
+- The repository being changed or advised on.
+- Owns its own workorders, playbooks, examples, checks, handoff rules, and current repo state.
 
-PFCOMM is the communication architecture source. Use it for requests, status, handoffs, approvals, coordination, and human-AI communication boundaries.
+Reference repo example: PFEM
+
+- PFEM is an evidence architecture source.
+- It may be useful for evidence boundaries, provenance, normalization, findings, reports, packages, rollups, and proof discipline.
+
+Reference repo example: PFCOMM
+
+- PFCOMM is a communication architecture source.
+- It may be useful for requests, status, handoffs, approvals, coordination, and human-AI communication boundaries.
 
 ## Checklist
 
-Before writing advice or a workorder, the foreground AI should answer:
+Before writing advice based on reference repositories, the foreground AI should answer:
 
-- Which DrBones files were read?
-- Which PFEM files were read?
-- Which PFCOMM files were read?
-- What transfers cleanly into DrBones?
-- What belongs only in PFEM or PFCOMM?
+- Which current-repo files were read?
+- Which reference repositories were named by the human?
+- Which reference files were read?
+- What transfers cleanly into the current repo?
+- What belongs only in a reference repo?
 - What is source-backed?
 - What is inference?
-- What should DrBones do next, if anything?
-
-## Workorder shape
-
-If this becomes durable work, create a workorder such as:
-
-`workorders/YYYY-MM-DD-HHMM-by-githubusername-load-pfem-pfcomm-context.md`
-
-The workorder should tell the executor to inspect DrBones first, then inspect only `lightrock/PFEM` and `lightrock/PFCOMM`, record files read, preserve source boundaries, and run required checks if files change.
+- What should the current repo do next, if anything?
 
 ## Practical lesson
 
@@ -49,9 +59,8 @@ A smarter foreground AI is not just a longer prompt.
 It is a source-aware setup:
 
 - current repo first
-- PFEM for evidence discipline
-- PFCOMM for communication discipline
+- selected reference repos second
 - clear transfer rules
 - bounded next action
 
-Load the governing architecture. Keep sharper boundaries.
+Load more context. Keep sharper boundaries.
