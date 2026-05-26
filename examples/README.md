@@ -6,6 +6,8 @@ Each example gets its own subfolder.
 
 The examples are intentionally simple and easy to inspect. They are communication artifacts, not claims of finished products.
 
+Each example listed is linked to the AI repo guidance so that it will do what it says it does if a prompt matches the same intent. There is a python test for that. If you add a new one of these, the test will fail and the repo guidance will need an update. Tell your foreground agent to fix it if it wasn't automatic.
+
 ## Current examples
 
 - [`day-in-the-life-1/`](day-in-the-life-1/README.md) — a normal PMP-style workflow: a human asks for repo guidance changes, the foreground AI creates a bounded workorder, the coding agent executes the task, checks run, and the completion note ties the work back to the task contract.
