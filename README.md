@@ -72,6 +72,10 @@ But for AI-assisted projects, human docs are no longer enough.
 
 AI-readable architecture cognition becomes the operating substrate.
 
+If your project wants retrieval or RAG behavior, add it in your own project in whatever way fits your architecture.
+
+PMP does not require a specific vector database, retrieval pipeline, embedding model, indexer, or AI vendor.
+
 Human-facing documentation becomes a view, explanation, and audit artifact generated from that substrate.
 
 Humans remain in authority.
