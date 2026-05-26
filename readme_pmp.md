@@ -64,6 +64,49 @@ completion tied back to source intent
 
 In that model, tools such as Codex, Roo Code, Cursor, Copilot, Claude, ChatGPT, Gemini, local agents, and future systems are executors or assistants. PMP is the portable project memory and operating discipline they consume.
 
+## Why coding agents look smarter than other agents
+
+Coding agents look unusually capable partly because software repositories already give them a strong workspace.
+
+A repo gives an AI assistant:
+
+```text
+files
+rules
+docs
+tests
+schemas
+history
+diffs
+checks
+a place to write changes back
+```
+
+Most non-coding work does not naturally come with that substrate. The work may live across email, chat, dashboards, spreadsheets, PDFs, SaaS records, meetings, human memory, and external systems.
+
+That does not mean non-coding agents need to be magical or psychic.
+
+It means the project needs to make the work inspectable first.
+
+PMP generalizes the advantage coding agents already have:
+
+```text
+durable context
++ task contracts
++ source-of-truth files
++ checks
++ audit trail
++ human authority boundaries
+```
+
+Before asking AI to operate in a domain, give it a workspace where state, rules, evidence, decisions, checks, and outputs can be inspected and corrected.
+
+This is why many useful PMP workflows are invocable workflows, not resident autonomous agents. A human or foreground AI can invoke a vigilance check, contradiction scan, release-surface map, workorder creation, or context-assembly pass when needed.
+
+The goal is not to pretend the AI knows everything.
+
+The goal is to stop forcing humans to rehydrate context from scratch every time.
+
 ## Core idea
 
 Human-readable documentation still matters.
@@ -340,6 +383,7 @@ If `pytest` is not installed, install it in your local development environment. 
 ```text
 AGENTS.md                                  AI/executor operating instructions
 README.md                                  human landing page
+readme_pmp.md                              full PMP / AI Project Skeleton guide
 workorders/README.md                       workorder operating notes
 workorders/TEMPLATE.md                     starter workorder template
 schemas/workorder-contract.json            machine-readable workorder governance contract
@@ -350,6 +394,9 @@ docs/architecture/semantic-folder-hierarchy.md
                                            architecture-first folder doctrine
 docs/origin/stream-of-consciousness.md     preserved origin/manifesto capture
 examples/README.md                         example index
+examples/day-in-the-life-6/                release-surface mapping workflow example
+examples/day-in-the-life-7/                invocable vigilance-check workflow example
+examples/day-in-the-life-8/                invocable contradiction-scan workflow example
 examples/webgl-demo-3/                     architecture-cognition WebGL example
 examples/hobbyist-mechanic-57-chevy/       everyday project-cognition WebGL example
 ```
@@ -363,6 +410,8 @@ The examples show what you can do when your AI has cognition-first context about
 They are not claims that a finished system exists.
 
 They are communication artifacts showing how project memory, architecture cognition, constraints, roles, intent, and concrete artifacts can work together.
+
+Some examples are invocable workflows rather than always-on agents. A human or foreground AI can run them when needed, such as a release-surface map, vigilance check, or contradiction scan.
 
 ## Origin trail
 
