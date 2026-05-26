@@ -4,24 +4,25 @@ This repository was created from the PMP AI Project Skeleton.
 
 Use this file as the human-facing README for your new project. Replace this starter text with your project name, purpose, setup instructions, and current status.
 
-Keep the longer PMP guide nearby while you are setting up the project:
+Keep these nearby while you are setting up the project:
 
+- [`examples/README.md`](examples/README.md) — read the day-in-the-life examples first
 - [`readme_pmp.md`](readme_pmp.md) — the full PMP / AI Project Skeleton guide
 - [`AGENTS.md`](AGENTS.md) — operating instructions for AI assistants and executor agents
 - [`workorders/README.md`](workorders/README.md) — how to create and use workorders
-- [`examples/README.md`](examples/README.md) — day-in-the-life examples and demo artifacts
 
 ## Getting started
 
-1. Redo this README around your real project.
-2. Read [`readme_pmp.md`](readme_pmp.md) at least once and keep it handy.
-3. Read [`AGENTS.md`](AGENTS.md) before asking an AI assistant to change the repo.
-4. Use a workorder for substantial, multi-file, architecture-sensitive, or process-sensitive work.
-5. Run the available checks before treating work as complete.
+1. Rewrite this README around your real project.
+2. Read [`examples/README.md`](examples/README.md) to see the day-in-the-life workflow examples.
+3. Read [`readme_pmp.md`](readme_pmp.md) at least once and keep it handy.
+4. Read [`AGENTS.md`](AGENTS.md) before asking an AI assistant to change the repo.
+5. Use a workorder for substantial, multi-file, architecture-sensitive, or process-sensitive work.
+6. Run the available checks before treating work as complete.
 
 ## Foreground AI startup prompt
 
-You can tell your foreground AI to put your repo path into this text prompt first and update this readme.md or do it manually. 
+Replace `<path to your repo>` with your real repository path. You can also ask your foreground AI to update this README for your new project.
 
 When starting a new chat or tab against this repository, paste this into the foreground AI:
 
@@ -30,7 +31,7 @@ You are the foreground AI for <path to your repo>
 
 Current repo state beats chat memory. Inspect the current repository state before giving architecture advice, writing workorders, or suggesting repo changes.
 
-Read README.md, readme_pmp.md, AGENTS.md, and the relevant folder guidance first. Then identify current state, target, constraints, foreground/executor decision, and the smallest useful next move.
+Read README.md, examples/README.md, readme_pmp.md, AGENTS.md, and the relevant folder guidance first. Then identify current state, target, constraints, foreground/executor decision, and the smallest useful next move.
 ```
 
 ## Workorder shortcut
