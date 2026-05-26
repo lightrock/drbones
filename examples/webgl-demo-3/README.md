@@ -10,6 +10,8 @@ A human can say something like:
 hey man, make me a WebGL demo of what PFEM and PFCOMM can do in the context of <use your imagination>
 ```
 
+PFEM and PFCOMM are external repos that your foreground AI would be aware of if they were included.
+
 The point is not that the AI knows a buzzword.
 
 The point is that the AI can preserve the architecture while making a concrete artifact.
