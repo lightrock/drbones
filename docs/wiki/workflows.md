@@ -33,7 +33,9 @@ Use playbooks when a workflow has become reusable enough that future workorders 
 Key source docs:
 
 - [`../../playbooks/README.md`](../../playbooks/README.md)
+- [`../../playbooks/mcp-style-agent-design/PLAYBOOK.md`](../../playbooks/mcp-style-agent-design/PLAYBOOK.md)
 - [`../../examples/day-in-the-life-11/README.md`](../../examples/day-in-the-life-11/README.md)
+- [`../../examples/day-in-the-life-12/README.md`](../../examples/day-in-the-life-12/README.md)
 
 Authority rule:
 
@@ -44,6 +46,26 @@ Playbooks remain reusable task-specific guidance.
 ```
 
 If a task or workorder references a playbook, the executor should read the matching `playbooks/<workflow-name>/PLAYBOOK.md` before doing the task.
+
+## MCP-style tool-agent design
+
+MCP-style tool access is an architecture boundary, not a cool trick.
+
+Use the MCP-style agent design playbook before exposing tools, APIs, scripts, command surfaces, external resources, or write-capable actions to an AI assistant.
+
+The governing pattern is:
+
+```text
+mission
+→ authority boundary
+→ tool contract
+→ approval gate
+→ action
+→ proof
+→ completion report
+```
+
+Do not collapse recommendation, command, execution, and proof.
 
 ## Invocable workflows
 
@@ -57,6 +79,7 @@ Examples include:
 - project-wiki builds
 - project-knowledge-bank builds
 - playbook packaging
+- MCP-style tool-agent design
 
 A project-knowledge-bank build is for creating project-specific reusable source material. It should not be populated in the generic template unless the content is explicitly safe for inheritance.
 
@@ -69,3 +92,4 @@ Workflow examples index:
 - [`../../examples/day-in-the-life-9/README.md`](../../examples/day-in-the-life-9/README.md)
 - [`../../examples/day-in-the-life-10/README.md`](../../examples/day-in-the-life-10/README.md)
 - [`../../examples/day-in-the-life-11/README.md`](../../examples/day-in-the-life-11/README.md)
+- [`../../examples/day-in-the-life-12/README.md`](../../examples/day-in-the-life-12/README.md)
