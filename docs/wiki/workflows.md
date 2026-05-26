@@ -38,6 +38,7 @@ Key source docs:
 - [`../../examples/day-in-the-life-12/README.md`](../../examples/day-in-the-life-12/README.md)
 - [`../../examples/day-in-the-life-13/README.md`](../../examples/day-in-the-life-13/README.md)
 - [`../../examples/day-in-the-life-14/README.md`](../../examples/day-in-the-life-14/README.md)
+- [`../../examples/day-in-the-life-15/README.md`](../../examples/day-in-the-life-15/README.md)
 
 Authority rule:
 
@@ -98,6 +99,24 @@ invent
 → release
 ```
 
+## Cross-repo foreground context loading
+
+Use the Day 15 pattern when the foreground AI should become smarter by reading selected related repositories before giving architecture advice or writing workorders.
+
+The goal is to load context on purpose without smearing every repository into one soup.
+
+The governing pattern is:
+
+```text
+current repo authority
++ related repo doctrine
++ explicit source roles
++ transfer/not-transfer classification
++ bounded next action
+```
+
+Related repositories can inform the current repo. They do not automatically govern it.
+
 ## Invocable workflows
 
 Invocable workflows are executed intentionally when needed instead of relying on background autonomous agents.
@@ -113,6 +132,7 @@ Examples include:
 - MCP-style tool-agent design
 - outside agent pattern distillation
 - release-readiness stabilization
+- cross-repo foreground context loading
 
 A project-knowledge-bank build is for creating project-specific reusable source material. It should not be populated in the generic template unless the content is explicitly safe for inheritance.
 
@@ -128,3 +148,4 @@ Workflow examples index:
 - [`../../examples/day-in-the-life-12/README.md`](../../examples/day-in-the-life-12/README.md)
 - [`../../examples/day-in-the-life-13/README.md`](../../examples/day-in-the-life-13/README.md)
 - [`../../examples/day-in-the-life-14/README.md`](../../examples/day-in-the-life-14/README.md)
+- [`../../examples/day-in-the-life-15/README.md`](../../examples/day-in-the-life-15/README.md)
