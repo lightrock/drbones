@@ -403,7 +403,7 @@ workorders/TEMPLATE.md                     starter workorder template
 schemas/workorder-contract.json            machine-readable workorder governance contract
 tools/pmp_check.py                         lightweight governance checker
 tests/test_pmp_check.py                    tests for the governance checker
-docs/releases/v0.3.1.md                    v0.3.1 release notes
+docs/releases/v0.4.0.md                    v0.4.0 release notes
 docs/architecture/semantic-folder-hierarchy.md
                                            architecture-first folder doctrine
 docs/origin/stream-of-consciousness.md     preserved origin/manifesto capture
@@ -458,15 +458,15 @@ This first public skeleton is shared so other people can use it, fork it, simpli
 
 ## Status
 
-`v0.3.1` is the current public skeleton.
+`v0.4.0` is the current public skeleton release for DrBones.
 
-It includes the cleaner public README, `AGENTS.md`, workorder guidance, the preserved origin trail, examples, the architecture-first folder philosophy, the first lightweight governance checker, and clearer foreground AI workorder handoff commands.
+It includes the renamed DrBones project identity, the cleaner public README, `AGENTS.md`, workorder guidance, vendor-independent playbooks, MCP-style tool-agent design guidance, outside-agent-pattern distillation, release-readiness stabilization, the preserved origin trail, examples, the architecture-first folder philosophy, the first lightweight governance checker, and clearer foreground AI workorder handoff commands.
 
 It is usable, but not finished.
 
 Expect the repo to evolve from captured doctrine toward stronger checks, examples, and workflow tooling.
 
-See [`docs/releases/v0.3.1.md`](docs/releases/v0.3.1.md) for release notes.
+See [`docs/releases/v0.4.0.md`](docs/releases/v0.4.0.md) for release notes.
 
 ## License
 
