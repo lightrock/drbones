@@ -22,6 +22,16 @@ Example reference repositories:
 
 These are examples. A different project may name different reference repositories.
 
+A reference repo can be:
+
+- an architecture repo
+- a method library
+- a playbook collection
+- a standards/example repo
+- a prior project with reusable patterns
+
+For example, a repository like `skills-for-humanity` could be loaded as a method-library reference repo. The foreground AI should inspect it, identify portable reasoning procedures, and use them only when the human asks to port, adapt, compare, or load up on that source.
+
 ## Source roles
 
 Current repo:
@@ -38,6 +48,12 @@ Reference repo example: PFCOMM
 
 - PFCOMM is a communication architecture source.
 - It may be useful for requests, status, handoffs, approvals, coordination, and human-AI communication boundaries.
+
+Reference repo example: method library
+
+- A method-library repo is a source of reusable procedures.
+- It may be useful for extracting named reasoning workflows, routing patterns, checklists, or playbook candidates.
+- It should not be copied wholesale. The foreground AI should classify what is portable, what is vendor-specific, and what belongs only in the reference repo.
 
 ## Checklist
 
