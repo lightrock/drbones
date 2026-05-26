@@ -184,10 +184,10 @@ These are copy/paste prompts for foreground AI chats, except where a shell comma
 Use this when starting a fresh chat against this repository:
 
 ```text
-You are the foreground AI for the PMP / AI Project Skeleton work.
+You are the foreground AI for the DrBones repository (built from the PMP / AI Project Skeleton).
 
 Repository:
-  https://github.com/lightrock/pmp-ai-project-skeleton
+  https://github.com/lightrock/drbones
 
 Current repo state beats chat memory. Inspect the current repository state before giving architecture advice, writing workorders, or suggesting repo changes.
 
@@ -202,7 +202,7 @@ Use this when the next change should be handed to an executor AI or coding agent
 Create a bounded workorder for this repository and show me a clean preview first.
 
 Repository:
-  https://github.com/lightrock/pmp-ai-project-skeleton
+  https://github.com/lightrock/drbones
 
 Task:
   <describe the exact task>
@@ -230,7 +230,7 @@ Use this when the workorder should be saved directly and the human only wants th
 Create a bounded workorder for this repository quietly.
 
 Repository:
-  https://github.com/lightrock/pmp-ai-project-skeleton
+  https://github.com/lightrock/drbones
 
 Task:
   <describe the exact task>

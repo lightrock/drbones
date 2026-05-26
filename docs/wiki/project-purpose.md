@@ -2,7 +2,7 @@
 
 ## What this project is
 
-This repository is a PMP AI Project Skeleton: a template repository for durable, AI-assisted project memory instead of chat-only memory.
+DrBones is a repository built from the PMP AI Project Skeleton template for durable, AI-assisted project memory instead of chat-only memory.
 
 Primary intent is to keep intent, scope, constraints, checks, and completion records in the repository.
 

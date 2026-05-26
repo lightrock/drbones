@@ -180,6 +180,10 @@ A completed pass should leave the repo in this state:
 - No new feature doctrine was introduced during the rename pass.
 ```
 
+## Completion note
+
+(Completion report format follows.)
+
 ## Completion report
 
 The executor must report:
