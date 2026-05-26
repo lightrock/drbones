@@ -1,21 +1,16 @@
-# DrBones
+# Doctor Bones
 
-DrBones is built from the PMP AI Project Skeleton and keeps the skeleton's governance/doctrine as durable project memory.
+Doctor Bones is an AI Disciplined Repository Template "skeleton" with well-thought workflow
+
+Start on the right foot, AI repo discipline, workflow, and healthy governable interaction examples.
 
 Use this file as the human-facing README for your new project. Replace this starter text with your project name, purpose, setup instructions, and current status.
 
-Keep these nearby while you are setting up the project:
-
-- [`examples/README.md`](examples/README.md) — read the day-in-the-life examples first
-- [`readme_pmp.md`](readme_pmp.md) — the full PMP / AI Project Skeleton guide
-- [`AGENTS.md`](AGENTS.md) — operating instructions for AI assistants and executor agents
-- [`workorders/README.md`](workorders/README.md) — how to create and use workorders
-
 ## Getting started
 
-1. Rewrite this README around your real project.
-2. Read [`examples/README.md`](examples/README.md) to see the day-in-the-life workflow examples.
-3. Read [`readme_pmp.md`](readme_pmp.md) at least once and keep it handy.
+1. If you copied this template, in a moment you will rewrite this README around your real project.
+2. BUT FIRST Read [`examples/README.md`](examples/README.md) to see the day-in-the-life workflow examples.
+3. AND Read [`readme_pmp.md`](readme_pmp.md) at least once and keep it handy.
 4. Read [`AGENTS.md`](AGENTS.md) before asking an AI assistant to change the repo.
 5. Use a workorder for substantial, multi-file, architecture-sensitive, or process-sensitive work.
 6. Run the available checks before treating work as complete.
