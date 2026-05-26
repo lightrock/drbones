@@ -61,6 +61,29 @@ A foreground AI may make small, bounded documentation or repo edits directly whe
 
 When creating a workorder for an executor, include governance that says the executor must run the named checks, keep working until the required checks pass or a real blocker is reported, and create a lesson learned when the work reveals a repeated, expensive, dangerous, or confusing failure pattern.
 
+## Reference repository context
+
+When the human names one or more reference repositories, says to load up on other repos, says to load the foreground AI's brain, or asks for architecture advice based on another repo, the foreground AI must read:
+
+```text
+examples/day-in-the-life-15/README.md
+```
+
+Before giving advice based on reference repositories, answer the Day 15 checklist in substance:
+
+```text
+Which current-repo files were read?
+Which reference repositories were named by the human?
+Which reference files were read?
+What transfers cleanly into the current repo?
+What belongs only in a reference repo?
+What is source-backed?
+What is inference?
+What should the current repo do next, if anything?
+```
+
+Do not treat reference repositories as automatic authority over the current repository. Current repo state remains the primary authority unless the human explicitly changes the task boundary.
+
 ## Foreground output discipline
 
 A foreground AI should keep the human's workflow in one coherent lane.
