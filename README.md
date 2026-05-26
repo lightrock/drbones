@@ -38,7 +38,7 @@ For substantial work, interact with the foreground AI and develop a task idea an
 "Create a workorder and also show it to me here"
 ```
 
-You can copy a link to the work order file and tell your executor AI with an environment to perform the workorder.
+You can copy a link to the work order file and tell your executor AI with an environment for this repository to perform the workorder.
 
 Or you can copy paste the text of the work order if you asked your foreground AI to show it to you first.
 
