@@ -101,6 +101,13 @@ docs/wiki/workflows.md
   - vigilance workflow
   - contradiction scan workflow
 
+docs/wiki/examples-and-demos.md
+  - day-in-the-life examples
+  - demo artifacts
+  - clickable links back to runnable demos
+  - note: "This is what you can do when your AI has architecture cognition."
+  - example link: [webgl_demo3.html](../../examples/webgl-demo-3/webgl_demo3.html)
+
 docs/wiki/checks-and-gates.md
   - available checks
   - full gate/lite gate distinction
@@ -113,6 +120,8 @@ docs/wiki/needs-human-decision.md
 ```
 
 The wiki should remain a map, not a substitute for source files.
+
+When the wiki references a runnable demo, it should include a clickable link back to the demo artifact instead of only summarizing it. For example, a wiki page about examples and demos should link to [`webgl_demo3.html`](../../examples/webgl-demo-3/webgl_demo3.html) with the note: "This is what you can do when your AI has architecture cognition."
 
 ## What the executor should report
 
