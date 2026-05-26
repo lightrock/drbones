@@ -11,6 +11,7 @@ It helps you keep project memory inside the repo instead of trapped in chat. It 
 - [Français](docs/i18n/README.fr.md)
 - [Deutsch](docs/i18n/README.de.md)
 - [Português do Brasil](docs/i18n/README.pt-BR.md)
+- [हिन्दी](docs/i18n/README.hi.md)
 
 ## What this is
 
