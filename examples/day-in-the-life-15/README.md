@@ -8,6 +8,7 @@ The point is simple:
 Load relevant reference repositories on purpose.
 Keep the current repo boundary clear.
 Say what you actually read.
+Do not mutate external repositories during analysis.
 ```
 
 ## Human request
@@ -29,7 +30,7 @@ The foreground AI should then:
 ```text
 1. Read current Doctor Bones guidance.
 2. Read docs/internal-reference/pfem-lite.md.
-3. Inspect the target repository files.
+3. Inspect the target repository files using read-only operations.
 4. Separate source-backed observations from PFEM-lite architectural inference.
 5. Say clearly that this is PFEM-lite, not a full live PFEM repo analysis.
 ```
@@ -40,7 +41,39 @@ Expected honesty boundary:
 I used Doctor Bones' embedded PFEM-lite reference for this analysis.
 I inspected <target repo files actually read>.
 I did not inspect the full live PFEM repository.
+I did not write to the external repository.
 ```
+
+## External repository safety
+
+Reference repositories and other people's repositories are **read-only by default**.
+
+Allowed actions:
+
+```text
+fetch files
+search files
+read repository metadata
+read issues, pull requests, commits, diffs, workflows, or logs when relevant
+prepare suggested issues, comments, workorders, or patches as text only
+```
+
+Forbidden unless the human gives a separate, explicit write instruction for that exact external repository:
+
+```text
+create file
+update file
+delete file
+create branch
+create pull request
+open issue
+post comment
+apply label
+change settings
+run release or deployment action
+```
+
+If a tool or action is ambiguous, stop and use the read-only operation instead.
 
 Example reference repositories:
 
@@ -146,6 +179,7 @@ Before writing advice based on reference repositories, the foreground AI should 
 - What is source-backed?
 - What is inference?
 - What should the current repo do next, if anything?
+- Was the external repository kept read-only?
 
 ## Practical lesson
 
@@ -158,5 +192,6 @@ It is a source-aware setup:
 - embedded fallback references only when clearly named
 - clear transfer rules
 - bounded next action
+- read-only external repository analysis unless explicitly authorized otherwise
 
 Load more context. Keep sharper boundaries. Say what you actually read.
