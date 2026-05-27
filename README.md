@@ -4,6 +4,10 @@ Doctor Bones is a vendor-independent repository template for AI-assisted develop
 
 It helps you keep project memory inside the repo instead of trapped in chat. It gives your human/AI team a shared operating discipline: workorders, playbooks, examples, checks, handoff rules, and release-readiness habits.
 
+You do not necessarily have to check out the template copy of your repository to use it. Doctor Bones carries its cognitionkitecture in the repository itself. If you follow the startup instructions below, your foreground AI should have enough project smarts to reason from the repo guidance, examples, playbooks, checks, and handoff rules.
+
+By default, nothing has to "run" anywhere in the traditional way, and you do not necessarily have to invoke an executor such as Codex. Point your foreground AI at the appropriate Doctor Bones-based repository instance first. Use an executor only when the task needs file edits, a runtime environment, checks, commits, or pull requests.
+
 ## Languages
 
 - English: this file
