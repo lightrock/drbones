@@ -192,6 +192,8 @@ workorders as durable task contracts
 checks/gates as proof discipline
 ```
 
+When performing PFEM-lite analysis of a target repository, include a reasonable but not exhaustive check of the target repo's test and check coverage. Look for tests, fixtures, schema checks, contract tests, golden outputs, CI workflows, validation scripts, or documented gates that prove important evidence-boundary behavior. Focus on whether the repo tests the boundaries PFEM-lite cares about: source input to normalized record, normalized record to finding, finding to report/package/rollup, confidence and provenance preservation, tool/MCP read-vs-mutate authority, and error or stale-data handling. Do not turn this into a full test audit unless the human asks. Say what test/check files or workflows you inspected, and be clear when coverage was not checked or could not be determined.
+
 PFCOMM-lite is enough for a useful first-pass analysis of:
 
 ```text
