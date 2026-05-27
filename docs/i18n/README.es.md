@@ -11,6 +11,7 @@ Ayuda a mantener la memoria del proyecto dentro del repositorio, en lugar de atr
 - [Français](README.fr.md)
 - [Deutsch](README.de.md)
 - [Português do Brasil](README.pt-BR.md)
+- [हिन्दी](README.hi.md)
 
 ## Qué es esto
 
@@ -38,33 +39,36 @@ El repositorio es la capa de memoria y disciplina entre ambos.
 1. Si copiaste esta plantilla, reescribe pronto este README para tu proyecto real.
 2. Lee [`examples/README.md`](../../examples/README.md) para ver los ejemplos de flujo de trabajo “day-in-the-life”.
 3. Lee [`readme_pmp.md`](../../readme_pmp.md) al menos una vez y tenlo a mano.
-4. Lee [`AGENTS.md`](../../AGENTS.md) antes de pedir a un asistente de IA que cambie el repositorio.
+4. Lee [`AGENTS.md`](../../AGENTS.md) antes de pedir a un asistente de IA que trabaje en el repositorio.
 5. Usa una orden de trabajo para trabajos sustanciales, de múltiples archivos, sensibles a la arquitectura o sensibles al proceso.
 6. Ejecuta las comprobaciones disponibles antes de tratar el trabajo como terminado.
 
 ## Prompt de inicio para la IA de primer plano
 
-Reemplaza `<ruta a tu repositorio>` con la ruta real de tu repositorio. También puedes pedir a tu IA de primer plano que actualice este README para tu nuevo proyecto.
+Este prompt es para un repositorio creado a partir de la plantilla Doctor Bones. Después de copiar esta plantilla, reemplaza `<URL del repositorio de tu proyecto>` con la URL de tu propio repositorio de proyecto.
 
-Al iniciar un nuevo chat o pestaña contra este repositorio, pega esto en la IA de primer plano:
+Al iniciar un nuevo chat o pestaña para el repositorio de tu proyecto, pega esto en la IA de primer plano:
 
 ```text
-Eres la IA de primer plano para <ruta a tu repositorio>
+You are the foreground AI for <your project repository URL>.
 
-El estado actual del repositorio pesa más que la memoria del chat. Inspecciona el estado actual del repositorio antes de dar consejos de arquitectura, escribir órdenes de trabajo o sugerir cambios del repositorio.
+Current repo state beats chat memory. Inspect the current project repository before giving
+architecture advice, writing workorders, or suggesting repo changes.
 
-Lee README.md, examples/README.md, readme_pmp.md, AGENTS.md y la guía de carpeta relevante primero. Luego identifica estado actual, objetivo, restricciones, decisión primer-plano/ejecutor y el siguiente paso útil más pequeño.
+Read README.md, examples/README.md, readme_pmp.md, AGENTS.md, and the relevant folder
+guidance from the project repository first. Then identify current state, target, constraints,
+foreground/executor decision, and the smallest useful next move.
 ```
 
 ## Atajo de orden de trabajo
 
-Para trabajo sustancial, habla con la IA de primer plano hasta que la tarea esté clara, luego di:
+Para trabajo sustancial en tu repositorio de proyecto copiado, habla con la IA de primer plano hasta que la tarea esté clara, luego di:
 
 ```text
 Create a workorder and also show it to me here.
 ```
 
-Puedes copiar un enlace al archivo de la orden de trabajo y decirle a tu IA ejecutora, trabajando en un entorno para este repositorio, que la ejecute.
+Puedes copiar un enlace al archivo de la orden de trabajo y decirle a tu IA ejecutora, trabajando en un entorno para el repositorio de tu proyecto, que la ejecute.
 
 También puedes copiar/pegar el cuerpo de la orden de trabajo si pediste a la IA de primer plano que lo mostrara primero. Mantén ese bloque limpio: sin citas, notas del asistente, explicaciones, enlaces extra ni comentarios dentro del cuerpo de la orden.
 
