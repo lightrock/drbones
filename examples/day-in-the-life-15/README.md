@@ -44,6 +44,45 @@ I did not inspect the full live PFEM repository.
 I did not write to the external repository.
 ```
 
+## Simple PFCOMM-lite invocation
+
+To ask for a lightweight PFCOMM-style external repository analysis, the human can say:
+
+```text
+Go analyze my other repo <repo URL or owner/name> with PFCOMM-lite analysis capabilities.
+```
+
+The foreground AI should then:
+
+```text
+1. Read current Doctor Bones guidance.
+2. Read docs/internal-reference/pfcomm-lite.md.
+3. Inspect the target repository files using read-only operations.
+4. Separate source-backed observations from PFCOMM-lite architectural inference.
+5. Say clearly that this is PFCOMM-lite, not a full live PFCOMM repo analysis.
+```
+
+Expected honesty boundary:
+
+```text
+I used Doctor Bones' embedded PFCOMM-lite reference for this analysis.
+I inspected <target repo files actually read>.
+I did not inspect the full live PFCOMM repository.
+I did not write to the external repository.
+```
+
+## Combined PFEM/PFCOMM-lite invocation
+
+To ask for both evidence-governance and command/coordination analysis, the human can say:
+
+```text
+Go analyze my other repo <repo URL or owner/name> with PFEM-lite and PFCOMM-lite analysis capabilities.
+```
+
+Use PFEM-lite for evidence, provenance, confidence, findings, packages, reports, and rollups. Use PFCOMM-lite for command intent, authority context, tasking, assignments, resources, operational status, action receipts, coordination messages, decision logs, and after-action accountability.
+
+Do not collapse the two lenses. PFEM owns evidence governance. PFCOMM owns command/coordination/accountability. MCP or other tool surfaces are callable interfaces, not the domain authority.
+
 ## External repository safety
 
 Reference repositories and other people's repositories are **read-only by default**.
@@ -97,12 +136,13 @@ Another example is [`ZhixiangLuo/10xProductivity`](https://github.com/ZhixiangLu
 
 A premier example of intelligent reference-repo analysis is [`bawbel/scanner`](https://github.com/bawbel/scanner). The foreground AI can inspect that repo against a current-repo architecture lens such as PFEM, compare evidence boundaries, contracts, schemas, testing discipline, runtime/static separation, confidence versus severity, lifecycle handling, and output contracts, then produce respectful GitHub issue suggestions. The point is not to criticize another repo from memory; the point is to read the source, identify what it already does well, name the real architectural gap if one exists, and preserve the boundary between source-backed observation and inference.
 
-## PFEM-lite fallback
+## PFEM-lite and PFCOMM-lite fallback
 
-Doctor Bones carries a small embedded PFEM reference at:
+Doctor Bones carries small embedded reference snapshots at:
 
 ```text
 docs/internal-reference/pfem-lite.md
+docs/internal-reference/pfcomm-lite.md
 ```
 
 Use PFEM-lite when the human asks for a PFEM-style first-pass analysis and the live `lightrock/PFEM` repo is not being inspected.
@@ -117,16 +157,34 @@ PFEM-lite is enough to support a useful analysis of:
 - findings, reports, packages, rollups, and proof discipline
 - workorders and checks as durable project discipline
 
-Do not overclaim it.
+Use PFCOMM-lite when the human asks for a PFCOMM-style first-pass analysis and the live `lightrock/PFCOMM` repo is not being inspected.
+
+PFCOMM-lite is enough to support a useful analysis of:
+
+- command intent
+- authority context
+- tasking
+- assignments
+- resources
+- operational status
+- action receipts
+- escalation requests
+- coordination messages
+- decision logs
+- after-action records
+- MCP/tool authority boundaries
+- workorders and checks as durable project discipline
+
+Do not overclaim either embedded reference.
 
 Use this wording when appropriate:
 
 ```text
-I used Doctor Bones' embedded PFEM-lite reference for this analysis.
-I did not inspect the full live PFEM repository.
+I used Doctor Bones' embedded PFEM-lite and/or PFCOMM-lite reference for this analysis.
+I did not inspect the full live PFEM and/or PFCOMM repository unless listed below.
 ```
 
-If the human asks for a full PFEM comparison, inspect current `lightrock/PFEM` files and report which PFEM files were actually read.
+If the human asks for a full PFEM or PFCOMM comparison, inspect current `lightrock/PFEM` or `lightrock/PFCOMM` files and report which files were actually read.
 
 ## Source roles
 
@@ -143,8 +201,9 @@ Reference repo example: PFEM
 
 Reference repo example: PFCOMM
 
-- PFCOMM is a communication architecture source.
-- It may be useful for requests, status, handoffs, approvals, coordination, and human-AI communication boundaries.
+- PFCOMM is a command and coordination architecture source.
+- It may be useful for command intent, authority context, tasking, assignments, resources, action receipts, operational status, decision logs, coordination, and after-action accountability.
+- The embedded PFCOMM-lite reference is a first-pass lens, not a substitute for a full live PFCOMM repo scan.
 
 Reference repo example: method library
 
@@ -174,6 +233,7 @@ Before writing advice based on reference repositories, the foreground AI should 
 - Which reference repositories were named by the human?
 - Which reference files were read?
 - Was `docs/internal-reference/pfem-lite.md` used instead of live PFEM inspection?
+- Was `docs/internal-reference/pfcomm-lite.md` used instead of live PFCOMM inspection?
 - What transfers cleanly into the current repo?
 - What belongs only in a reference repo?
 - What is source-backed?
