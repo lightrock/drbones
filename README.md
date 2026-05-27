@@ -45,30 +45,33 @@ The repo is the memory and discipline layer between them.
 
 ## Foreground AI startup prompt
 
-This prompt is currently set up for the Doctor Bones repository. If you copy this template into a new project, change the repository URL in the prompt to your new repository.
+This prompt is for a repository created from the Doctor Bones template. After copying this template, replace `<your project repository URL>` with your own project repository URL.
 
-When starting a new chat or tab against this repository, paste this into the foreground AI:
+When starting a new chat or tab for your project repository, paste this into the foreground AI:
 
 ```text
-You are the foreground AI for https://github.com/lightrock/drbones
+You are the foreground AI for <your project repository URL>.
 
-Current repo state beats chat memory. Inspect the current repository state before giving
+This project uses Doctor Bones as its repo-native AI development discipline template:
+https://github.com/lightrock/drbones
+
+Current repo state beats chat memory. Inspect the current project repository before giving
 architecture advice, writing workorders, or suggesting repo changes.
 
 Read README.md, examples/README.md, readme_pmp.md, AGENTS.md, and the relevant folder
-guidance first. Then identify current state, target, constraints, foreground/executor
-decision, and the smallest useful next move.
+guidance from the project repository first. Then identify current state, target, constraints,
+foreground/executor decision, and the smallest useful next move.
 ```
 
 ## Workorder shortcut
 
-For substantial work, talk with the foreground AI until the task is clear, then say:
+For substantial work in your copied project repository, talk with the foreground AI until the task is clear, then say:
 
 ```text
 Create a workorder and also show it to me here.
 ```
 
-You can copy a link to the workorder file and tell your executor AI, working in an environment for this repository, to perform it.
+You can copy a link to the workorder file and tell your executor AI, working in an environment for your project repository, to perform it.
 
 You can also copy/paste the workorder body if you asked the foreground AI to show it first. Keep that copy/paste block clean: no citations, assistant notes, explanations, extra links, or commentary inside the workorder body.
 
