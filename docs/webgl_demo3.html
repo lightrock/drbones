@@ -200,7 +200,7 @@
     <div><span class="dot" style="background:#ffcf5a"></span>protected observer in safer zone</div>
     <div><span class="dot" style="background:#aaa"></span>latent candidate, role not active yet</div>
     <div><span class="dot" style="background:#ff5a76"></span>lost / degraded / last-known state</div>
-    <div><span class="dot" style="background:#b78cff"></span>mission target volume</div>
+    <div><span class="dot" style="background:#b78cff"></span>rectangular ground target + airspace</div>
   </section>
 
 <script type="module">
@@ -316,11 +316,10 @@ function makeRing(color, radius) {
   return ring;
 }
 
-function makeLine(color, opacity, dashed = false) {
+function makeLine(color, opacity) {
   const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
   const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
   const line = new THREE.Line(geo, mat);
-  line.userData.dashed = dashed;
   line.visible = false;
   return line;
 }
@@ -341,6 +340,12 @@ function setNodeColor(n, color) {
   n.ring.material.color.setHex(color);
 }
 
+function makeBoxEdges(width, height, depth, color, opacity) {
+  const geo = new THREE.EdgesGeometry(new THREE.BoxGeometry(width, height, depth));
+  const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
+  return new THREE.LineSegments(geo, mat);
+}
+
 // Lights.
 scene.add(new THREE.AmbientLight(0xb7cfff, 0.55));
 const sun = new THREE.DirectionalLight(0xffffff, 1.6);
@@ -357,103 +362,51 @@ const axesRing = makeRing(0x2d5280, 58);
 axesRing.position.y = 0.03;
 scene.add(axesRing);
 
-// Mission target volume.
+// Mission target: a rectangular ground objective with an airspace box above it.
 const mission = new THREE.Group();
-mission.position.set(34, 3.4, -2);
-const missionSphere = new THREE.Mesh(
-  new THREE.SphereGeometry(14, 48, 24),
-  new THREE.MeshBasicMaterial({ color: colors.mission, transparent: true, opacity: 0.13, wireframe: false })
+mission.position.set(34, 0.05, -2);
+
+const groundTarget = new THREE.Mesh(
+  new THREE.BoxGeometry(26, 0.7, 16),
+  new THREE.MeshStandardMaterial({ color: colors.mission, transparent: true, opacity: 0.48, roughness: 0.5, metalness: 0.05 })
 );
-mission.add(missionSphere);
-const missionWire = new THREE.Mesh(
-  new THREE.SphereGeometry(14.05, 32, 16),
-  new THREE.MeshBasicMaterial({ color: colors.mission, transparent: true, opacity: 0.34, wireframe: true })
+groundTarget.position.set(0, 0.35, 0);
+mission.add(groundTarget);
+
+const groundTargetWire = makeBoxEdges(26.2, 0.75, 16.2, colors.mission, 0.82);
+groundTargetWire.position.copy(groundTarget.position);
+mission.add(groundTargetWire);
+
+const airspaceVolume = new THREE.Mesh(
+  new THREE.BoxGeometry(30, 18, 20),
+  new THREE.MeshBasicMaterial({ color: colors.mission, transparent: true, opacity: 0.075, wireframe: false })
 );
-mission.add(missionWire);
-const missionLabel = makeLabel('MISSION OBJECTIVE VOLUME');
-missionLabel.position.set(0, 18, 0);
+airspaceVolume.position.set(0, 9.5, 0);
+mission.add(airspaceVolume);
+
+const airspaceWire = makeBoxEdges(30, 18, 20, colors.mission, 0.32);
+airspaceWire.position.copy(airspaceVolume.position);
+mission.add(airspaceWire);
+
+const missionLabel = makeLabel('GROUND TARGET + AIRSPACE');
+missionLabel.position.set(0, 22, 0);
 mission.add(missionLabel);
 scene.add(mission);
+
+const missionAimPoint = new THREE.Vector3(mission.position.x, 10.5, mission.position.z);
 
 // Every node below is conceptually both PFEM and PFCOMM.
 // role is what it says it is best suited to do in this scenario.
 // lead/coordinator status is a role, not a different species.
 const nodeSpecs = [
-  {
-    id: 'node-alpha',
-    roleLine: "I'm a temporary mission objective lead",
-    role: 'coordinator',
-    base: [-36, 8, -8],
-    target: [22, 13, -7],
-    activateAt: 0.8,
-    moveAt: 7.5
-  },
-  {
-    id: 'node-bravo',
-    roleLine: "I'm a protected observer, staying safer so the mesh does not collapse",
-    role: 'safe',
-    base: [-22, 20, 34],
-    target: [7, 22, 31],
-    activateAt: 1.4,
-    moveAt: 9.0
-  },
-  {
-    id: 'node-charlie',
-    roleLine: "I'm a camera guy",
-    role: 'camera',
-    base: [-58, 4, -30],
-    target: [27, 8, -11],
-    activateAt: 2.2,
-    moveAt: 6.2,
-    failAt: 12.2
-  },
-  {
-    id: 'node-delta',
-    roleLine: "I'm a package delivery agent",
-    role: 'package',
-    base: [-54, 4, 31],
-    target: [31, 6, 8],
-    activateAt: 3.2,
-    moveAt: 6.8,
-    degradeAt: 10.7
-  },
-  {
-    id: 'node-echo',
-    roleLine: "I'm a relay and status-return helper",
-    role: 'package',
-    base: [-28, 5, -46],
-    target: [39, 8, -4],
-    activateAt: 4.2,
-    moveAt: 7.3
-  },
-  {
-    id: 'node-foxtrot',
-    roleLine: "I'm a review and rollup participant",
-    role: 'coordinator',
-    base: [-23, 5, 46],
-    target: [39, 10, 13],
-    activateAt: 5.7,
-    moveAt: 8.2,
-    failAt: 14.2
-  },
-  {
-    id: 'node-golf',
-    roleLine: "I'm a replacement package agent",
-    role: 'package',
-    base: [-68, 5, 0],
-    target: [21, 7, 15],
-    activateAt: 14.8,
-    moveAt: 15.2
-  },
-  {
-    id: 'node-hotel',
-    roleLine: "I'm a replacement observer",
-    role: 'camera',
-    base: [2, 6, -57],
-    target: [31, 14, -16],
-    activateAt: 16.1,
-    moveAt: 16.4
-  }
+  { id: 'node-alpha', roleLine: "I'm a temporary mission objective lead", role: 'coordinator', base: [-36, 8, -8], target: [22, 13, -7], activateAt: 0.8, moveAt: 7.5 },
+  { id: 'node-bravo', roleLine: "I'm a protected observer, staying safer so the mesh does not collapse", role: 'safe', base: [-22, 20, 34], target: [7, 22, 31], activateAt: 1.4, moveAt: 9.0 },
+  { id: 'node-charlie', roleLine: "I'm a camera guy", role: 'camera', base: [-58, 4, -30], target: [27, 8, -11], activateAt: 2.2, moveAt: 6.2, failAt: 12.2 },
+  { id: 'node-delta', roleLine: "I'm a package delivery agent", role: 'package', base: [-54, 4, 31], target: [31, 6, 8], activateAt: 3.2, moveAt: 6.8, degradeAt: 10.7 },
+  { id: 'node-echo', roleLine: "I'm a relay and status-return helper", role: 'package', base: [-28, 5, -46], target: [39, 8, -4], activateAt: 4.2, moveAt: 7.3 },
+  { id: 'node-foxtrot', roleLine: "I'm a review and rollup participant", role: 'coordinator', base: [-23, 5, 46], target: [39, 10, 13], activateAt: 5.7, moveAt: 8.2, failAt: 14.2 },
+  { id: 'node-golf', roleLine: "I'm a replacement package agent", role: 'package', base: [-68, 5, 0], target: [21, 7, 15], activateAt: 14.8, moveAt: 15.2 },
+  { id: 'node-hotel', roleLine: "I'm a replacement observer", role: 'camera', base: [2, 6, -57], target: [31, 14, -16], activateAt: 16.1, moveAt: 16.4 }
 ];
 
 const nodes = nodeSpecs.map(n => {
@@ -468,8 +421,6 @@ const nodes = nodeSpecs.map(n => {
     ring: makeRing(color, n.role === 'safe' ? 4.4 : 3.4),
     label: makeLabel(n.id),
     roleLabel: makeLabel(n.roleLine),
-    pfemLines: [],
-    pfcommLines: [],
     missionLine: makeLine(colors.status, 0.5)
   };
   node.mesh.position.copy(node.pos);
@@ -638,7 +589,7 @@ function updateNode(n, t) {
   n.roleLabel.position.copy(n.pos).add(new THREE.Vector3(0, 10.3, 0));
 
   if (n.status === 'active' || n.status === 'degraded') {
-    setLine(n.missionLine, n.pos, mission.position, n.status === 'degraded' ? colors.degraded : colors.status, n.status === 'degraded' ? 0.32 : 0.42);
+    setLine(n.missionLine, n.pos, missionAimPoint, n.status === 'degraded' ? colors.degraded : colors.status, n.status === 'degraded' ? 0.32 : 0.42);
   } else {
     n.missionLine.visible = false;
   }
@@ -703,8 +654,8 @@ function update(t) {
   updatePairLines(t);
   updateEvents(t);
 
-  mission.rotation.y += 0.003;
-  mission.rotation.x = Math.sin(t * 0.4) * 0.025;
+  airspaceWire.material.opacity = 0.24 + Math.sin(t * 1.2) * 0.08;
+  groundTargetWire.material.opacity = 0.72 + Math.sin(t * 1.6) * 0.10;
 }
 
 function animate() {
