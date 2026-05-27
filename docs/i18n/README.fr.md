@@ -4,6 +4,10 @@ Doctor Bones est un modèle de dépôt indépendant des fournisseurs d’IA pour
 
 Il aide à garder la mémoire du projet dans le dépôt, au lieu de la laisser enfermée dans le chat. Il donne à l’équipe humain/IA une discipline de travail partagée : ordres de travail, playbooks, exemples, vérifications, règles de passation et habitudes de préparation aux releases.
 
+Tu n’as pas forcément besoin de cloner en local la copie modèle de ton dépôt pour l’utiliser. Doctor Bones porte sa cognitionkitecture dans le dépôt lui-même. Si tu suis les instructions de démarrage ci-dessous, ton IA de premier plan devrait avoir assez de repères projet pour raisonner à partir de la guidance du dépôt, des exemples, des playbooks, des vérifications et des règles de passation.
+
+Par défaut, rien n’a besoin de “tourner” quelque part au sens traditionnel, et tu n’as pas forcément besoin d’invoquer un exécuteur comme Codex. Commence par orienter ton IA de premier plan vers l’instance de dépôt appropriée basée sur Doctor Bones. Utilise un exécuteur seulement quand la tâche exige des modifications de fichiers, un environnement d’exécution, des vérifications, des commits ou des pull requests.
+
 ## Langues
 
 - [English](../../README.md)

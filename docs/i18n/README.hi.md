@@ -4,6 +4,10 @@ Doctor Bones AI-सहायता प्राप्त विकास के 
 
 यह project memory को chat में फँसाकर रखने के बजाय repo के अंदर रखने में मदद करता है। यह आपके human/AI team को साझा operating discipline देता है: workorders, playbooks, examples, checks, handoff rules, और release-readiness habits।
 
+इसे उपयोग करने के लिए आपको अपने repository की template copy का local checkout करना हमेशा ज़रूरी नहीं है। Doctor Bones अपनी cognitionkitecture खुद repository के अंदर रखता है। अगर आप नीचे दिए गए startup instructions का पालन करते हैं, तो आपकी foreground AI के पास repo guidance, examples, playbooks, checks, और handoff rules से reason करने के लिए पर्याप्त project context होना चाहिए।
+
+डिफ़ॉल्ट रूप से, पारंपरिक तरीके से कहीं भी कुछ “run” करना ज़रूरी नहीं है, और आपको Codex जैसे executor को हर बार invoke करना भी ज़रूरी नहीं है। पहले अपनी foreground AI को सही Doctor Bones-based repository instance पर point करें। executor का उपयोग केवल तब करें जब task में file edits, runtime environment, checks, commits, या pull requests की ज़रूरत हो।
+
 ## भाषाएँ
 
 - [English](../../README.md)

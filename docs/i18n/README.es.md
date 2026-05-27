@@ -4,6 +4,10 @@ Doctor Bones es una plantilla de repositorio independiente del proveedor de IA p
 
 Ayuda a mantener la memoria del proyecto dentro del repositorio, en lugar de atrapada en el chat. Da al equipo humano/IA una disciplina operativa compartida: órdenes de trabajo, playbooks, ejemplos, comprobaciones, reglas de traspaso y hábitos de preparación para releases.
 
+No necesariamente tienes que clonar en local la copia de plantilla de tu repositorio para usarlo. Doctor Bones lleva su arquitectura de cognición dentro del propio repositorio. Si sigues las instrucciones de inicio de abajo, tu IA de primer plano debería tener suficiente contexto del proyecto para razonar con la guía del repo, los ejemplos, los playbooks, las comprobaciones y las reglas de traspaso.
+
+De forma predeterminada, no hace falta que nada “se ejecute” en algún lugar de la manera tradicional, y no necesariamente tienes que invocar a un ejecutor como Codex. Primero apunta tu IA de primer plano a la instancia adecuada de repositorio basada en Doctor Bones. Usa un ejecutor solo cuando la tarea necesite ediciones de archivos, un entorno de ejecución, comprobaciones, commits o pull requests.
+
 ## Idiomas
 
 - [English](../../README.md)

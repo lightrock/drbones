@@ -4,6 +4,10 @@ Doctor Bones ist eine anbieterunabhängige Repository-Vorlage für KI-unterstüt
 
 Sie hilft dabei, Projekterinnerung im Repository zu halten, statt sie im Chat einzuschließen. Sie gibt dem Mensch/KI-Team eine gemeinsame Arbeitsdisziplin: Workorders, Playbooks, Beispiele, Checks, Übergaberegeln und Release-Readiness-Gewohnheiten.
 
+Du musst nicht zwingend die Vorlagenkopie deines Repositorys lokal auschecken, um es zu nutzen. Doctor Bones trägt seine Cognitionkitecture im Repository selbst. Wenn du die Startanweisungen unten befolgst, sollte deine Foreground-KI genug Projektwissen haben, um mit Repo-Leitlinien, Beispielen, Playbooks, Checks und Übergaberegeln zu arbeiten.
+
+Standardmäßig muss nichts im traditionellen Sinn irgendwo “laufen”, und du musst nicht zwingend einen Executor wie Codex aufrufen. Richte deine Foreground-KI zuerst auf die passende Doctor-Bones-basierte Repository-Instanz aus. Nutze einen Executor nur dann, wenn die Aufgabe Dateiänderungen, eine Laufzeitumgebung, Checks, Commits oder Pull Requests braucht.
+
 ## Sprachen
 
 - [English](../../README.md)
