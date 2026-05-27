@@ -297,15 +297,61 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 function makeNodeMesh(color, radius = 2.15) {
-  const geo = new THREE.SphereGeometry(radius, 28, 18);
-  const mat = new THREE.MeshStandardMaterial({
+  const drone = new THREE.Group();
+
+  const bodyMat = new THREE.MeshStandardMaterial({
     color,
     emissive: color,
     emissiveIntensity: 0.28,
-    roughness: 0.38,
-    metalness: 0.12
+    roughness: 0.35,
+    metalness: 0.14
   });
-  return new THREE.Mesh(geo, mat);
+
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.58, radius * 0.58, radius * 0.5, 20), bodyMat);
+  body.position.y = radius * 0.2;
+  drone.add(body);
+
+  const armLength = radius * 1.05;
+  const armThickness = radius * 0.14;
+  const armGeo = new THREE.BoxGeometry(armLength, armThickness, armThickness);
+
+  for (let i = 0; i < 4; i += 1) {
+    const arm = new THREE.Mesh(armGeo, bodyMat);
+    arm.position.y = radius * 0.2;
+    arm.rotation.y = (Math.PI / 4) + (i * Math.PI / 2);
+    drone.add(arm);
+  }
+
+  const rotorMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.9 });
+  const rotorCoreMat = new THREE.MeshStandardMaterial({
+    color,
+    emissive: color,
+    emissiveIntensity: 0.2,
+    roughness: 0.3,
+    metalness: 0.08
+  });
+  const rotorOffset = radius * 0.62;
+
+  for (const sx of [-1, 1]) {
+    for (const sz of [-1, 1]) {
+      const hub = new THREE.Group();
+      hub.position.set(sx * rotorOffset, radius * 0.28, sz * rotorOffset);
+
+      const rotorRing = new THREE.Mesh(new THREE.TorusGeometry(radius * 0.27, radius * 0.03, 8, 28), rotorMat);
+      rotorRing.rotation.x = Math.PI / 2;
+      hub.add(rotorRing);
+
+      const rotorCore = new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.055, radius * 0.055, radius * 0.08, 10), rotorCoreMat);
+      rotorCore.position.y = radius * 0.04;
+      hub.add(rotorCore);
+
+      hub.userData.isRotor = true;
+      drone.add(hub);
+    }
+  }
+
+  drone.userData.colorMeshes = [body, ...drone.children.filter(c => c.isMesh), ...drone.children.flatMap(c => c.children || []).filter(c => c.isMesh)];
+  return drone;
 }
 
 function makeRing(color, radius) {
@@ -335,8 +381,14 @@ function setLine(line, a, b, color, opacity) {
 }
 
 function setNodeColor(n, color) {
-  n.mesh.material.color.setHex(color);
-  n.mesh.material.emissive.setHex(color);
+  n.mesh.traverse(obj => {
+    if (!obj.isMesh || !obj.material) return;
+    const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+    for (const mat of mats) {
+      if (mat.color) mat.color.setHex(color);
+      if (mat.emissive) mat.emissive.setHex(color);
+    }
+  });
   n.ring.material.color.setHex(color);
 }
 
@@ -583,6 +635,10 @@ function updateNode(n, t) {
   }
 
   n.mesh.position.copy(n.pos);
+  n.mesh.rotation.y += 0.012;
+  n.mesh.traverse(obj => {
+    if (obj.userData && obj.userData.isRotor) obj.rotation.y += 0.24;
+  });
   n.ring.position.copy(n.pos);
   n.ring.rotation.y += 0.012;
   n.label.position.copy(n.pos).add(new THREE.Vector3(0, 5.4, 0));
