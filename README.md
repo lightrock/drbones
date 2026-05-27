@@ -1,3 +1,5 @@
+For the public introduction, see the [Doctor Bones GitHub Pages site](https://lightrock.github.io/drbones/).
+
 # Doctor Bones
 
 Doctor Bones is a vendor-independent repository template for AI-assisted development.
