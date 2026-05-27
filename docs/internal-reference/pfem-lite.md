@@ -12,6 +12,33 @@ Use this file as a **PFEM-lite** analysis lens when the live PFEM repository is 
 
 Do not claim this file is the whole PFEM architecture. It is enough to support a useful first-pass analysis of evidence boundaries, provenance, confidence, MCP/tool exposure, record species, workorder discipline, and proof/report/rollup separation. If the human asks for a full PFEM comparison, inspect the current `lightrock/PFEM` repository state.
 
+## Human prompt shape
+
+Read this PFEM-lite reference when the human asks something like:
+
+```text
+Go analyze my other repo <repo URL or owner/name> with PFEM-lite analysis capabilities.
+```
+
+Equivalent prompt shapes include:
+
+```text
+Use PFEM-lite to analyze <repo>.
+Compare <repo> against Doctor Bones' PFEM-lite lens.
+Look at <repo> for evidence-boundary problems using PFEM-lite.
+Analyze this external repo with PFEM-style boundaries, but do not do a full PFEM repo scan.
+```
+
+Expected response boundary:
+
+```text
+I used Doctor Bones' embedded PFEM-lite reference for this analysis.
+I inspected <target repo files actually read>.
+I did not inspect the full live PFEM repository.
+```
+
+For a PFEM-lite repo analysis, inspect the target repository first, then compare it against this embedded lens. Separate source-backed observations from architectural inference. Do not call a gap a bug unless the target repository evidence supports that claim.
+
 ---
 
 # PFEM
