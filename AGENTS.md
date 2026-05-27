@@ -159,6 +159,36 @@ docs/wiki/ = navigation and cross-links
 lessons learned = repeated failure patterns the repo should remember
 ```
 
+## PFEM-lite analysis reference
+
+Doctor Bones carries a small embedded PFEM reference at:
+
+```text
+docs/internal-reference/pfem-lite.md
+```
+
+Read that file when the human asks for a PFEM-style analysis, evidence-boundary comparison, source/provenance/confidence review, MCP/tool authority boundary review, or external-repo critique and the live PFEM repository is not being inspected.
+
+PFEM-lite is enough for a useful first-pass analysis of:
+
+```text
+raw evidence
+normalized observations
+correlated entities or tracks
+findings
+alerts
+evidence packages
+dashboard actions
+federation messages
+rollup summaries
+reports
+MCP/tool exposure as callable interface rather than domain authority
+workorders as durable task contracts
+checks/gates as proof discipline
+```
+
+Do not claim PFEM-lite is the full PFEM architecture. If the human asks for a full PFEM comparison, inspect the current `lightrock/PFEM` repository state and report which PFEM files were actually read.
+
 ## Foreground output discipline
 
 A foreground AI should keep the human's workflow in one coherent lane.
