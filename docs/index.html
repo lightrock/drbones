@@ -3,55 +3,62 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Doctor Bones — Repo-native AI discipline</title>
+  <title>Doctor Bones — GitHub-native AI project discipline</title>
   <style>
     :root {
-      --bg: #f4f1ea;
-      --panel: #fffaf0;
+      --bg: #f6f3ed;
+      --panel: #fffdf8;
       --ink: #1f2933;
       --muted: #5f6c7b;
       --line: #d8cdbb;
-      --accent: #7c3aed;
+      --accent: #3f3f46;
       --accent-2: #0f766e;
-      --warn: #92400e;
-      --shadow: 0 18px 45px rgba(31, 41, 51, 0.12);
+      --soft: #f1f5f9;
+      --shadow: 0 14px 36px rgba(31, 41, 51, 0.10);
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background: radial-gradient(circle at top left, #ede9fe 0, transparent 35%), var(--bg);
+      background: var(--bg);
       color: var(--ink);
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.55;
+      line-height: 1.58;
     }
 
     main {
-      width: min(1100px, calc(100% - 32px));
+      width: min(1040px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 44px 0 64px;
+      padding: 40px 0 64px;
+    }
+
+    .hero,
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
     }
 
     .hero {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      padding: clamp(28px, 5vw, 56px);
-      box-shadow: var(--shadow);
+      padding: clamp(28px, 5vw, 52px);
+    }
+
+    .section {
+      margin-top: 18px;
+      padding: clamp(22px, 4vw, 34px);
     }
 
     .eyebrow {
       display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0 0 18px;
-      padding: 7px 12px;
-      border: 1px solid #c4b5fd;
+      margin: 0 0 16px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
       border-radius: 999px;
-      color: #4c1d95;
-      background: #f5f3ff;
-      font-size: 0.92rem;
+      color: var(--muted);
+      background: #ffffff;
+      font-size: 0.88rem;
       font-weight: 700;
       letter-spacing: 0.02em;
       text-transform: uppercase;
@@ -59,154 +66,220 @@
 
     h1 {
       margin: 0;
-      max-width: 870px;
-      font-size: clamp(2.35rem, 6vw, 5.1rem);
-      line-height: 0.98;
-      letter-spacing: -0.06em;
+      max-width: 850px;
+      font-size: clamp(2rem, 5vw, 4.2rem);
+      line-height: 1.04;
+      letter-spacing: -0.045em;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
     }
 
     .lede {
-      max-width: 840px;
-      margin: 28px 0 0;
-      font-size: clamp(1.12rem, 2vw, 1.35rem);
-      color: var(--muted);
+      max-width: 780px;
+      margin-top: 22px;
+      font-size: clamp(1.08rem, 2vw, 1.28rem);
     }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 30px;
+      gap: 12px;
+      margin-top: 28px;
     }
 
     a.button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 46px;
-      padding: 12px 18px;
-      border-radius: 14px;
-      border: 1px solid #6d28d9;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--accent);
       background: var(--accent);
       color: white;
       text-decoration: none;
-      font-weight: 800;
+      font-weight: 750;
     }
 
     a.button.secondary {
       background: white;
-      color: #4c1d95;
-      border-color: #c4b5fd;
+      color: var(--ink);
+      border-color: var(--line);
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 22px;
+      gap: 16px;
+      margin-top: 18px;
     }
 
     .card {
-      background: rgba(255, 250, 240, 0.92);
+      background: white;
       border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 10px 24px rgba(31, 41, 51, 0.06);
+      border-radius: 18px;
+      padding: 20px;
     }
 
-    .card h2 {
-      margin: 0 0 8px;
-      font-size: 1.15rem;
-      letter-spacing: -0.02em;
+    .card p { color: var(--muted); }
+
+    .steps {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
     }
 
-    .card p { margin: 0; color: var(--muted); }
-
-    .wide {
-      margin-top: 18px;
-      background: #102a43;
-      color: #edf2f7;
-      border-radius: 24px;
-      padding: 26px;
-      box-shadow: var(--shadow);
+    .step {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
     }
 
-    .wide h2 { margin: 0 0 12px; }
-    .wide p { margin: 0; color: #cbd5e1; }
+    .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--ink);
+      font-weight: 800;
+    }
 
-    code, pre {
+    code,
+    pre {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
 
     pre {
-      margin: 18px 0 0;
+      margin: 16px 0 0;
       overflow-x: auto;
       padding: 18px;
-      border-radius: 16px;
-      background: rgba(15, 23, 42, 0.92);
+      border-radius: 14px;
+      background: #111827;
       color: #f8fafc;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.10);
     }
 
     footer {
-      margin-top: 28px;
+      margin-top: 24px;
       color: var(--muted);
       font-size: 0.95rem;
     }
 
+    footer a { color: var(--ink); font-weight: 700; }
+
     @media (max-width: 820px) {
+      main { width: min(100% - 20px, 1040px); padding-top: 20px; }
       .grid { grid-template-columns: 1fr; }
-      main { width: min(100% - 20px, 1100px); padding-top: 20px; }
-      .hero { border-radius: 20px; }
+      .hero, .section { border-radius: 18px; }
+      .step { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <main>
     <section class="hero">
-      <p class="eyebrow">Doctor Bones / repo-native cognitionkitecture</p>
-      <h1>Start a project with a repo that can teach the AI how to behave.</h1>
+      <p class="eyebrow">Doctor Bones / GitHub-native project discipline</p>
+      <h1>A starting discipline for AI-assisted work inside a repository.</h1>
       <p class="lede">
-        Doctor Bones is a repository template for AI-assisted development. The idea is simple:
-        when the repo contains durable intent, workorder rules, checks, examples, and architecture patterns,
-        a foreground AI can understand what kind of work belongs here before an executor touches files.
+        Doctor Bones gives a new project an initial governing structure for working with AI:
+        repository-owned guidance, example prompt workflows, workorders, checks, and handoff rules.
+        The GitHub repository remains the source of truth.
       </p>
       <div class="actions">
-        <a class="button" href="miller-pattern-fit.html">Open the Miller / PFEM pattern-fit page</a>
-        <a class="button secondary" href="https://github.com/lightrock/drbones">View the GitHub repository</a>
+        <a class="button" href="https://github.com/lightrock/drbones">Open the GitHub repository</a>
+        <a class="button secondary" href="miller-pattern-fit.html">View the pattern-fit example</a>
       </div>
     </section>
 
-    <section class="grid" aria-label="Core Doctor Bones ideas">
-      <article class="card">
-        <h2>Simple prompts, smarter repo</h2>
-        <p>If your repo carries cognitionkitecture, you can ask for useful work in plain language. The repo guidance narrows the lane, names the constraints, and tells the AI what evidence or checks matter.</p>
-      </article>
-      <article class="card">
-        <h2>Patterns without vendor lock-in</h2>
-        <p>Doctor Bones can reference generic architecture patterns such as PFEM and PFCOMM without becoming tied to a single AI vendor, IDE, MCP server, or coding-agent product.</p>
-      </article>
-      <article class="card">
-        <h2>Foreground before executor</h2>
-        <p>The foreground AI frames the work. The executor changes files only when the task is bounded, the target repository is correct, and the checks are named.</p>
-      </article>
+    <section class="section">
+      <h2>What you get at the beginning</h2>
+      <div class="grid" aria-label="Doctor Bones starting contents">
+        <article class="card">
+          <h3>Governing AI discipline</h3>
+          <p>Basic rules for foreground AI planning, executor AI work, repo inspection, scope control, and human authority.</p>
+        </article>
+        <article class="card">
+          <h3>Example prompt workflows</h3>
+          <p>Day-in-the-life examples that teach future AI sessions when to read guidance, when to create workorders, and when to stop.</p>
+        </article>
+        <article class="card">
+          <h3>Workorders and checks</h3>
+          <p>A plain contract format for bounded file-changing work, plus checks that help keep repo guidance and examples coherent.</p>
+        </article>
+      </div>
     </section>
 
-    <section class="wide">
-      <h2>Example prompt shape</h2>
+    <section class="section">
+      <h2>How it starts</h2>
       <p>
-        Instead of hand-feeding every instruction, point the foreground AI at the Doctor Bones-based repository and ask for the outcome. The repo should teach the AI the discipline.
+        You can begin by pointing a foreground AI at the GitHub repository. The AI reads the repo guidance first,
+        then helps decide whether the next move is advice, a prompt, a small doc edit, or a workorder for an executor.
+      </p>
+      <div class="steps">
+        <div class="step">
+          <span class="num">1</span>
+          <div>
+            <h3>Use GitHub as the shared memory</h3>
+            <p>The repository carries the current project instructions. Chat memory is useful, but repo state wins.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">2</span>
+          <div>
+            <h3>Ask the foreground AI to read first</h3>
+            <p>The AI should inspect README, AGENTS, examples, and relevant folder guidance before giving architecture advice or suggesting changes.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">3</span>
+          <div>
+            <h3>Use workorders for file-changing work</h3>
+            <p>When the task needs an executor, the workorder names the target repo, scope, constraints, checks, fallback behavior, and expected completion note.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Example startup prompt</h2>
+      <p>
+        This is the basic shape. Replace the repository URL with the project repository created from the Doctor Bones template.
       </p>
       <pre><code>You are the foreground AI for &lt;your project repository URL&gt;.
-Current repo state beats chat memory.
-Read README.md, AGENTS.md, examples/README.md, and relevant repo guidance first.
 
-Task:
-Use the repo's architecture patterns and workorder discipline to help me plan the next safe change.</code></pre>
+Current repo state beats chat memory. Inspect the current project repository before giving
+architecture advice, writing workorders, or suggesting repo changes.
+
+Read README.md, AGENTS.md, examples/README.md, and relevant folder guidance first.
+Then identify current state, target, constraints, foreground/executor decision,
+and the smallest useful next move.</code></pre>
     </section>
 
     <footer>
-      GitHub Pages surface for Doctor Bones. Public demos belong here; project-specific workorders belong in the user's copied Doctor Bones-based project repository.
+      This is the rendered public entry point. The working source of truth is the
+      <a href="https://github.com/lightrock/drbones">Doctor Bones GitHub repository</a>.
     </footer>
   </main>
 </body>
