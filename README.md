@@ -86,20 +86,3 @@ python -m pytest
 ```
 
 If a check fails, paste the exact command output into the foreground AI and ask for the smallest safe fix.
-
-## About Doctor Bones
-
-Doctor Bones is an AI-vendor-agnostic operating discipline for AI-assisted projects.
-
-The short version:
-
-```text
-intent captured
-scope bounded
-constraints preserved
-executor instructed
-checks required
-completion tied back to source intent
-```
-
-The full explanation is in [`readme_pmp.md`](readme_pmp.md).
