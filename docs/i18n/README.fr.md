@@ -11,6 +11,7 @@ Il aide à garder la mémoire du projet dans le dépôt, au lieu de la laisser e
 - Français : ce fichier
 - [Deutsch](README.de.md)
 - [Português do Brasil](README.pt-BR.md)
+- [हिन्दी](README.hi.md)
 
 ## Ce que c’est
 
@@ -38,33 +39,36 @@ Le dépôt est la couche de mémoire et de discipline entre les deux.
 1. Si tu as copié ce modèle, réécris bientôt ce README autour de ton vrai projet.
 2. Lis [`examples/README.md`](../../examples/README.md) pour voir les exemples de workflows “day-in-the-life”.
 3. Lis [`readme_pmp.md`](../../readme_pmp.md) au moins une fois et garde-le sous la main.
-4. Lis [`AGENTS.md`](../../AGENTS.md) avant de demander à un assistant IA de modifier le dépôt.
+4. Lis [`AGENTS.md`](../../AGENTS.md) avant de demander à un assistant IA de travailler dans le dépôt.
 5. Utilise un ordre de travail pour les tâches substantielles, multi-fichiers, sensibles à l’architecture ou sensibles au processus.
 6. Lance les vérifications disponibles avant de considérer le travail comme terminé.
 
 ## Prompt de démarrage pour l’IA de premier plan
 
-Remplace `<chemin vers ton dépôt>` par le vrai chemin de ton dépôt. Tu peux aussi demander à ton IA de premier plan de mettre à jour ce README pour ton nouveau projet.
+Ce prompt est destiné à un dépôt créé à partir du modèle Doctor Bones. Après avoir copié ce modèle, remplace `<your project repository URL>` par l’URL de ton propre dépôt de projet.
 
-Quand tu démarres un nouveau chat ou un nouvel onglet pour ce dépôt, colle ceci dans l’IA de premier plan :
+Quand tu démarres un nouveau chat ou un nouvel onglet pour ton dépôt de projet, colle ceci dans l’IA de premier plan :
 
 ```text
-Tu es l’IA de premier plan pour <chemin vers ton dépôt>
+You are the foreground AI for <your project repository URL>.
 
-L’état actuel du dépôt passe avant la mémoire du chat. Inspecte l’état actuel du dépôt avant de donner des conseils d’architecture, d’écrire des ordres de travail ou de suggérer des changements du dépôt.
+Current repo state beats chat memory. Inspect the current project repository before giving
+architecture advice, writing workorders, or suggesting repo changes.
 
-Lis d’abord README.md, examples/README.md, readme_pmp.md, AGENTS.md et la guidance du dossier concerné. Puis identifie l’état actuel, la cible, les contraintes, la décision premier-plan/exécuteur et le plus petit prochain pas utile.
+Read README.md, examples/README.md, readme_pmp.md, AGENTS.md, and the relevant folder
+guidance from the project repository first. Then identify current state, target, constraints,
+foreground/executor decision, and the smallest useful next move.
 ```
 
 ## Raccourci d’ordre de travail
 
-Pour un travail substantiel, discute avec l’IA de premier plan jusqu’à ce que la tâche soit claire, puis dis :
+Pour un travail substantiel dans ton dépôt de projet copié, discute avec l’IA de premier plan jusqu’à ce que la tâche soit claire, puis dis :
 
 ```text
 Create a workorder and also show it to me here.
 ```
 
-Tu peux copier un lien vers le fichier d’ordre de travail et demander à ton IA exécutrice, dans un environnement pour ce dépôt, de l’exécuter.
+Tu peux copier un lien vers le fichier d’ordre de travail et demander à ton IA exécutrice, dans un environnement pour ton dépôt de projet, de l’exécuter.
 
 Tu peux aussi copier/coller le corps de l’ordre de travail si tu as demandé à l’IA de premier plan de l’afficher d’abord. Garde ce bloc propre : pas de citations, notes d’assistant, explications, liens supplémentaires ni commentaires dans le corps de l’ordre de travail.
 
