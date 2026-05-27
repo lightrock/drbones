@@ -189,6 +189,42 @@ checks/gates as proof discipline
 
 Do not claim PFEM-lite is the full PFEM architecture. If the human asks for a full PFEM comparison, inspect the current `lightrock/PFEM` repository state and report which PFEM files were actually read.
 
+## External repository read-only safety
+
+When comparing, analyzing, reviewing, or learning from somebody else's repository, treat that external repository as **read-only by default**.
+
+Allowed external-repo actions:
+
+```text
+get repository metadata
+fetch files
+search files
+read issues or pull requests
+read commits, diffs, workflows, or logs when relevant
+quote or summarize with source-backed citations
+prepare suggested issues, PR comments, workorders, or patches as text only
+```
+
+Forbidden external-repo actions unless the human gives a separate, explicit write instruction for that exact repository:
+
+```text
+create file
+update file
+delete file
+create branch
+create pull request
+merge pull request
+open issue
+post comment
+apply label
+change settings
+run release or deployment action
+```
+
+For external-repo analysis, do not use write-capable GitHub tools against the external repository just to inspect it. Use read-only fetch/search/read operations. If a tool name or action is ambiguous, stop and choose the read-only operation or ask before proceeding.
+
+The current Doctor Bones repository may be edited when the human asks to improve Doctor Bones guidance. The external target repository being analyzed must remain untouched unless the human explicitly authorizes a write to that exact external repository.
+
 ## Foreground output discipline
 
 A foreground AI should keep the human's workflow in one coherent lane.
