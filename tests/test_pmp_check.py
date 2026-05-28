@@ -56,6 +56,18 @@ def test_invalid_workorder_filename_is_rejected(tmp_path: Path) -> None:
     assert "invalid workorder filename" in messages
 
 
+def test_connector_safe_fixture_wording_rejects_old_heading(tmp_path: Path) -> None:
+    repo = tmp_path
+    (repo / "tests").mkdir()
+    (repo / "tests" / "fixture_sample.md").write_text("# Bad\n", encoding="utf-8")
+
+    results = pmp_check.check_connector_safe_fixture_wording(repo)
+    messages = "\n".join(result.message for result in results if not result.ok)
+
+    assert "connector-unsafe fixture wording" in messages
+    assert "tests/fixture_sample.md" in messages
+
+
 def test_day_in_the_life_examples_are_indexed_and_triggered() -> None:
     repo = Path(__file__).resolve().parents[1]
     examples_dir = repo / "examples"
