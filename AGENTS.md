@@ -1,8 +1,8 @@
 # AGENTS.md
 
-This file is for AI assistants and executor agents working inside a PMP-style repository.
+This file is for AI assistants and executor agents working inside a Doctor Bones lightrock/drbones repository.
 
-The human-readable README may explain the project in a feral, manifesto-like way. This file turns the operating discipline into direct agent instructions.
+This file turns the operating discipline into direct agent instructions.
 
 ## Core rule
 
