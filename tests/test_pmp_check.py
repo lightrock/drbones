@@ -47,8 +47,8 @@ def test_invalid_workorder_filename_is_rejected(tmp_path: Path) -> None:
         (Path(__file__).resolve().parents[1] / "schemas" / "workorder-contract.json").read_text(encoding="utf-8"),
         encoding="utf-8",
     )
-    (repo / "workorders" / "next.md").write_text("# Bad", encoding="utf-8")
-    (repo / "workorders" / "not-a-real-workorder.md").write_text("# Bad", encoding="utf-8")
+    (repo / "workorders" / "next.md").write_text("# Invalid fixture", encoding="utf-8")
+    (repo / "workorders" / "not-a-real-workorder.md").write_text("# Invalid fixture", encoding="utf-8")
 
     results = pmp_check.run_checks(repo, "workorders")
     messages = "\n".join(result.message for result in results if not result.ok)
@@ -61,6 +61,9 @@ def test_day_in_the_life_examples_are_indexed_and_triggered() -> None:
     examples_dir = repo / "examples"
     agents_text = (repo / "AGENTS.md").read_text(encoding="utf-8")
     examples_index = (examples_dir / "README.md").read_text(encoding="utf-8")
+    trigger_map = (examples_dir / "TRIGGER_MAP.md").read_text(encoding="utf-8")
+
+    assert "examples/TRIGGER_MAP.md" in agents_text
 
     example_paths = sorted(
         path
@@ -69,7 +72,7 @@ def test_day_in_the_life_examples_are_indexed_and_triggered() -> None:
     )
     assert example_paths, "expected day-in-the-life examples to exist"
 
-    missing_from_agents: list[str] = []
+    missing_from_trigger_map: list[str] = []
     missing_from_index: list[str] = []
 
     for readme_path in example_paths:
@@ -78,11 +81,11 @@ def test_day_in_the_life_examples_are_indexed_and_triggered() -> None:
         relative_path = f"examples/{day_dir}/README.md"
         index_link = f"{day_dir}/README.md"
 
-        if f"Day {day_number}:" not in agents_text or relative_path not in agents_text:
-            missing_from_agents.append(relative_path)
+        if f"Day {day_number}:" not in trigger_map or relative_path not in trigger_map:
+            missing_from_trigger_map.append(relative_path)
 
         if index_link not in examples_index:
             missing_from_index.append(relative_path)
 
-    assert not missing_from_agents, "AGENTS.md trigger map is missing: " + ", ".join(missing_from_agents)
+    assert not missing_from_trigger_map, "examples/TRIGGER_MAP.md is missing: " + ", ".join(missing_from_trigger_map)
     assert not missing_from_index, "examples/README.md is missing: " + ", ".join(missing_from_index)
