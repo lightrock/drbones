@@ -33,6 +33,11 @@ class WorkorderContract:
     completion_note_items: tuple[str, ...]
 
 
+def repo_relative_path(path: Path, repo_root: Path) -> str:
+    """Return a stable repo-relative path for checker messages."""
+    return path.relative_to(repo_root).as_posix()
+
+
 def load_contract(repo_root: Path) -> WorkorderContract:
     contract_file = repo_root / DEFAULT_CONTRACT_PATH
     if not contract_file.exists():
@@ -146,7 +151,7 @@ def check_connector_safe_fixture_wording(repo_root: Path) -> list[CheckResult]:
                 continue
             text = path.read_text(encoding="utf-8")
             if "# Bad" in text:
-                flagged.append(str(path.relative_to(repo_root)))
+                flagged.append(repo_relative_path(path, repo_root))
 
     if flagged:
         results.append(
@@ -195,7 +200,7 @@ def check_day_examples(repo_root: Path) -> list[CheckResult]:
             CheckResult(
                 False,
                 "old numeric-only day example folders remain: "
-                + ", ".join(str(path.relative_to(repo_root)) for path in old_style),
+                + ", ".join(repo_relative_path(path, repo_root) for path in old_style),
             )
         )
 
