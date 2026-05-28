@@ -21,12 +21,12 @@ Executor needed = needs local checks, CI work, broad edits, or tool-specific val
 - `README.md` explains Doctor Bones as a vendor-independent repository template for AI-assisted development.
 - `README.md` links to `TODO.md` from the working TODO section.
 - `docs/index.html` has been aligned with the README framing and links to the TODO.
-- `examples/README.md` lists day-in-the-life examples through Day 20.
-- `AGENTS.md` includes a trigger map for day-in-the-life examples through Day 20.
-- `examples/day-in-the-life-20/README.md` now captures the TODO state-review workflow.
+- `examples/README.md` lists day-in-the-life examples through Day 21.
+- `examples/TRIGGER_MAP.md` includes a trigger map for day-in-the-life examples through Day 21, with `AGENTS.md` pointing to it.
+- `examples/day-20-todo-state-review/README.md` now captures the TODO state-review workflow.
 - The workorder system exists as real repo structure: `workorders/README.md`, `workorders/TEMPLATE.md`, and `schemas/workorder-contract.json`.
 - `tools/pmp_check.py` exists and checks the current workorder contract and example indexing.
-- `tests/test_pmp_check.py` includes a test that day-in-the-life examples are indexed in both `examples/README.md` and `AGENTS.md`.
+- `tests/test_pmp_check.py` includes a test that semantic day examples are indexed in both `examples/README.md` and `examples/TRIGGER_MAP.md`.
 - PFEM-lite and PFCOMM-lite are present as embedded internal reference lenses and are referenced from `AGENTS.md` and the public docs page.
 
 ### Partial / still needs work

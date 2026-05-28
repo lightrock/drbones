@@ -47,7 +47,7 @@ That output must be repaired before it is trusted.
 
 ## Related reference-repo pattern
 
-If the external output includes a repository to inspect, or the human asks to compare another repository against PFEM, read [`../day-in-the-life-15/README.md`](../day-in-the-life-15/README.md) first.
+If the external output includes a repository to inspect, or the human asks to compare another repository against PFEM, read [`../day-15-reference-repository-context/README.md`](../day-15-reference-repository-context/README.md) first.
 
 Simple PFEM-lite invocation:
 

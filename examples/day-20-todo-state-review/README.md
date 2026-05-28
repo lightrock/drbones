@@ -33,7 +33,7 @@ README.md
 TODO.md
 AGENTS.md
 examples/README.md
-examples/day-in-the-life-*/README.md
+examples/day-*/README.md
 workorders/README.md
 workorders/TEMPLATE.md
 schemas/
@@ -132,13 +132,13 @@ Updated TODO.md with a repo-state review.
 
 Changed files:
 - TODO.md
-- examples/day-in-the-life-20/README.md
+- examples/day-20-todo-state-review/README.md
 - examples/README.md
 - AGENTS.md
 
 Checks:
 - Not run here because this connector cannot run the local test suite.
-- Manual check: Day 20 is linked from examples/README.md and AGENTS.md trigger map.
+- Manual check: Day 20 is linked from examples/README.md and examples/TRIGGER_MAP.md trigger map.
 
 Remaining risk:
 - Local `python tools/pmp_check.py --area all` and `python -m pytest` should still be run by an executor.

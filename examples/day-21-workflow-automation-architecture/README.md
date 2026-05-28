@@ -116,7 +116,7 @@ website lead form submitted
 
 The workflow routes information, creates routine records, and notifies people. It does not become the governing authority model for the business.
 
-## Bad n8n-shaped overreach
+## Overreaching n8n-shaped workflow
 
 This is the kind of workflow that should trigger a boundary stop:
 
@@ -147,9 +147,9 @@ A coding agent can help build custom logic, tests, UI, deployment scripts, and r
 
 But the work still needs a workorder when it changes files or project behavior.
 
-## Bad Claude Code-shaped overreach
+## Overreaching Claude Code-shaped workflow
 
-Bad prompt:
+Overreaching prompt:
 
 ```text
 Build me an automation that handles emergency contacts and sends commands automatically.

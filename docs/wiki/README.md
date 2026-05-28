@@ -16,7 +16,7 @@ Use this when starting new work so you do not need to rehydrate project context 
 1. Current repository state and executable checks (`tools/pmp_check.py`, tests).
 2. Root governance (`AGENTS.md`, `workorders/README.md`, `workorders/TEMPLATE.md`).
 3. Current project summaries (`README.md`, `readme_pmp.md`, release notes).
-4. Invocable workflow examples (`examples/day-in-the-life-*/README.md`).
+4. Invocable workflow examples (`examples/day-*/README.md`).
 5. Demos and origin/history material (`examples/*demo*`, `docs/origin/*`) as illustrative context, not governing doctrine.
 
 ## Wiki pages

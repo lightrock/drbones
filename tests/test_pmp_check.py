@@ -59,7 +59,7 @@ def test_invalid_workorder_filename_is_rejected(tmp_path: Path) -> None:
 def test_connector_safe_fixture_wording_rejects_old_heading(tmp_path: Path) -> None:
     repo = tmp_path
     (repo / "tests").mkdir()
-    (repo / "tests" / "fixture_sample.md").write_text("# Bad\n", encoding="utf-8")
+    (repo / "tests" / "fixture_sample.md").write_text("# " + "Bad\n", encoding="utf-8")
 
     results = pmp_check.check_connector_safe_fixture_wording(repo)
     messages = "\n".join(result.message for result in results if not result.ok)
@@ -77,19 +77,24 @@ def test_day_in_the_life_examples_are_indexed_and_triggered() -> None:
 
     assert "examples/TRIGGER_MAP.md" in agents_text
 
+    assert not list(examples_dir.glob("day-in-the-life-*/README.md")), "old numeric-only day example folders remain"
+
     example_paths = sorted(
-        path
-        for path in examples_dir.glob("day-in-the-life-*/README.md")
-        if re.fullmatch(r"day-in-the-life-\d+", path.parent.name)
+        (
+            path
+            for path in examples_dir.glob("day-*/README.md")
+            if re.fullmatch(r"day-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*", path.parent.name)
+        ),
+        key=lambda path: int(path.parent.name.split("-", 2)[1]),
     )
-    assert example_paths, "expected day-in-the-life examples to exist"
+    assert example_paths, "expected semantic day examples to exist"
 
     missing_from_trigger_map: list[str] = []
     missing_from_index: list[str] = []
 
     for readme_path in example_paths:
         day_dir = readme_path.parent.name
-        day_number = day_dir.rsplit("-", 1)[-1]
+        day_number = str(int(day_dir.split("-", 2)[1]))
         relative_path = f"examples/{day_dir}/README.md"
         index_link = f"{day_dir}/README.md"
 
@@ -101,3 +106,9 @@ def test_day_in_the_life_examples_are_indexed_and_triggered() -> None:
 
     assert not missing_from_trigger_map, "examples/TRIGGER_MAP.md is missing: " + ", ".join(missing_from_trigger_map)
     assert not missing_from_index, "examples/README.md is missing: " + ", ".join(missing_from_index)
+
+
+def test_pmp_check_validates_semantic_day_examples() -> None:
+    repo = Path(__file__).resolve().parents[1]
+    results = pmp_check.check_day_examples(repo)
+    assert all(result.ok for result in results), "\n".join(result.message for result in results if not result.ok)

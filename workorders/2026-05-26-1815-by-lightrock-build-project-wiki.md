@@ -7,7 +7,7 @@ Create a small, durable project wiki for the PMP AI Project Skeleton repository 
 This work invokes the Day in the life 9 workflow:
 
 ```text
-examples/day-in-the-life-9/README.md
+examples/day-09-project-wiki-build/README.md
 ```
 
 The wiki should be a map back to source material, not a replacement for source material.
@@ -66,15 +66,15 @@ AGENTS.md
 workorders/README.md
 workorders/TEMPLATE.md
 examples/README.md
-examples/day-in-the-life-1/README.md
-examples/day-in-the-life-2/README.md
-examples/day-in-the-life-3/README.md
-examples/day-in-the-life-4/README.md
-examples/day-in-the-life-5/README.md
-examples/day-in-the-life-6/README.md
-examples/day-in-the-life-7/README.md
-examples/day-in-the-life-8/README.md
-examples/day-in-the-life-9/README.md
+examples/day-01-normal-pmp-workflow/README.md
+examples/day-02-repo-identity/README.md
+examples/day-03-architecture-doctrine-migration/README.md
+examples/day-04-distributed-guidance/README.md
+examples/day-05-vendor-adapter-workflow/README.md
+examples/day-06-release-surface-mapping/README.md
+examples/day-07-vigilance-check/README.md
+examples/day-08-contradiction-scan/README.md
+examples/day-09-project-wiki-build/README.md
 examples/webgl-demo-3/README.md
 examples/webgl-demo-3/webgl_demo3.html
 examples/hobbyist-mechanic-57-chevy/README.md

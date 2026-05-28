@@ -15,7 +15,7 @@ AGENTS.md
 workorders/
   One-time bounded task contracts.
 
-examples/day-in-the-life-*/
+examples/day-*/
   Teaching examples that show workflows in context.
 
 playbooks/*/PLAYBOOK.md

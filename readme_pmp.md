@@ -264,7 +264,7 @@ python -m pytest
 
 ### Read the day-in-the-life examples
 
-Before inventing a new workflow, read the examples linked below, especially the `day-in-the-life-*` examples in [`examples/README.md`](examples/README.md). They show how foreground AI requests become bounded executor workorders, checks, completion notes, and lessons learned without turning root `AGENTS.md` into a junk drawer.
+Before inventing a new workflow, read the examples linked below, especially the `day-*` day-in-the-life examples in [`examples/README.md`](examples/README.md). They show how foreground AI requests become bounded executor workorders, checks, completion notes, and lessons learned without turning root `AGENTS.md` into a junk drawer.
 
 ## Core concepts
 
@@ -408,15 +408,15 @@ docs/architecture/semantic-folder-hierarchy.md
                                            architecture-first folder doctrine
 docs/origin/stream-of-consciousness.md     preserved origin/manifesto capture
 examples/README.md                         example index
-examples/day-in-the-life-6/                release-surface mapping workflow example
-examples/day-in-the-life-7/                invocable vigilance-check workflow example
-examples/day-in-the-life-8/                invocable contradiction-scan workflow example
-examples/day-in-the-life-9/                invocable project-wiki-build workflow example
-examples/day-in-the-life-10/               invocable project-knowledge-bank workflow example
-examples/day-in-the-life-11/               vendor-independent playbook packaging workflow example
-examples/day-in-the-life-12/               MCP-style tool-agent design workflow example
-examples/day-in-the-life-13/               outside-agent-pattern distillation workflow example
-examples/day-in-the-life-14/               release-readiness stabilization workflow example
+examples/day-06-release-surface-mapping/             release-surface mapping workflow example
+examples/day-07-vigilance-check/                     invocable vigilance-check workflow example
+examples/day-08-contradiction-scan/                  invocable contradiction-scan workflow example
+examples/day-09-project-wiki-build/                  invocable project-wiki-build workflow example
+examples/day-10-project-knowledge-bank/              invocable project-knowledge-bank workflow example
+examples/day-11-playbook-packaging/                  vendor-independent playbook packaging workflow example
+examples/day-12-mcp-style-tool-agent-design/         MCP-style tool-agent design workflow example
+examples/day-13-outside-agent-pattern-distillation/  outside-agent-pattern distillation workflow example
+examples/day-14-release-readiness-stabilization/     release-readiness stabilization workflow example
 examples/webgl-demo-3/                     architecture-cognition WebGL example
 examples/hobbyist-mechanic-57-chevy/       everyday project-cognition WebGL example
 ```

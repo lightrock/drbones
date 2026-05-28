@@ -44,7 +44,7 @@ docs/wiki/*.md
 docs/releases/*.md
 docs/architecture/*.md
 examples/README.md
-examples/day-in-the-life-*/README.md
+examples/day-*/README.md
 playbooks/README.md
 playbooks/*/PLAYBOOK.md
 workorders/README.md
@@ -108,7 +108,7 @@ Preserve the current doctrine:
 AGENTS.md = global operating rules
 workorders/ = one-time task contracts
 playbooks/*/PLAYBOOK.md = reusable task-specific workflow guidance
-examples/day-in-the-life-*/ = teaching artifacts
+examples/day-*/ = teaching artifacts
 docs/wiki/ = navigable project map
 ```
 

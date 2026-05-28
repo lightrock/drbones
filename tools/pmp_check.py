@@ -161,6 +161,76 @@ def check_connector_safe_fixture_wording(repo_root: Path) -> list[CheckResult]:
     return results
 
 
+
+def day_example_sort_key(path: Path) -> tuple[int, str]:
+    match = re.fullmatch(r"day-(\d{2})-[a-z0-9]+(?:-[a-z0-9]+)*", path.parent.name)
+    if not match:
+        return (10_000, path.parent.name)
+    return (int(match.group(1)), path.parent.name)
+
+
+def check_day_examples(repo_root: Path) -> list[CheckResult]:
+    """Ensure semantic day example folders are indexed and trigger-mapped."""
+    results: list[CheckResult] = []
+    examples_dir = repo_root / "examples"
+    examples_index = examples_dir / "README.md"
+    trigger_map = examples_dir / "TRIGGER_MAP.md"
+    agents_file = repo_root / "AGENTS.md"
+
+    for required in [examples_index, trigger_map, agents_file]:
+        if not required.exists():
+            results.append(CheckResult(False, f"missing day-example governance file: {required}"))
+            return results
+
+    agents_text = agents_file.read_text(encoding="utf-8")
+    index_text = examples_index.read_text(encoding="utf-8")
+    trigger_text = trigger_map.read_text(encoding="utf-8")
+
+    if "examples/TRIGGER_MAP.md" not in agents_text:
+        results.append(CheckResult(False, "AGENTS.md must point day-in-the-life routing to examples/TRIGGER_MAP.md"))
+
+    old_style = sorted(examples_dir.glob("day-in-the-life-*/README.md"))
+    if old_style:
+        results.append(
+            CheckResult(
+                False,
+                "old numeric-only day example folders remain: "
+                + ", ".join(str(path.relative_to(repo_root)) for path in old_style),
+            )
+        )
+
+    example_paths = sorted(
+        (path for path in examples_dir.glob("day-*/README.md") if re.fullmatch(r"day-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*", path.parent.name)),
+        key=day_example_sort_key,
+    )
+    if not example_paths:
+        results.append(CheckResult(False, "expected semantic day examples to exist"))
+        return results
+
+    missing_from_trigger_map: list[str] = []
+    missing_from_index: list[str] = []
+
+    for readme_path in example_paths:
+        day_dir = readme_path.parent.name
+        day_number = str(int(day_dir.split("-", 2)[1]))
+        relative_path = f"examples/{day_dir}/README.md"
+        index_link = f"{day_dir}/README.md"
+
+        if f"Day {day_number}:" not in trigger_text or relative_path not in trigger_text:
+            missing_from_trigger_map.append(relative_path)
+
+        if index_link not in index_text:
+            missing_from_index.append(relative_path)
+
+    if missing_from_trigger_map:
+        results.append(CheckResult(False, "examples/TRIGGER_MAP.md is missing: " + ", ".join(missing_from_trigger_map)))
+    if missing_from_index:
+        results.append(CheckResult(False, "examples/README.md is missing: " + ", ".join(missing_from_index)))
+    if not missing_from_trigger_map and not missing_from_index and not old_style:
+        results.append(CheckResult(True, "semantic day examples are indexed and trigger-mapped"))
+
+    return results
+
 def run_checks(repo_root: Path, area: str) -> list[CheckResult]:
     contract = load_contract(repo_root)
     results: list[CheckResult] = []
@@ -169,6 +239,7 @@ def run_checks(repo_root: Path, area: str) -> list[CheckResult]:
         results.extend(check_workorders(repo_root, contract))
         results.extend(check_contract_references(repo_root, contract))
         results.extend(check_connector_safe_fixture_wording(repo_root))
+        results.extend(check_day_examples(repo_root))
 
     return results
 
