@@ -8,17 +8,19 @@ It helps you keep project memory inside the repo instead of trapped in chat. It 
 
 The idea is, whenever you start a new project, start with a Doctor Bones.
 
-You do not necessarily have to fetch your copy of this template to your local PC or agent environment to use it. Doctor Bones carries its cognitionkitecture in the repository itself. If you follow the startup instructions below, your foreground AI should have enough project smarts to reason from the repo guidance, examples, playbooks, checks, and handoff rules.
+You do not necessarily have to fetch your copy of this template to your local PC or agent environment to use it. Doctor Bones carries its cognitive architecture in the repository itself. If you follow the startup instructions below, your foreground AI should have enough project smarts to reason from the repo guidance, examples, playbooks, checks, and handoff rules.
 
 By default, nothing has to "run" anywhere in the traditional way, and you do not necessarily have to invoke an executor such as Codex. Point your foreground AI at the appropriate Doctor Bones-based repository instance first. Use an executor only when the task needs file edits, a runtime environment, checks, commits, or pull requests.
 
-## More about the idea here
+## More about the idea 
 
 Before the AI codes, teach the repo how to talk. Before the AI claims done, define what done means. Before the AI recommends, separate evidence from conclusion. Before the AI patches, define authority, verification, and boundary rules.
 
-“Can we define the repo-native standards that Cursor, Codex, Claude Code, Copilot, Codex... and GitHub bots should obey?”
+Can we define the repo-native standards that Cursor, Codex, Claude Code, Copilot... and GitHub bots should obey?
 
-“We’re not incompatible. Other guys are building the hands. We’re working on the nervous system / rulebook / courtroom standards / job ticket language that tells the hands what a valid job looks like.”
+## Working on it / TODO / TO FINISH
+
+< link the todo here >
 
 ## Languages
 
