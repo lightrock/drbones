@@ -170,6 +170,10 @@ Day 19: add a new day-in-the-life example
 Day 20: TODO state review
   Read when the human asks to evaluate TODO.md or a roadmap against current repo state, mark done/partial/prose-only/missing/blocked work, or update remaining work without deleting useful rough notes.
   examples/day-in-the-life-20/README.md
+
+Day 21: workflow automation architecture
+  Read when the human asks about n8n, Zapier, Make, Airtable automations, webhook chains, Claude Code/Codex-built automations, agent workflows, business-process automation, or whether a workflow belongs in plumbing, custom code, the core app, or a governed evidence/authority layer.
+  examples/day-in-the-life-21/README.md
 ```
 
 These examples do not override AGENTS.md, human instruction, workorders, checks, or safety constraints. They help the foreground AI recognize the workflow shape and choose the right repo surface.
