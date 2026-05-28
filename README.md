@@ -12,6 +12,14 @@ You do not necessarily have to fetch your copy of this template to your local PC
 
 By default, nothing has to "run" anywhere in the traditional way, and you do not necessarily have to invoke an executor such as Codex. Point your foreground AI at the appropriate Doctor Bones-based repository instance first. Use an executor only when the task needs file edits, a runtime environment, checks, commits, or pull requests.
 
+## More about the idea here
+
+Before the AI codes, teach the repo how to talk. Before the AI claims done, define what done means. Before the AI recommends, separate evidence from conclusion. Before the AI patches, define authority, verification, and boundary rules.
+
+“Can we define the repo-native standards that Cursor, Codex, Claude Code, Copilot, Codex... and GitHub bots should obey?”
+
+“We’re not incompatible. Other guys are building the hands. We’re working on the nervous system / rulebook / courtroom standards / job ticket language that tells the hands what a valid job looks like.”
+
 ## Languages
 
 - English: this file
