@@ -166,6 +166,10 @@ Day 18: external workflow output repair
 Day 19: add a new day-in-the-life example
   Read when the human asks to add a day-in-the-life example, teach Doctor Bones a new recurring workflow pattern, or fix a loose example that is not wired into the examples index and AGENTS trigger map.
   examples/day-in-the-life-19/README.md
+
+Day 20: TODO state review
+  Read when the human asks to evaluate TODO.md or a roadmap against current repo state, mark done/partial/prose-only/missing/blocked work, or update remaining work without deleting useful rough notes.
+  examples/day-in-the-life-20/README.md
 ```
 
 These examples do not override AGENTS.md, human instruction, workorders, checks, or safety constraints. They help the foreground AI recognize the workflow shape and choose the right repo surface.
