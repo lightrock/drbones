@@ -28,6 +28,8 @@ Executor needed = needs local checks, CI work, broad edits, or tool-specific val
 - `tools/pmp_check.py` exists and checks the current workorder contract and example indexing.
 - `tests/test_pmp_check.py` includes a test that semantic day examples are indexed in both `examples/README.md` and `examples/TRIGGER_MAP.md`.
 - PFEM-lite and PFCOMM-lite are present as embedded internal reference lenses and are referenced from `AGENTS.md` and the public docs page.
+- `.github/pull_request_template.md` exists and gives workorder-driven PRs and small direct-fix PRs a standard completion shape.
+- `.github/workflows/checks.yml` exists and runs `python tools/pmp_check.py --area all` and `python -m pytest` on pull requests and pushes to `main`.
 
 ### Partial / still needs work
 
@@ -36,7 +38,7 @@ Executor needed = needs local checks, CI work, broad edits, or tool-specific val
 - Rubric thinking exists in TODO and examples, but there is not yet a formal rubric file or evaluator contract.
 - Examples exist and are wired, but the specific good/bad examples for rubric failures still need to be split into small durable files.
 - Checks exist, but they mostly validate workorder governance and example wiring. They do not yet validate broader schema/rubric/completion-report behavior.
-- Integration positioning is clear, but dedicated surfaces for Codex, Claude Code, Cursor, Copilot, PR templates, VS Code diagnostics, or CI gates are not yet built.
+- Integration positioning is clear, and GitHub PR/CI surfaces now exist. Dedicated surfaces for Codex, Claude Code, Cursor, Copilot, VS Code diagnostics, or richer CI gates are not yet built.
 - Completion-report discipline exists in workorder guidance, but there is not yet a separate completion-report schema or example pack.
 
 ### Prose-only / concept captured but not executable yet
@@ -52,9 +54,6 @@ Executor needed = needs local checks, CI work, broad edits, or tool-specific val
 
 ### Missing / likely future work
 
-- `.github/pull_request_template.md`
-- GitHub Actions workflow for `python tools/pmp_check.py --area all`
-- GitHub Actions workflow for `python -m pytest`
 - Tool-specific guidance files, if desired, such as:
   - `CLAUDE.md`
   - `.cursor/rules`
@@ -68,8 +67,8 @@ Executor needed = needs local checks, CI work, broad edits, or tool-specific val
 2. Add one formal rubric file for the first high-value rule: `patch is not verification`.
 3. Add two tiny examples: bad agent completion vs. corrected agent completion.
 4. Add a completion-report schema or template that matches the existing workorder completion-note guidance.
-5. Add a GitHub Actions workflow that runs `python tools/pmp_check.py --area all` and `python -m pytest`.
-6. Extend `pmp_check.py` only after the schema/example shape is stable.
+5. Add a GitHub comment-bot feedback contract or PR review guidance if the PR template proves too weak.
+6. Extend `pmp_check.py` further only after the schema/example shape is stable.
 
 ## Near-term README polish
 
@@ -90,7 +89,8 @@ The core advantage only becomes real if the repo carries usable artifacts, not j
 - [x] Convert core doctrine into stable repo files: `README.md`, `AGENTS.md`, `readme_pmp.md`, examples, workorders, internal references, docs.
 - [x] Convert workorder doctrine into a schema and checker.
 - [ ] Convert broader repo files into schemas, rubrics, examples, and checks.
-- [ ] Convert checks into automation that foreground AIs, executor AIs, GitHub bots, IDE integrations, and CI can consume.
+- [x] Convert current checks into GitHub CI automation.
+- [ ] Convert broader checks into automation that foreground AIs, executor AIs, GitHub bots, IDE integrations, and CI can consume.
 - [x] Keep the doctrine practical enough that it helps a real project move faster instead of becoming ceremonial documentation.
 
 ## Schema work
@@ -189,12 +189,12 @@ Possible checks still remaining:
 - [ ] Validate additional JSON schemas beyond `workorder-contract.json`.
 - [ ] Validate completion reports include checks and known unknowns.
 - [ ] Check examples for required labels such as good/bad/corrected.
-- [ ] Add a CI path that runs `python tools/pmp_check.py --area all`.
-- [ ] Add a CI path that runs `python -m pytest`.
+- [x] Add a CI path that runs `python tools/pmp_check.py --area all`.
+- [x] Add a CI path that runs `python -m pytest`.
 
 ## Integration targets
 
-Status: Mostly prose-only.
+Status: Partial.
 
 Doctor Bones should feed existing tools instead of trying to replace them.
 
@@ -203,12 +203,12 @@ Potential consumers:
 - [ ] Codex instructions.
 - [ ] Claude Code / Cursor / Copilot-style repo rules.
 - [ ] GitHub comment bots.
-- [ ] PR checklists and review comments.
+- [x] PR checklists and review comments.
 - [ ] VS Code diagnostics or inline warnings.
 - [ ] Custom evaluator systems.
 - [ ] CI gates for workorder and completion-report hygiene.
 
-Current repo state supports the concept, but the dedicated integration files are not built yet.
+Current repo state supports the concept and now includes a PR template plus a basic GitHub Actions check workflow. Tool-specific files, comment-bot contracts, IDE surfaces, and richer completion-report gates are not built yet.
 
 ## Product shape / positioning
 

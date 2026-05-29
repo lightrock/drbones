@@ -45,6 +45,27 @@ ROUTED_DOCTRINE_TERMS = {
     "lessons-learned/README.md": ("Lessons learned", "When to create or propose one"),
 }
 
+GITHUB_SURFACE_FILES = (
+    ".github/pull_request_template.md",
+    ".github/workflows/checks.yml",
+)
+
+GITHUB_PR_TEMPLATE_TERMS = (
+    "## Summary",
+    "## Workorder",
+    "## Checks",
+    "## Lessons learned",
+    "## Open questions / risks",
+    "Not workorder-driven:",
+)
+
+GITHUB_CHECK_WORKFLOW_TERMS = (
+    "python tools/pmp_check.py --area all",
+    "python -m pytest",
+    "pull_request:",
+    "push:",
+)
+
 
 @dataclass(frozen=True)
 class CheckResult:
@@ -307,6 +328,42 @@ def check_routed_doctrine(repo_root: Path) -> list[CheckResult]:
 
     return results
 
+
+def check_github_surfaces(repo_root: Path) -> list[CheckResult]:
+    """Ensure GitHub PR and CI surfaces preserve Doctor Bones workflow discipline."""
+    results: list[CheckResult] = []
+    missing_files: list[str] = []
+    missing_terms: list[str] = []
+
+    for relative in GITHUB_SURFACE_FILES:
+        path = repo_root / relative
+        if not path.exists():
+            missing_files.append(relative)
+
+    pr_template = repo_root / ".github" / "pull_request_template.md"
+    if pr_template.exists():
+        text = pr_template.read_text(encoding="utf-8")
+        for term in GITHUB_PR_TEMPLATE_TERMS:
+            if term not in text:
+                missing_terms.append(f".github/pull_request_template.md: {term}")
+
+    workflow = repo_root / ".github" / "workflows" / "checks.yml"
+    if workflow.exists():
+        text = workflow.read_text(encoding="utf-8")
+        for term in GITHUB_CHECK_WORKFLOW_TERMS:
+            if term not in text:
+                missing_terms.append(f".github/workflows/checks.yml: {term}")
+
+    if missing_files:
+        results.append(CheckResult(False, "missing GitHub surfaces: " + ", ".join(missing_files)))
+    if missing_terms:
+        results.append(CheckResult(False, "GitHub surfaces are missing expected terms: " + ", ".join(missing_terms)))
+
+    if not missing_files and not missing_terms:
+        results.append(CheckResult(True, "GitHub PR and CI surfaces are present"))
+
+    return results
+
 def run_checks(repo_root: Path, area: str) -> list[CheckResult]:
     contract = load_contract(repo_root)
     results: list[CheckResult] = []
@@ -317,6 +374,7 @@ def run_checks(repo_root: Path, area: str) -> list[CheckResult]:
         results.extend(check_connector_safe_fixture_wording(repo_root))
         results.extend(check_day_examples(repo_root))
         results.extend(check_routed_doctrine(repo_root))
+        results.extend(check_github_surfaces(repo_root))
 
     return results
 

@@ -124,3 +124,13 @@ def test_agents_router_links_to_routed_doctrine() -> None:
 
     results = pmp_check.check_routed_doctrine(repo)
     assert all(result.ok for result in results), "\n".join(result.message for result in results if not result.ok)
+
+
+def test_github_surfaces_exist_and_name_required_checks() -> None:
+    repo = Path(__file__).resolve().parents[1]
+
+    for relative in pmp_check.GITHUB_SURFACE_FILES:
+        assert (repo / relative).exists(), relative
+
+    results = pmp_check.check_github_surfaces(repo)
+    assert all(result.ok for result in results), "\n".join(result.message for result in results if not result.ok)
