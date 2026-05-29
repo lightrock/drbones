@@ -30,24 +30,25 @@ Executor needed = needs local checks, CI work, broad edits, or tool-specific val
 - PFEM-lite and PFCOMM-lite are present as embedded internal reference lenses and are referenced from `AGENTS.md` and the public docs page.
 - `.github/pull_request_template.md` exists and gives workorder-driven PRs and small direct-fix PRs a standard completion shape.
 - `.github/workflows/checks.yml` exists and runs `python tools/pmp_check.py --area all` and `python -m pytest` on pull requests and pushes to `main`.
+- PFEM-lite starter schemas now exist for evidence, findings, remediation, evaluation results, handoffs, and completion reports.
+- `rubrics/patch-is-not-verification.md` exists as the first durable evaluator rubric.
+- `examples/pfem-lite-boundary-artifacts/` includes good, failed, and corrected completion-report examples.
 
 ### Partial / still needs work
 
 - README polish is partly done, but a clearer `Who this is for` / `What this is not` section may still help first-time visitors.
-- The repo already has a workorder schema, but the broader schema set is not built yet.
-- Rubric thinking exists in TODO and examples, but there is not yet a formal rubric file or evaluator contract.
-- Examples exist and are wired, but the specific good/bad examples for rubric failures still need to be split into small durable files.
-- Checks exist, but they mostly validate workorder governance and example wiring. They do not yet validate broader schema/rubric/completion-report behavior.
+- The repo now has a starter schema set, but the schemas are intentionally lightweight and not yet used to validate real records.
+- The first rubric exists, but the broader evaluator rubric set is not built yet.
+- Completion-report examples exist for the first rubric, but workorder examples and evidence/finding boundary examples still need to be split into small durable files.
+- Checks exist and now validate the presence of the PFEM-lite artifact pack, but they do not yet validate real completion reports or schema instances.
 - Integration positioning is clear, and GitHub PR/CI surfaces now exist. Dedicated surfaces for Codex, Claude Code, Cursor, Copilot, VS Code diagnostics, or richer CI gates are not yet built.
-- Completion-report discipline exists in workorder guidance, but there is not yet a separate completion-report schema or example pack.
+- Completion-report discipline now has a schema and example pack, but not a validator for real PR bodies or completion-report instances.
 
 ### Prose-only / concept captured but not executable yet
 
-- Evidence / finding / remediation schemas.
-- Evaluation-result schema.
-- Handoff schema.
-- Completion-report schema.
-- PFEM-style rubric files with criterion/pass/fail/good-example/bad-example fields.
+- Rich evidence / finding / remediation validation beyond starter schemas.
+- Rich evaluation-result, handoff, and completion-report validation beyond starter schemas.
+- More PFEM-style rubric files with criterion/pass/fail/good-example/bad-example fields.
 - GitHub comment-bot feedback contract.
 - IDE diagnostic contract.
 - CI gate for workorder plus completion-report hygiene beyond the current `pmp_check.py` scope.
@@ -64,9 +65,9 @@ Executor needed = needs local checks, CI work, broad edits, or tool-specific val
 ### Next smallest useful moves
 
 1. Add a `Who this is for` / `What this is not` section to `README.md` and mirror only the necessary idea in `docs/index.html`.
-2. Add one formal rubric file for the first high-value rule: `patch is not verification`.
-3. Add two tiny examples: bad agent completion vs. corrected agent completion.
-4. Add a completion-report schema or template that matches the existing workorder completion-note guidance.
+2. Add a validator for completion-report instances or PR-body hygiene using the new starter schema/rubric shape.
+3. Add good and failed workorder examples.
+4. Add evidence/finding/remediation boundary examples.
 5. Add a GitHub comment-bot feedback contract or PR review guidance if the PR template proves too weak.
 6. Extend `pmp_check.py` further only after the schema/example shape is stable.
 
@@ -88,7 +89,8 @@ The core advantage only becomes real if the repo carries usable artifacts, not j
 
 - [x] Convert core doctrine into stable repo files: `README.md`, `AGENTS.md`, `readme_pmp.md`, examples, workorders, internal references, docs.
 - [x] Convert workorder doctrine into a schema and checker.
-- [ ] Convert broader repo files into schemas, rubrics, examples, and checks.
+- [x] Add starter PFEM-lite schemas, one rubric, and completion-report examples.
+- [ ] Convert broader repo files into richer schemas, rubrics, examples, and checks.
 - [x] Convert current checks into GitHub CI automation.
 - [ ] Convert broader checks into automation that foreground AIs, executor AIs, GitHub bots, IDE integrations, and CI can consume.
 - [x] Keep the doctrine practical enough that it helps a real project move faster instead of becoming ceremonial documentation.
@@ -102,15 +104,18 @@ Create or refine machine-readable structures for the things Doctor Bones wants a
 Current:
 
 - [x] `schemas/workorder-contract.json`
+- [x] `schemas/evidence.schema.json`
+- [x] `schemas/finding.schema.json`
+- [x] `schemas/remediation.schema.json`
+- [x] `schemas/evaluation-result.schema.json`
+- [x] `schemas/handoff.schema.json`
+- [x] `schemas/completion-report.schema.json`
 
-Candidate schemas still remaining:
+Schema work still remaining:
 
-- [ ] `evidence.schema.json`
-- [ ] `finding.schema.json`
-- [ ] `remediation.schema.json`
-- [ ] `evaluation-result.schema.json`
-- [ ] `handoff.schema.json`
-- [ ] `completion-report.schema.json`
+- [ ] Add fixtures or example instances for the starter schemas.
+- [ ] Add validation of schema instances when the repo begins carrying them.
+- [ ] Decide which schemas are template defaults and which are optional examples.
 
 Important boundary idea:
 
@@ -127,7 +132,7 @@ patch is not verification
 
 ## Rubrics / evaluator work
 
-Status: Prose-only / early partial.
+Status: Partial.
 
 Turn PFEM-style boundary discipline into evaluator rubrics that can be used by humans, foreground AIs, executor AIs, comment bots, or CI checks.
 
@@ -135,17 +140,26 @@ Candidate rubric dimensions:
 
 - [ ] Evidence integrity: does the agent identify evidence, inference, and unknowns?
 - [ ] Boundary preservation: does the agent avoid collapsing evidence, findings, recommendations, commands, execution, and proof?
-- [ ] Verification discipline: does the agent avoid claiming "done" without checks or a stated verification path?
+- [x] Verification discipline: does the agent avoid claiming "done" without checks or a stated verification path?
 - [ ] Scope control: does the agent stay inside the workorder and avoid drive-by refactors?
 - [ ] Authority separation: does the agent avoid treating AI output as policy, approval, or operational authority?
 - [ ] Traceability: do conclusions tie back to source intent, evidence, and checks?
 - [ ] Completion reporting: does the agent say what changed, what was checked, what failed, and what remains unknown?
 
-First useful rubric to create:
+First useful rubric created:
 
 ```text
 patch is not verification
 ```
+
+Still useful to create:
+
+- [ ] Evidence integrity rubric.
+- [ ] Boundary preservation rubric.
+- [ ] Scope control rubric.
+- [ ] Authority separation rubric.
+- [ ] Traceability rubric.
+- [ ] Completion reporting rubric beyond the first verification rule.
 
 ## Examples to add
 
@@ -163,10 +177,10 @@ Still useful to add as small durable examples:
 
 - [ ] A good workorder.
 - [ ] A bad workorder.
-- [ ] A good completion report.
-- [ ] A bad completion report.
-- [ ] A bad agent answer that claims a patch is verified without running checks.
-- [ ] A corrected agent answer that distinguishes patch, expected effect, verification, and remaining risk.
+- [x] A good completion report.
+- [x] A failed completion report.
+- [x] A failed agent answer that claims a patch is verified without running checks.
+- [x] A corrected agent answer that distinguishes patch, expected effect, verification, and remaining risk.
 - [ ] A boundary failure where an agent confuses evidence with a conclusion.
 - [ ] A boundary failure where an agent treats a recommendation as authority.
 
@@ -186,7 +200,7 @@ Current:
 
 Possible checks still remaining:
 
-- [ ] Validate additional JSON schemas beyond `workorder-contract.json`.
+- [x] Validate additional JSON schemas beyond `workorder-contract.json`.
 - [ ] Validate completion reports include checks and known unknowns.
 - [ ] Check examples for required labels such as good/bad/corrected.
 - [x] Add a CI path that runs `python tools/pmp_check.py --area all`.
@@ -243,10 +257,10 @@ A small first milestone could be:
 
 1. [x] Add a concise PFEM/PFCOMM-lite vocabulary reference.
 2. [x] Add a workorder schema.
-3. [ ] Add finding/evidence/remediation draft schemas.
+3. [x] Add finding/evidence/remediation draft schemas.
 4. [ ] Add five good/bad agent-behavior examples.
-5. [ ] Add one evaluator rubric: agent must not claim done without verification.
-6. [ ] Add one check that validates the schema/examples.
+5. [x] Add one evaluator rubric: agent must not claim done without verification.
+6. [x] Add one check that validates the schema/examples.
 
 That would move Doctor Bones from good repo doctrine toward executable AI-development discipline.
 

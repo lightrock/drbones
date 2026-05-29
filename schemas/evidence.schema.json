@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Doctor Bones Evidence Record",
+  "description": "Lightweight PFEM-lite evidence record shape. This is not the full PFEM contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "source",
+    "summary",
+    "provenance",
+    "confidence",
+    "captured_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "description": "Where the evidence came from."
+    },
+    "summary": {
+      "type": "string",
+      "description": "What was observed, without turning it into a finding."
+    },
+    "provenance": {
+      "type": "string",
+      "description": "A link, file path, command output, log reference, or human-provided source note."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "captured_at": {
+      "type": "string",
+      "description": "ISO-8601 timestamp or explicit capture date."
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "x-doctor-bones-contract": {
+    "record_kind": "evidence",
+    "boundary_rule": "Evidence is source-backed observation, not finding, recommendation, command, execution, or proof."
+  }
+}

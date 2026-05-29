@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Doctor Bones Completion Report",
+  "description": "Lightweight completion-report shape for executor notes and PR bodies.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "summary",
+    "workorder",
+    "changed_files",
+    "checks_run",
+    "checks_not_run",
+    "lessons_learned",
+    "open_questions",
+    "verification_status"
+  ],
+  "properties": {
+    "summary": {
+      "type": "string"
+    },
+    "workorder": {
+      "type": "string",
+      "description": "Exact workorder path, or Not workorder-driven with a reason."
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "checks_run": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "checks_not_run": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lessons_learned": {
+      "type": "string"
+    },
+    "open_questions": {
+      "type": "string"
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "verified",
+        "partially-verified",
+        "not-verified",
+        "blocked"
+      ]
+    }
+  },
+  "x-doctor-bones-contract": {
+    "record_kind": "completion-report",
+    "boundary_rule": "A completion report must separate changed files from checks run, checks not run, lessons learned, open questions, and verification status."
+  }
+}

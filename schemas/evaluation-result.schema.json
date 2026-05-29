@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Doctor Bones Evaluation Result",
+  "description": "Lightweight evaluator output for rubric or check results.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "rubric",
+    "subject",
+    "result",
+    "evidence_ids",
+    "notes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "rubric": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string",
+      "description": "The PR, completion report, workorder, answer, or artifact being evaluated."
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail",
+        "needs-human-review"
+      ]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "x-doctor-bones-contract": {
+    "record_kind": "evaluation-result",
+    "boundary_rule": "An evaluation result reports a check outcome; it is not authority to merge, publish, or act."
+  }
+}

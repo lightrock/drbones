@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Doctor Bones Handoff Record",
+  "description": "Lightweight handoff shape for new tabs, agents, or executor sessions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "repository",
+    "current_state",
+    "target",
+    "constraints",
+    "read_first",
+    "next_move"
+  ],
+  "properties": {
+    "repository": {
+      "type": "string"
+    },
+    "current_state": {
+      "type": "string"
+    },
+    "target": {
+      "type": "string"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "read_first": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_move": {
+      "type": "string"
+    }
+  },
+  "x-doctor-bones-contract": {
+    "record_kind": "handoff",
+    "boundary_rule": "A handoff carries context and next intent; it is not proof that the repo state still matches memory."
+  }
+}

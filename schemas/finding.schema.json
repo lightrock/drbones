@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Doctor Bones Finding Record",
+  "description": "Lightweight PFEM-lite finding shape. Findings must cite evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "claim",
+    "evidence_ids",
+    "confidence",
+    "boundary_notes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "claim": {
+      "type": "string",
+      "description": "The conclusion drawn from evidence."
+    },
+    "evidence_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "boundary_notes": {
+      "type": "string",
+      "description": "What remains inference, uncertain, unverified, or out of scope."
+    }
+  },
+  "x-doctor-bones-contract": {
+    "record_kind": "finding",
+    "boundary_rule": "A finding is a conclusion tied to evidence; it is not a command, remediation, execution, or proof."
+  }
+}

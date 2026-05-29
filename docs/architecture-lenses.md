@@ -58,3 +58,28 @@ checks/gates as proof discipline
 ```
 
 Do not claim PFEM-lite is the full PFEM architecture or PFCOMM-lite is the full PFCOMM architecture. If the human asks for a full PFEM or PFCOMM comparison, inspect the current `lightrock/PFEM` or `lightrock/PFCOMM` repository state and report which files were actually read.
+
+## PFEM-lite concrete artifacts
+
+Doctor Bones carries a small PFEM-lite artifact pack so boundary discipline is not only prose:
+
+```text
+schemas/evidence.schema.json
+schemas/finding.schema.json
+schemas/remediation.schema.json
+schemas/evaluation-result.schema.json
+schemas/handoff.schema.json
+schemas/completion-report.schema.json
+rubrics/patch-is-not-verification.md
+examples/pfem-lite-boundary-artifacts/README.md
+```
+
+These artifacts are intentionally modest. They are starter contracts for AI-assisted project discipline, not a replacement for the full PFEM architecture.
+
+Use `rubrics/patch-is-not-verification.md` when reviewing an executor completion note, PR body, or AI answer that claims coding work is done. The rule is:
+
+```text
+A patch is an action.
+Verification is evidence that the action produced the intended result.
+Do not collapse them.
+```

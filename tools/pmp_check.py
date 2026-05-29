@@ -66,6 +66,49 @@ GITHUB_CHECK_WORKFLOW_TERMS = (
     "push:",
 )
 
+PFEM_LITE_SCHEMA_FILES = (
+    "schemas/evidence.schema.json",
+    "schemas/finding.schema.json",
+    "schemas/remediation.schema.json",
+    "schemas/evaluation-result.schema.json",
+    "schemas/handoff.schema.json",
+    "schemas/completion-report.schema.json",
+)
+
+PFEM_LITE_ARTIFACT_FILES = (
+    "rubrics/patch-is-not-verification.md",
+    "examples/pfem-lite-boundary-artifacts/README.md",
+    "examples/pfem-lite-boundary-artifacts/completion-report-good.md",
+    "examples/pfem-lite-boundary-artifacts/completion-report-failure.md",
+    "examples/pfem-lite-boundary-artifacts/completion-report-corrected.md",
+)
+
+PFEM_LITE_REQUIRED_SCHEMA_KINDS = {
+    "schemas/evidence.schema.json": "evidence",
+    "schemas/finding.schema.json": "finding",
+    "schemas/remediation.schema.json": "remediation",
+    "schemas/evaluation-result.schema.json": "evaluation-result",
+    "schemas/handoff.schema.json": "handoff",
+    "schemas/completion-report.schema.json": "completion-report",
+}
+
+PATCH_VERIFICATION_RUBRIC_TERMS = (
+    "Patch Is Not Verification",
+    "A patch is an action.",
+    "Verification is evidence",
+    "Pass condition",
+    "Fail condition",
+    "Good example",
+    "Failure example",
+    "Corrected example",
+)
+
+COMPLETION_REPORT_EXAMPLE_TERMS = (
+    "Checks run",
+    "Checks not run",
+    "Verification status",
+)
+
 
 @dataclass(frozen=True)
 class CheckResult:
@@ -364,6 +407,79 @@ def check_github_surfaces(repo_root: Path) -> list[CheckResult]:
 
     return results
 
+
+def check_pfem_lite_artifacts(repo_root: Path) -> list[CheckResult]:
+    """Ensure PFEM-lite boundary ideas exist as small concrete artifacts."""
+    results: list[CheckResult] = []
+    missing_files: list[str] = []
+    invalid_schemas: list[str] = []
+    missing_terms: list[str] = []
+
+    for relative in (*PFEM_LITE_SCHEMA_FILES, *PFEM_LITE_ARTIFACT_FILES):
+        if not (repo_root / relative).exists():
+            missing_files.append(relative)
+
+    for relative, expected_kind in PFEM_LITE_REQUIRED_SCHEMA_KINDS.items():
+        path = repo_root / relative
+        if not path.exists():
+            continue
+        try:
+            raw = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            invalid_schemas.append(f"{relative}: invalid JSON: {exc}")
+            continue
+
+        contract = raw.get("x-doctor-bones-contract")
+        if not isinstance(contract, dict):
+            invalid_schemas.append(f"{relative}: missing x-doctor-bones-contract")
+            continue
+        if contract.get("record_kind") != expected_kind:
+            invalid_schemas.append(f"{relative}: expected record_kind {expected_kind}")
+        if "boundary_rule" not in contract:
+            invalid_schemas.append(f"{relative}: missing boundary_rule")
+        if "required" not in raw or not isinstance(raw["required"], list):
+            invalid_schemas.append(f"{relative}: missing required field list")
+
+    rubric = repo_root / "rubrics" / "patch-is-not-verification.md"
+    if rubric.exists():
+        text = rubric.read_text(encoding="utf-8")
+        for term in PATCH_VERIFICATION_RUBRIC_TERMS:
+            if term not in text:
+                missing_terms.append(f"rubrics/patch-is-not-verification.md: {term}")
+
+    for relative in (
+        "examples/pfem-lite-boundary-artifacts/completion-report-good.md",
+        "examples/pfem-lite-boundary-artifacts/completion-report-failure.md",
+        "examples/pfem-lite-boundary-artifacts/completion-report-corrected.md",
+    ):
+        path = repo_root / relative
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        for term in COMPLETION_REPORT_EXAMPLE_TERMS:
+            if term not in text:
+                missing_terms.append(f"{relative}: {term}")
+
+    examples_index = repo_root / "examples" / "README.md"
+    if examples_index.exists() and "pfem-lite-boundary-artifacts/README.md" not in examples_index.read_text(encoding="utf-8"):
+        missing_terms.append("examples/README.md: pfem-lite-boundary-artifacts/README.md")
+
+    architecture_lenses = repo_root / "docs" / "architecture-lenses.md"
+    if architecture_lenses.exists() and "rubrics/patch-is-not-verification.md" not in architecture_lenses.read_text(encoding="utf-8"):
+        missing_terms.append("docs/architecture-lenses.md: rubrics/patch-is-not-verification.md")
+
+    if missing_files:
+        results.append(CheckResult(False, "missing PFEM-lite artifacts: " + ", ".join(missing_files)))
+    if invalid_schemas:
+        results.append(CheckResult(False, "invalid PFEM-lite schemas: " + ", ".join(invalid_schemas)))
+    if missing_terms:
+        results.append(CheckResult(False, "PFEM-lite artifacts are missing expected terms: " + ", ".join(missing_terms)))
+
+    if not missing_files and not invalid_schemas and not missing_terms:
+        results.append(CheckResult(True, "PFEM-lite schemas, rubric, and completion examples are present"))
+
+    return results
+
 def run_checks(repo_root: Path, area: str) -> list[CheckResult]:
     contract = load_contract(repo_root)
     results: list[CheckResult] = []
@@ -375,6 +491,7 @@ def run_checks(repo_root: Path, area: str) -> list[CheckResult]:
         results.extend(check_day_examples(repo_root))
         results.extend(check_routed_doctrine(repo_root))
         results.extend(check_github_surfaces(repo_root))
+        results.extend(check_pfem_lite_artifacts(repo_root))
 
     return results
 

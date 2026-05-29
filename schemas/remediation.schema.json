@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Doctor Bones Remediation Record",
+  "description": "Lightweight remediation shape for proposed or completed fixes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "finding_ids",
+    "action",
+    "authority",
+    "verification_plan",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "finding_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "action": {
+      "type": "string",
+      "description": "The proposed or performed change."
+    },
+    "authority": {
+      "type": "string",
+      "description": "Who or what authorized the action."
+    },
+    "verification_plan": {
+      "type": "string",
+      "description": "How the action will be checked. A patch alone is not verification."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "approved",
+        "implemented",
+        "verified",
+        "blocked"
+      ]
+    }
+  },
+  "x-doctor-bones-contract": {
+    "record_kind": "remediation",
+    "boundary_rule": "A remediation action is not proof; it needs authority and verification."
+  }
+}

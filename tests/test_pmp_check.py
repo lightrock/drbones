@@ -134,3 +134,13 @@ def test_github_surfaces_exist_and_name_required_checks() -> None:
 
     results = pmp_check.check_github_surfaces(repo)
     assert all(result.ok for result in results), "\n".join(result.message for result in results if not result.ok)
+
+
+def test_pfem_lite_artifacts_exist_and_are_checked() -> None:
+    repo = Path(__file__).resolve().parents[1]
+
+    for relative in (*pmp_check.PFEM_LITE_SCHEMA_FILES, *pmp_check.PFEM_LITE_ARTIFACT_FILES):
+        assert (repo / relative).exists(), relative
+
+    results = pmp_check.check_pfem_lite_artifacts(repo)
+    assert all(result.ok for result in results), "\n".join(result.message for result in results if not result.ok)
