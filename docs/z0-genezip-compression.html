@@ -46,6 +46,10 @@
     .recipe-table th:nth-child(1), .recipe-table td:nth-child(1) { width:23%; }
     .recipe-table th:nth-child(2), .recipe-table td:nth-child(2) { width:15%; white-space:pre-line; }
     .recipe-table th:nth-child(3), .recipe-table td:nth-child(3) { width:62%; }
+    .group-table th:nth-child(1), .group-table td:nth-child(1) { width:18%; }
+    .group-table th:nth-child(2), .group-table td:nth-child(2) { width:17%; white-space:pre-line; }
+    .group-table th:nth-child(3), .group-table td:nth-child(3) { width:30%; white-space:pre-line; }
+    .group-table th:nth-child(4), .group-table td:nth-child(4) { width:35%; white-space:pre-line; }
     .busy-note { display:none; margin-top:10px; padding:9px 10px; border:1px solid rgba(255,184,77,.38); background:rgba(255,184,77,.08); color:var(--orange); border-radius:6px; font-size:.82rem; }
     body.busy .busy-note { display:block; }
     @media (max-width: 920px) { .layout { grid-template-columns:1fr; } .card-grid { grid-template-columns:1fr 1fr; } }
@@ -64,6 +68,7 @@
           <select id="targetSelect"></select>
           <button id="compressOne">Compress Selected</button>
           <button class="magenta" id="scanAll">Scan CODATA</button>
+          <button class="magenta" id="scanGroups">Semantic Groups</button>
           <button class="magenta" id="scanRandomControls">Fake-Quark Control</button>
           <button id="toggleOrientations">Orientations: F/R/I/IR ON</button>
           <button id="toggleShort">Allow Small UP/DOWN: ON</button>
@@ -137,10 +142,90 @@ function scanRows(tokens) { return TARGETS.map((target) => { const result = comp
 function scanSummary(rows) { const totalCoverage = rows.reduce((sum, row) => sum + row.coverage, 0); const totalLiteral = rows.reduce((sum, row) => sum + row.result.literalBits, 0); return { exact: rows.filter(row => row.result.literalBits === 0).length, strong: rows.filter(row => row.coverage >= 50).length, avgCoverage: rows.length ? totalCoverage / rows.length : 0, avgLiteral: rows.length ? totalLiteral / rows.length : 0, bestCoverage: rows[0] ? rows[0].coverage : 0 }; }
 function metricSummary(row) { return [`len ${row.target.bits.length}`, `${row.coverage.toFixed(1)}%`, `left ${row.result.literalBits}`, `tok ${row.result.tokenCount}`, `long ${row.result.longestToken}`].join("\n"); }
 function controlTable(rows) { const top = rows.slice(0, 40); return `<table class="recipe-table"><thead><tr><th>Target</th><th>Metrics</th><th>Recipe</th></tr></thead><tbody>${top.map(row => `<tr><td>${escapeHtml(row.target.name)}</td><td>${escapeHtml(metricSummary(row))}</td><td>${escapeHtml(summarizePieces(row.result))}</td></tr>`).join("")}</tbody></table>`; }
+function tokenPieces(result) { return result.levels.flatMap((level) => level.result.pieces.filter((piece) => piece.type === "token").map((piece) => ({ level: level.depth, ...piece }))); }
+function semanticGroup(target) {
+  const text = `${target.name} ${target.unit}`.toLowerCase();
+  const has = (pattern) => pattern.test(text);
+  if (has(/\b(electric|charge|current|voltage|volt|faraday|josephson|klitzing|conductance|impedance|permittivity|coulomb|ampere|ohm| siemens|^s$| f m| c\b| v\b| a\b)/)) return "Electric / charge";
+  if (has(/\b(mag\.|magnetic|magnet|magneton|gyromag|tesla| t\b)/)) return "Magnetic / moment";
+  if (has(/\b(kelvin|temperature|boltzmann|wien|gas constant| k\b)/)) return "Thermal";
+  if (has(/\b(hertz|frequency|time|second| hz| s\b)/)) return "Frequency / time";
+  if (has(/\b(energy|joule|hartree|electron volt|electronvolt|ev|mev|rydberg|radiation|stefan| j\b)/)) return "Energy / radiation";
+  if (has(/\b(length|radius|wavelength|meter|metre|angstrom|x unit|cross section| m\b|m\^-1)/)) return "Length / geometry";
+  if (has(/\b(mass|molar|electron|proton|neutron|muon|tau|deuteron|triton|helion|alpha particle|atomic mass| kg| u\b|mol)/)) return "Mass / particle";
+  if (has(/\b(fine-structure|weak mixing|g factor|coupling|ratio|angle|dimensionless|alpha\b)/) || !target.unit) return "Dimensionless / coupling";
+  return "Other / conversion";
+}
+function addCount(map, key, amount = 1) { map.set(key, (map.get(key) || 0) + amount); }
+function topCounts(map, limit = 5) { return [...map.entries()].sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, limit); }
+function groupRows(rows) {
+  const groups = new Map();
+  for (const row of rows) {
+    const name = semanticGroup(row.target);
+    if (!groups.has(name)) groups.set(name, { name, rows: [], quarks: new Map(), closures: new Map(), closureBits: 0, closureTargets: 0 });
+    const group = groups.get(name);
+    group.rows.push(row);
+    let hasClosure = false;
+    for (const piece of tokenPieces(row.result)) {
+      const tokenName = piece.variant.token.name;
+      if (tokenName.startsWith("Z0_")) {
+        addCount(group.closures, tokenName);
+        group.closureBits += piece.bits.length;
+        hasClosure = true;
+      } else {
+        addCount(group.quarks, tokenName);
+      }
+    }
+    if (hasClosure) group.closureTargets += 1;
+  }
+  return [...groups.values()].map((group) => {
+    const summary = scanSummary(group.rows);
+    return { ...group, summary };
+  }).sort((a,b) => (b.closureTargets / b.rows.length) - (a.closureTargets / a.rows.length) || b.summary.avgCoverage - a.summary.avgCoverage || a.name.localeCompare(b.name));
+}
+function closureRead(group) {
+  const ratio = group.rows.length ? group.closureTargets / group.rows.length : 0;
+  if (!group.closureTargets) return "no Z0 closure hits in this bucket";
+  if (ratio >= 0.55) return "closure-rich: Z0 closed-both-ways words are common here";
+  if (ratio >= 0.25) return "closure-present: Z0 closure words participate in a visible minority";
+  return "closure-sparse: Z0 closure words appear, but lightly";
+}
+function groupMetrics(group) { return [`n ${group.rows.length}`, `avg ${group.summary.avgCoverage.toFixed(1)}%`, `exact ${group.summary.exact}`, `left ${group.summary.avgLiteral.toFixed(1)}`, `closure ${group.closureTargets}/${group.rows.length}`].join("\n"); }
+function dominantQuarks(group) {
+  const top = topCounts(group.quarks, 6);
+  return top.length ? top.map(([name, count]) => `${name} x${count}`).join("\n") : "none";
+}
+function closureSignature(group) {
+  const counts = topCounts(group.closures, 3);
+  const lines = counts.length ? counts.map(([name, count]) => `${name} x${count}`) : ["none"];
+  lines.push(`${group.closureBits} closure bits covered`);
+  lines.push(closureRead(group));
+  return lines.join("\n");
+}
+function groupTable(groups) {
+  return `<table class="group-table"><thead><tr><th>Semantic bucket</th><th>Metrics</th><th>Dominant quark grammar</th><th>Z0 closed-both-ways signature</th></tr></thead><tbody>${groups.map(group => `<tr><td>${escapeHtml(group.name)}</td><td>${escapeHtml(groupMetrics(group))}</td><td>${escapeHtml(dominantQuarks(group))}</td><td>${escapeHtml(closureSignature(group))}</td></tr>`).join("")}</tbody></table>`;
+}
+function scanGroups() {
+  setBusy(true);
+  document.getElementById("report").innerText = "Sorting CODATA constants into semantic GeneZip groups...";
+  window.setTimeout(() => {
+    try {
+      const rows = scanRows(activeTokens());
+      const groups = groupRows(rows);
+      const closureRich = groups.filter(group => group.closureTargets > 0);
+      document.getElementById("report").innerText = ["Semantic GeneZip group scan", `Targets scanned: ${TARGETS.length}`, `Groups found: ${groups.length}`, `Groups with any Z0 closure signature: ${closureRich.length}`, `Active tokens: ${activeTokens().length}`, "", "Plain English:", "This sorts constants by their CODATA name/unit labels, then asks which quark words and which Z0 closure words do the recursive GeneZip covering work inside each bucket.", "The Z0 closure column is the impedance-form question: where do the closed-both-ways words show up, and are they concentrated in electric, magnetic, mass, geometry, or coupling contexts?", "A closure-rich bucket is a lead. It may indicate a more direct impedance participation surface, but by itself it is still a signature map, not proof of physical causality.", "", "Bucket note:", "These groups are heuristic labels built from text names and units. They are for navigation and falsification targeting, not an official physics taxonomy."].join("\n");
+      document.getElementById("scanTable").innerHTML = groupTable(groups);
+      document.getElementById("controlAvg").innerText = "-";
+      renderCards(rows[0].target, rows[0].result);
+    } finally {
+      setBusy(false);
+    }
+  }, 25);
+}
 function scanAll() { setBusy(true); document.getElementById("report").innerText = "Scanning all CODATA constants with the current quark grammar..."; window.setTimeout(() => { try { const rows = scanRows(activeTokens()); const summary = scanSummary(rows); document.getElementById("report").innerText = ["All-CODATA Quark GeneZip scan", `Targets scanned: ${TARGETS.length}`, `Exact quark-grammar covers: ${summary.exact}`, `Targets with 50%+ coverage: ${summary.strong}`, `Average coverage: ${summary.avgCoverage.toFixed(2)}%`, `Average literal leftovers: ${summary.avgLiteral.toFixed(2)} bits`, `Active tokens: ${activeTokens().length}`, "", "Mortal read:", summary.exact || summary.strong ? "Using only the starting quark vocabulary, recursive remainder passes re-express most CODATA bitstrings above 50% coverage. Read this beside the negative-control run: equal-or-longer fake quark grammars perform much worse in the current test batch." : "Under this strict exact-copy grammar, quarks are not yet doing much explanatory compression across CODATA. Read this beside the negative-control run before drawing conclusions."].join("\n"); document.getElementById("scanTable").innerHTML = controlTable(rows); document.getElementById("controlAvg").innerText = "-"; renderCards(rows[0].target, rows[0].result); } finally { setBusy(false); } }, 25); }
 function scanRandomControls() { setBusy(true); document.getElementById("report").innerText = "Running equal-or-longer random fake-quark negative controls..."; window.setTimeout(() => { try { const realRows = scanRows(activeTokens()); const real = scanSummary(realRows); const controls = []; for (let i = 0; i < RANDOM_CONTROL_RUNS; i += 1) { const fakeTokens = fakeQuarkTokens(`batch-${controlBatch}-control-${i}`); const fakeRows = scanRows(fakeTokens); controls.push({ index: i + 1, tokens: fakeTokens, rows: fakeRows, summary: scanSummary(fakeRows) }); } controlBatch += 1; const avgCoverage = controls.reduce((sum, control) => sum + control.summary.avgCoverage, 0) / controls.length; const avgLiteral = controls.reduce((sum, control) => sum + control.summary.avgLiteral, 0) / controls.length; const avgExact = controls.reduce((sum, control) => sum + control.summary.exact, 0) / controls.length; const avgStrong = controls.reduce((sum, control) => sum + control.summary.strong, 0) / controls.length; const beatCoverage = controls.filter(control => real.avgCoverage > control.summary.avgCoverage).length; const beatLiteral = controls.filter(control => real.avgLiteral < control.summary.avgLiteral).length; const bestFake = controls.slice().sort((a,b) => b.summary.avgCoverage - a.summary.avgCoverage || a.summary.avgLiteral - b.summary.avgLiteral)[0]; const fakeLengthRange = controls.flatMap(control => control.tokens.map(token => token.bits.length)); const minFakeLength = Math.min(...fakeLengthRange); const maxFakeLength = Math.max(...fakeLengthRange); const verdict = beatCoverage >= Math.ceil(controls.length * 0.75) && beatLiteral >= Math.ceil(controls.length * 0.75) ? "Real quark grammar is beating the equal-or-longer fake grammars on this batch." : beatCoverage <= Math.floor(controls.length * 0.25) ? "Equal-or-longer fake grammars are matching or beating real quarks here. That is a warning flag, not a win." : "This batch is mixed. Real quarks are not cleanly separated from equal-or-longer fake quarks yet."; document.getElementById("controlAvg").innerText = avgCoverage.toFixed(1) + "%"; document.getElementById("report").innerText = ["Negative control: random fake quarks", `Targets scanned: ${TARGETS.length}`, `Fake grammars tested: ${controls.length}`, `Real token lengths: ${activeTokens().map(token => token.bits.length).join(", ")}`, `Fake rule: each fake token is real length + 0..${RANDOM_LENGTH_SLACK} bits`, `Fake token length range this batch: ${minFakeLength}..${maxFakeLength}`, "", "Real quark grammar:", `Average coverage: ${real.avgCoverage.toFixed(2)}%`, `Average literal leftovers: ${real.avgLiteral.toFixed(2)} bits`, `Exact covers: ${real.exact}`, `50%+ covers: ${real.strong}`, "", "Equal-or-longer fake quark grammars:", `Average coverage: ${avgCoverage.toFixed(2)}%`, `Average literal leftovers: ${avgLiteral.toFixed(2)} bits`, `Average exact covers: ${avgExact.toFixed(2)}`, `Average 50%+ covers: ${avgStrong.toFixed(2)}`, `Real beat fake coverage in ${beatCoverage} of ${controls.length} runs`, `Real beat fake literal leftovers in ${beatLiteral} of ${controls.length} runs`, `Best fake average coverage: ${bestFake.summary.avgCoverage.toFixed(2)}%`, "", "Plain English:", verdict, "This lets fake quarks be larger but never smaller than the real active quark words. If fake quarks do just as well with that advantage, the compression rule is too cheap or the grammar needs sharper constraints."].join("\n"); document.getElementById("scanTable").innerHTML = `<table><thead><tr><th>Grammar</th><th>Avg coverage</th><th>Avg literal left</th><th>Exact covers</th><th>50%+ covers</th><th>Best coverage</th></tr></thead><tbody><tr><td>REAL_Q</td><td>${real.avgCoverage.toFixed(2)}%</td><td>${real.avgLiteral.toFixed(2)}</td><td>${real.exact}</td><td>${real.strong}</td><td>${real.bestCoverage.toFixed(2)}%</td></tr>${controls.map(control => `<tr><td>FAKE_Q_${control.index}</td><td>${control.summary.avgCoverage.toFixed(2)}%</td><td>${control.summary.avgLiteral.toFixed(2)}</td><td>${control.summary.exact}</td><td>${control.summary.strong}</td><td>${control.summary.bestCoverage.toFixed(2)}%</td></tr>`).join("")}</tbody></table>`; renderCards(realRows[0].target, realRows[0].result); } finally { setBusy(false); } }, 25); }
 function updateSettings() { document.getElementById("targetCount").innerText = String(TARGETS.length); document.getElementById("tokenCount").innerText = String(activeTokens().length); document.getElementById("orientationState").innerText = useOrientations ? "ON" : "OFF"; document.getElementById("shortState").innerText = allowShort ? "ON" : "OFF"; document.getElementById("closureState").innerText = allowClosures ? "ON" : "OFF"; document.getElementById("depthState").innerText = `${MAX_REMAINDER_DEPTH} max`; document.getElementById("controlRuns").innerText = `${RANDOM_CONTROL_RUNS} fake, +0..${RANDOM_LENGTH_SLACK} bits`; document.getElementById("toggleOrientations").innerText = `F/R/I/IR: ${useOrientations ? "ON" : "OFF"}`; document.getElementById("toggleShort").innerText = `Small UP/DOWN: ${allowShort ? "ON" : "OFF"}`; document.getElementById("toggleClosures").innerText = `Z0 Closures: ${allowClosures ? "ON" : "OFF"}`; }
-function init() { const select = document.getElementById("targetSelect"); select.innerHTML = TARGETS.map((target, index) => `<option value="${index}">${target.index}. ${escapeHtml(target.name)}</option>`).join(""); const z0Index = TARGETS.findIndex(target => /characteristic impedance of vacuum/i.test(target.name)); select.value = String(z0Index >= 0 ? z0Index : 0); document.getElementById("compressOne").addEventListener("click", compressSelected); document.getElementById("scanAll").addEventListener("click", scanAll); document.getElementById("scanRandomControls").addEventListener("click", scanRandomControls); document.getElementById("targetSelect").addEventListener("change", compressSelected); document.getElementById("toggleOrientations").addEventListener("click", () => { useOrientations = !useOrientations; compressSelected(); }); document.getElementById("toggleShort").addEventListener("click", () => { allowShort = !allowShort; compressSelected(); }); document.getElementById("toggleClosures").addEventListener("click", () => { allowClosures = !allowClosures; compressSelected(); }); updateSettings(); compressSelected(); }
+function init() { const select = document.getElementById("targetSelect"); select.innerHTML = TARGETS.map((target, index) => `<option value="${index}">${target.index}. ${escapeHtml(target.name)}</option>`).join(""); const z0Index = TARGETS.findIndex(target => /characteristic impedance of vacuum/i.test(target.name)); select.value = String(z0Index >= 0 ? z0Index : 0); document.getElementById("compressOne").addEventListener("click", compressSelected); document.getElementById("scanAll").addEventListener("click", scanAll); document.getElementById("scanGroups").addEventListener("click", scanGroups); document.getElementById("scanRandomControls").addEventListener("click", scanRandomControls); document.getElementById("targetSelect").addEventListener("change", compressSelected); document.getElementById("toggleOrientations").addEventListener("click", () => { useOrientations = !useOrientations; scanGroups(); }); document.getElementById("toggleShort").addEventListener("click", () => { allowShort = !allowShort; scanGroups(); }); document.getElementById("toggleClosures").addEventListener("click", () => { allowClosures = !allowClosures; scanGroups(); }); updateSettings(); scanGroups(); }
 init();
 </script>
 </body>
