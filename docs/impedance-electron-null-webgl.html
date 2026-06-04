@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Electron As A Color Null</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #edf6f1;
+      --muted: #a8bbb2;
+      --line: rgba(181, 210, 196, 0.24);
+      --paper: #050b0f;
+      --panel: rgba(10, 19, 24, 0.78);
+      --red: #ff6374;
+      --green: #55d29c;
+      --blue: #67a7ff;
+      --gold: #f1bd55;
+      --void: #e9f4ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    main {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    header {
+      position: relative;
+      z-index: 2;
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 22px 0;
+    }
+
+    a {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    h1 {
+      max-width: 980px;
+      margin: 18px 0 0;
+      font-size: 38px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .lede {
+      max-width: 920px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .stage {
+      position: relative;
+      min-height: 740px;
+      margin-top: -26px;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 740px;
+    }
+
+    .hud {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 22px;
+      z-index: 3;
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(275px, 0.75fr);
+      gap: 14px;
+      pointer-events: none;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.30);
+    }
+
+    .panel h2 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.2;
+    }
+
+    .panel p {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    .readout {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .fact {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .fact span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .fact strong {
+      display: block;
+      overflow: hidden;
+      margin-top: 4px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 18px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .messages {
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+    }
+
+    .messages li + li {
+      margin-top: 6px;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 8px;
+      border-radius: 50%;
+      vertical-align: -1px;
+    }
+
+    @media (max-width: 860px) {
+      h1 {
+        font-size: 31px;
+      }
+
+      .stage,
+      canvas {
+        min-height: 860px;
+      }
+
+      .hud {
+        grid-template-columns: 1fr;
+      }
+
+      .readout {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="nav">
+        <a href="index.html">Back to docs index</a>
+        <a href="impedance-dialogue-webgl.html">Previous toy model</a>
+      </div>
+      <h1>Electron As A Color Null</h1>
+      <p class="lede">
+        A second minimum universe: color-channel messages race around a bonded
+        impedance pair, and an electron-like candidate appears only as a stable
+        hole in the color conversation.
+      </p>
+    </header>
+
+    <section class="stage" aria-label="WebGL electron null simulation">
+      <canvas id="universe"></canvas>
+      <div class="hud">
+        <section class="panel">
+          <h2>Null Candidate State</h2>
+          <p>
+            The white moving gap is not a bead. It is a conserved colorless
+            accounting defect: a recurring place where red, green, and blue
+            exchange cancels to zero while the bond still has to carry it forward.
+          </p>
+          <div class="readout">
+            <div class="fact"><span>now</span><strong id="nowTick">0</strong></div>
+            <div class="fact"><span>null score</span><strong id="nullScore">0.00</strong></div>
+            <div class="fact"><span>persistence</span><strong id="persistence">0</strong></div>
+            <div class="fact"><span>color sum</span><strong id="colorSum">0</strong></div>
+          </div>
+          <ul class="messages" id="messages"></ul>
+        </section>
+
+        <aside class="panel">
+          <h2>Reading The Toy</h2>
+          <div class="legend">
+            <div><span class="swatch" style="background: var(--red)"></span>Red channel: active color constraint</div>
+            <div><span class="swatch" style="background: var(--green)"></span>Green channel: active color constraint</div>
+            <div><span class="swatch" style="background: var(--blue)"></span>Blue channel: active color constraint</div>
+            <div><span class="swatch" style="background: var(--void)"></span>White gap: colorless null carried by the bond</div>
+            <div><span class="swatch" style="background: var(--gold)"></span>Gold pulses: bond pressure around the null</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+
+    const Z0_BITS = "101011110110110111000000110001011110101";
+    const canvas = document.getElementById("universe");
+    const gl = canvas.getContext("webgl", { antialias: true, alpha: false });
+    const readouts = {
+      now: document.getElementById("nowTick"),
+      nullScore: document.getElementById("nullScore"),
+      persistence: document.getElementById("persistence"),
+      colorSum: document.getElementById("colorSum"),
+      messages: document.getElementById("messages")
+    };
+
+    if (!gl) {
+      canvas.replaceWith(document.createTextNode("WebGL is not available in this browser."));
+      throw new Error("WebGL unavailable");
+    }
+
+    const vertexSource = `
+      attribute vec2 a_position;
+      attribute vec3 a_color;
+      attribute float a_size;
+      varying vec3 v_color;
+      void main() {
+        gl_Position = vec4(a_position, 0.0, 1.0);
+        gl_PointSize = a_size;
+        v_color = a_color;
+      }
+    `;
+
+    const fragmentSource = `
+      precision mediump float;
+      varying vec3 v_color;
+      void main() {
+        vec2 p = gl_PointCoord - vec2(0.5);
+        float d = length(p);
+        float alpha = smoothstep(0.5, 0.07, d);
+        gl_FragColor = vec4(v_color * (1.0 + alpha * 0.55), alpha);
+      }
+    `;
+
+    function shader(type, source) {
+      const result = gl.createShader(type);
+      gl.shaderSource(result, source);
+      gl.compileShader(result);
+      if (!gl.getShaderParameter(result, gl.COMPILE_STATUS)) {
+        throw new Error(gl.getShaderInfoLog(result));
+      }
+      return result;
+    }
+
+    const program = gl.createProgram();
+    gl.attachShader(program, shader(gl.VERTEX_SHADER, vertexSource));
+    gl.attachShader(program, shader(gl.FRAGMENT_SHADER, fragmentSource));
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      throw new Error(gl.getProgramInfoLog(program));
+    }
+    gl.useProgram(program);
+
+    const positionBuffer = gl.createBuffer();
+    const colorBuffer = gl.createBuffer();
+    const sizeBuffer = gl.createBuffer();
+    const positionLocation = gl.getAttribLocation(program, "a_position");
+    const colorLocation = gl.getAttribLocation(program, "a_color");
+    const sizeLocation = gl.getAttribLocation(program, "a_size");
+
+    function enableBuffer(buffer, location, size) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.enableVertexAttribArray(location);
+      gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
+    }
+
+    function xorStep(bits) {
+      let next = "";
+      for (let i = 0; i < bits.length; i += 1) {
+        next += bits[i] === bits[(i + 1) % bits.length] ? "0" : "1";
+      }
+      return next;
+    }
+
+    function invert(bits) {
+      return bits.split("").map((bit) => bit === "1" ? "0" : "1").join("");
+    }
+
+    function pushPoint(points, colors, sizes, x, y, color, size) {
+      points.push(x, y);
+      colors.push(color[0], color[1], color[2]);
+      sizes.push(size);
+    }
+
+    const colorVectors = [
+      { name: "red", rgb: [1.0, 0.26, 0.34], charge: [1, -1, 0] },
+      { name: "green", rgb: [0.30, 0.86, 0.58], charge: [0, 1, -1] },
+      { name: "blue", rgb: [0.38, 0.64, 1.0], charge: [-1, 0, 1] }
+    ];
+
+    const nodes = [
+      { name: "A", bits: Z0_BITS, phase: 0 },
+      { name: "B", bits: invert(Z0_BITS), phase: Math.PI }
+    ];
+    const pulses = [];
+    const nullTrail = [];
+    let tick = 0;
+    let lastStep = 0;
+    let nullIndex = 0;
+    let nullScore = 0;
+    let persistence = 0;
+    let colorSum = [0, 0, 0];
+    let logLines = [
+      "null: no color carried, but the bond keeps accounting",
+      "A/B: color channels cancel around a moving absence",
+      "candidate: stable hole, not a tiny bead"
+    ];
+
+    function centers() {
+      const breathing = Math.sin(tick * 0.026) * 0.035;
+      return [{ x: -0.36 - breathing, y: 0.02 }, { x: 0.36 + breathing, y: -0.02 }];
+    }
+
+    function simulationStep() {
+      tick += 1;
+      nodes[0].bits = xorStep(nodes[0].bits);
+      nodes[1].bits = xorStep(nodes[1].bits);
+      nullIndex = (nullIndex + 1 + (nodes[0].bits[tick % 39] === "1" ? 1 : 0)) % 39;
+
+      const local = [-2, -1, 0, 1, 2].map((offset) => (nullIndex + offset + 39) % 39);
+      colorSum = [0, 0, 0];
+      local.forEach((index, offsetIndex) => {
+        const color = colorVectors[(index + tick + offsetIndex) % 3];
+        const activeA = nodes[0].bits[index] === "1" ? 1 : -1;
+        const activeB = nodes[1].bits[(38 - index + 39) % 39] === "1" ? 1 : -1;
+        const weight = activeA + activeB;
+        colorSum[0] += color.charge[0] * weight;
+        colorSum[1] += color.charge[1] * weight;
+        colorSum[2] += color.charge[2] * weight;
+      });
+
+      const magnitude = Math.abs(colorSum[0]) + Math.abs(colorSum[1]) + Math.abs(colorSum[2]);
+      const localZero = magnitude <= 2;
+      nullScore = Math.max(0, Math.min(1, nullScore * 0.88 + (localZero ? 0.18 : -0.08)));
+      persistence = localZero ? persistence + 1 : Math.max(0, persistence - 2);
+
+      const c = centers();
+      for (let i = 0; i < 3; i += 1) {
+        const color = colorVectors[(tick + i) % 3];
+        pulses.push({
+          from: i % 2,
+          to: (i + 1) % 2,
+          channel: color,
+          t: i * -0.18,
+          bendsTowardNull: localZero
+        });
+      }
+
+      nullTrail.push({
+        index: nullIndex,
+        life: 1,
+        x: (c[0].x + c[1].x) / 2 + Math.cos((nullIndex / 39) * Math.PI * 2) * 0.12,
+        y: (c[0].y + c[1].y) / 2 + Math.sin((nullIndex / 39) * Math.PI * 2) * 0.16
+      });
+      if (nullTrail.length > 80) {
+        nullTrail.shift();
+      }
+
+      if (tick % 5 === 0) {
+        const line = localZero
+          ? "electron-candidate: color sum cancels, persistence rises"
+          : "bond: color pressure searches for a new null window";
+        logLines = [line, ...logLines].slice(0, 5);
+      }
+    }
+
+    function renderScene(time) {
+      if (time - lastStep > 82) {
+        simulationStep();
+        lastStep = time;
+      }
+
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      if (canvas.width !== Math.floor(width * ratio) || canvas.height !== Math.floor(height * ratio)) {
+        canvas.width = Math.floor(width * ratio);
+        canvas.height = Math.floor(height * ratio);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+
+      gl.clearColor(0.018, 0.035, 0.048, 1);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+
+      const points = [];
+      const colors = [];
+      const sizes = [];
+      const c = centers();
+      const beat = time * 0.001;
+
+      for (let i = 0; i < 150; i += 1) {
+        const a = i * 2.41 + beat * 0.05;
+        const r = 0.11 + (i % 13) * 0.006;
+        pushPoint(points, colors, sizes, Math.cos(a) * r, Math.sin(a) * r * 0.62, [0.08, 0.12, 0.17], 2);
+      }
+
+      nodes.forEach((node, nodeNumber) => {
+        const center = c[nodeNumber];
+        for (let i = 0; i < node.bits.length; i += 1) {
+          const angle = (i / node.bits.length) * Math.PI * 2 + beat * (nodeNumber === 0 ? 0.62 : -0.59);
+          const active = node.bits[i] === "1";
+          const channel = colorVectors[(i + tick + nodeNumber) % 3];
+          const isNullSite = Math.abs(i - nullIndex) <= 1 || Math.abs(i - nullIndex) >= 38;
+          const radius = 0.165 + (active ? 0.034 : 0);
+          const color = isNullSite ? [0.92, 0.96, 1.0] : channel.rgb;
+          pushPoint(
+            points,
+            colors,
+            sizes,
+            center.x + Math.cos(angle) * radius,
+            center.y + Math.sin(angle) * radius,
+            color,
+            isNullSite ? 10.5 + nullScore * 8 : active ? 7.8 : 4.8
+          );
+        }
+        pushPoint(points, colors, sizes, center.x, center.y, nodeNumber === 0 ? [0.46, 0.76, 1.0] : [1.0, 0.54, 0.62], 18);
+      });
+
+      pulses.forEach((pulse) => {
+        pulse.t += 0.02 + nullScore * 0.006;
+        if (pulse.t < 0) return;
+        const start = c[pulse.from];
+        const end = c[pulse.to];
+        const t = Math.min(1, pulse.t);
+        const towardNull = pulse.bendsTowardNull ? 0.05 + nullScore * 0.10 : 0.02;
+        const x = start.x + (end.x - start.x) * t;
+        const y = start.y + (end.y - start.y) * t + Math.sin(t * Math.PI) * towardNull;
+        pushPoint(points, colors, sizes, x, y, pulse.channel.rgb, 7.5);
+      });
+      for (let i = pulses.length - 1; i >= 0; i -= 1) {
+        if (pulses[i].t >= 1.08) pulses.splice(i, 1);
+      }
+
+      nullTrail.forEach((trail) => {
+        trail.life -= 0.006;
+        pushPoint(points, colors, sizes, trail.x, trail.y, [0.92, 0.96, 1.0], 14 * trail.life * (0.55 + nullScore));
+      });
+
+      const nullAngle = (nullIndex / 39) * Math.PI * 2 + beat * 0.4;
+      const nullX = Math.cos(nullAngle) * 0.16;
+      const nullY = Math.sin(nullAngle) * 0.18;
+      pushPoint(points, colors, sizes, nullX, nullY, [0.98, 1.0, 1.0], 28 + nullScore * 20);
+      pushPoint(points, colors, sizes, nullX, nullY, [0.38, 0.64, 1.0], 12 + persistence * 0.12);
+
+      for (let i = 0; i < 28; i += 1) {
+        const angle = (i / 28) * Math.PI * 2 - beat * 0.9;
+        const radius = 0.055 + nullScore * 0.045;
+        pushPoint(points, colors, sizes, nullX + Math.cos(angle) * radius, nullY + Math.sin(angle) * radius, [0.95, 0.72, 0.28], 3.5);
+      }
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.DYNAMIC_DRAW);
+      enableBuffer(positionBuffer, positionLocation, 2);
+      gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.DYNAMIC_DRAW);
+      enableBuffer(colorBuffer, colorLocation, 3);
+      gl.bindBuffer(gl.ARRAY_BUFFER, sizeBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sizes), gl.DYNAMIC_DRAW);
+      enableBuffer(sizeBuffer, sizeLocation, 1);
+      gl.drawArrays(gl.POINTS, 0, points.length / 2);
+
+      readouts.now.textContent = String(tick);
+      readouts.nullScore.textContent = nullScore.toFixed(2);
+      readouts.persistence.textContent = String(persistence);
+      readouts.colorSum.textContent = `[${colorSum.join(",")}]`;
+      readouts.messages.innerHTML = logLines.map((line) => `<li>${line}</li>`).join("");
+
+      requestAnimationFrame(renderScene);
+    }
+
+    requestAnimationFrame(renderScene);
+  </script>
+</body>
+</html>

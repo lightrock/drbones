@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Two Impedance Nodes In Now</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #edf6f1;
+      --muted: #a8bbb2;
+      --line: rgba(181, 210, 196, 0.24);
+      --paper: #07110d;
+      --panel: rgba(12, 24, 18, 0.78);
+      --green: #55d29c;
+      --gold: #f1bd55;
+      --blue: #67a7ff;
+      --red: #ff6f7d;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    main {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    header {
+      position: relative;
+      z-index: 2;
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 22px 0;
+    }
+
+    a {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    h1 {
+      max-width: 980px;
+      margin: 18px 0 0;
+      font-size: 38px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .lede {
+      max-width: 900px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .stage {
+      position: relative;
+      min-height: 720px;
+      margin-top: -26px;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 720px;
+    }
+
+    .hud {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 22px;
+      z-index: 3;
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.7fr);
+      gap: 14px;
+      pointer-events: none;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+    }
+
+    .panel h2 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.2;
+    }
+
+    .panel p {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    .readout {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .fact {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .fact span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .fact strong {
+      display: block;
+      overflow: hidden;
+      margin-top: 4px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 18px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .messages {
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+    }
+
+    .messages li + li {
+      margin-top: 6px;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 8px;
+      border-radius: 50%;
+      vertical-align: -1px;
+    }
+
+    @media (max-width: 860px) {
+      h1 {
+        font-size: 31px;
+      }
+
+      .stage,
+      canvas {
+        min-height: 800px;
+      }
+
+      .hud {
+        grid-template-columns: 1fr;
+      }
+
+      .readout {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <a href="index.html">Back to docs index</a>
+      <span style="display:inline-block;margin-left:14px">
+        <a href="impedance-electron-null-webgl.html">Next toy model</a>
+      </span>
+      <h1>Two Impedance Nodes In Now</h1>
+      <p class="lede">
+        A minimum WebGL toy universe: two Z0-running impedance objects, one shared
+        now, no empty vacuum between them, only delayed mutual readability.
+      </p>
+    </header>
+
+    <section class="stage" aria-label="WebGL impedance dialogue simulation">
+      <canvas id="universe"></canvas>
+      <div class="hud">
+        <section class="panel">
+          <h2>Conversation State</h2>
+          <p>
+            Each node evolves its 39-bit ring, reads an inbox snapshot, and posts
+            messages into the other node's next-now stack. Apparent distance is
+            rendered from phase mismatch, unresolved messages, and echo debt.
+          </p>
+          <div class="readout">
+            <div class="fact"><span>now</span><strong id="nowTick">0</strong></div>
+            <div class="fact"><span>distance</span><strong id="distance">0.00</strong></div>
+            <div class="fact"><span>bond</span><strong id="bond">0.00</strong></div>
+            <div class="fact"><span>stack</span><strong id="stack">0</strong></div>
+          </div>
+          <ul class="messages" id="messages"></ul>
+        </section>
+
+        <aside class="panel">
+          <h2>Message Grammar</h2>
+          <div class="legend">
+            <div><span class="swatch" style="background: var(--blue)"></span>PING / ECHO: tap bits finding each other</div>
+            <div><span class="swatch" style="background: var(--green)"></span>BIND / LOCK: low mismatch, stable closure</div>
+            <div><span class="swatch" style="background: var(--gold)"></span>COLOR: channel bookkeeping under constraint</div>
+            <div><span class="swatch" style="background: var(--red)"></span>DECAY: unreconciled stack shed as radiation</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+
+    const Z0_BITS = "101011110110110111000000110001011110101";
+    const canvas = document.getElementById("universe");
+    const gl = canvas.getContext("webgl", { antialias: true, alpha: false });
+
+    const readouts = {
+      now: document.getElementById("nowTick"),
+      distance: document.getElementById("distance"),
+      bond: document.getElementById("bond"),
+      stack: document.getElementById("stack"),
+      messages: document.getElementById("messages")
+    };
+
+    if (!gl) {
+      canvas.replaceWith(document.createTextNode("WebGL is not available in this browser."));
+      throw new Error("WebGL unavailable");
+    }
+
+    const vertexSource = `
+      attribute vec2 a_position;
+      attribute vec3 a_color;
+      attribute float a_size;
+      varying vec3 v_color;
+      void main() {
+        gl_Position = vec4(a_position, 0.0, 1.0);
+        gl_PointSize = a_size;
+        v_color = a_color;
+      }
+    `;
+
+    const fragmentSource = `
+      precision mediump float;
+      varying vec3 v_color;
+      void main() {
+        vec2 p = gl_PointCoord - vec2(0.5);
+        float d = length(p);
+        float alpha = smoothstep(0.5, 0.08, d);
+        gl_FragColor = vec4(v_color * (1.0 + alpha * 0.45), alpha);
+      }
+    `;
+
+    function shader(type, source) {
+      const result = gl.createShader(type);
+      gl.shaderSource(result, source);
+      gl.compileShader(result);
+      if (!gl.getShaderParameter(result, gl.COMPILE_STATUS)) {
+        throw new Error(gl.getShaderInfoLog(result));
+      }
+      return result;
+    }
+
+    const program = gl.createProgram();
+    gl.attachShader(program, shader(gl.VERTEX_SHADER, vertexSource));
+    gl.attachShader(program, shader(gl.FRAGMENT_SHADER, fragmentSource));
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      throw new Error(gl.getProgramInfoLog(program));
+    }
+    gl.useProgram(program);
+
+    const positionBuffer = gl.createBuffer();
+    const colorBuffer = gl.createBuffer();
+    const sizeBuffer = gl.createBuffer();
+    const positionLocation = gl.getAttribLocation(program, "a_position");
+    const colorLocation = gl.getAttribLocation(program, "a_color");
+    const sizeLocation = gl.getAttribLocation(program, "a_size");
+
+    function enableBuffer(buffer, location, size) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.enableVertexAttribArray(location);
+      gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
+    }
+
+    function xorStep(bits) {
+      let next = "";
+      for (let i = 0; i < bits.length; i += 1) {
+        next += bits[i] === bits[(i + 1) % bits.length] ? "0" : "1";
+      }
+      return next;
+    }
+
+    function hashBits(bits) {
+      let h = 0;
+      for (let i = 0; i < bits.length; i += 1) {
+        h = (h * 33 + bits.charCodeAt(i)) >>> 0;
+      }
+      return h;
+    }
+
+    function makeNode(name, phase, invert) {
+      const bits = invert
+        ? Z0_BITS.split("").map((bit) => bit === "1" ? "0" : "1").join("")
+        : Z0_BITS;
+      return {
+        name,
+        phase,
+        bits,
+        inbox: [],
+        nextInbox: [],
+        stackDebt: 0,
+        colorDebt: [0, 0, 0],
+        lastTap: "0"
+      };
+    }
+
+    const nodes = [makeNode("A", 0, false), makeNode("B", Math.PI, true)];
+    const pulses = [];
+    const decays = [];
+    let tick = 0;
+    let apparentDistance = 0.42;
+    let bond = 0;
+    let lastStep = 0;
+    let logLines = [
+      "A -> B PING: my tap is inside now",
+      "B -> A ECHO: delay looks like where you are",
+      "A -> B COLOR: keeping the channel balanced"
+    ];
+
+    const palette = {
+      PING: [0.38, 0.64, 1.0],
+      ECHO: [0.38, 0.64, 1.0],
+      COLOR: [0.95, 0.72, 0.28],
+      BIND: [0.30, 0.86, 0.58],
+      LOCK: [0.30, 0.86, 0.58],
+      STRAIN: [1.0, 0.48, 0.36],
+      DECAY: [1.0, 0.35, 0.45]
+    };
+
+    function positions() {
+      const wobble = Math.sin(tick * 0.035) * 0.03;
+      const half = apparentDistance + wobble;
+      return [{ x: -half, y: 0.03 }, { x: half, y: -0.03 }];
+    }
+
+    function messageKind(a, b, mismatch, stack) {
+      if (stack > 8 && tick % 5 === 0) return "DECAY";
+      if (mismatch < 0.18) return tick % 9 === 0 ? "LOCK" : "BIND";
+      if (tick % 3 === 0) return "COLOR";
+      return mismatch > 0.48 ? "STRAIN" : "PING";
+    }
+
+    function simulationStep() {
+      tick += 1;
+      const before = positions();
+      const mismatch = Math.abs(hashBits(nodes[0].bits) % 97 - hashBits(nodes[1].bits) % 97) / 97;
+      const stack = nodes[0].inbox.length + nodes[1].inbox.length + nodes[0].stackDebt + nodes[1].stackDebt;
+      bond = Math.max(0, 1 - mismatch * 1.45 - stack * 0.035);
+      apparentDistance = 0.30 + mismatch * 0.55 + stack * 0.018;
+
+      nodes.forEach((node, index) => {
+        const other = nodes[1 - index];
+        const received = node.inbox;
+        node.inbox = node.nextInbox;
+        node.nextInbox = [];
+        node.bits = xorStep(node.bits);
+        node.lastTap = node.bits[(tick + index * 13) % node.bits.length];
+        node.stackDebt = Math.max(0, node.stackDebt + received.length - (bond > 0.62 ? 2 : 1));
+
+        const kind = messageKind(node, other, mismatch, node.stackDebt);
+        const colorIndex = (tick + index) % 3;
+        node.colorDebt[colorIndex] += kind === "COLOR" ? 1 : -0.25;
+        node.colorDebt[colorIndex] = Math.max(-2, Math.min(4, node.colorDebt[colorIndex]));
+
+        const message = {
+          kind,
+          tap: node.lastTap,
+          hash: hashBits(node.bits).toString(16).slice(0, 4),
+          age: 0
+        };
+
+        if (kind === "DECAY") {
+          node.stackDebt = Math.max(0, node.stackDebt - 3);
+          decays.push({
+            x: before[index].x,
+            y: before[index].y,
+            vx: (index === 0 ? -1 : 1) * (0.004 + Math.random() * 0.004),
+            vy: (Math.random() - 0.5) * 0.008,
+            life: 1
+          });
+        } else {
+          other.nextInbox.push(message);
+        }
+
+        pulses.push({
+          from: index,
+          to: 1 - index,
+          kind,
+          t: 0,
+          bit: node.lastTap
+        });
+      });
+
+      if (tick % 4 === 0) {
+        const kind = pulses[pulses.length - 1]?.kind || "PING";
+        const noun = kind === "BIND" || kind === "LOCK"
+          ? "our loop debt is falling"
+          : kind === "STRAIN"
+            ? "your echo raised my stack"
+            : kind === "DECAY"
+              ? "unreadable backlog is leaving as radiation"
+              : kind === "COLOR"
+                ? "red green blue bookkeeping stays balanced"
+                : "delay in our conversation looks like distance";
+        logLines = [`${nodes[tick % 2].name} -> ${nodes[(tick + 1) % 2].name} ${kind}: ${noun}`, ...logLines].slice(0, 5);
+      }
+    }
+
+    function pushPoint(points, colors, sizes, x, y, color, size) {
+      points.push(x, y);
+      colors.push(color[0], color[1], color[2]);
+      sizes.push(size);
+    }
+
+    function renderScene(time) {
+      if (time - lastStep > 72) {
+        simulationStep();
+        lastStep = time;
+      }
+
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      if (canvas.width !== Math.floor(width * ratio) || canvas.height !== Math.floor(height * ratio)) {
+        canvas.width = Math.floor(width * ratio);
+        canvas.height = Math.floor(height * ratio);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+
+      gl.clearColor(0.025, 0.055, 0.042, 1);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+
+      const points = [];
+      const colors = [];
+      const sizes = [];
+      const pos = positions();
+      const beat = time * 0.001;
+
+      for (let i = 0; i < 120; i += 1) {
+        const a = i * 2.399 + beat * 0.08;
+        const r = 0.12 + (i % 11) * 0.006;
+        pushPoint(points, colors, sizes, Math.cos(a) * r, Math.sin(a) * r * 0.54, [0.08, 0.18, 0.14], 2.0);
+      }
+
+      nodes.forEach((node, nodeIndex) => {
+        const center = pos[nodeIndex];
+        const baseRadius = 0.155 + bond * 0.035;
+        for (let i = 0; i < node.bits.length; i += 1) {
+          const angle = (i / node.bits.length) * Math.PI * 2 + beat * (nodeIndex === 0 ? 0.75 : -0.72);
+          const active = node.bits[i] === "1";
+          const radius = baseRadius + (active ? 0.035 : 0);
+          const color = active ? [0.55, 0.95, 0.78] : [0.22, 0.42, 0.68];
+          pushPoint(
+            points,
+            colors,
+            sizes,
+            center.x + Math.cos(angle) * radius,
+            center.y + Math.sin(angle) * radius,
+            color,
+            active ? 8.5 : 5.0
+          );
+        }
+
+        pushPoint(points, colors, sizes, center.x, center.y, nodeIndex === 0 ? [0.42, 0.68, 1.0] : [0.95, 0.76, 0.32], 18 + bond * 16);
+
+        for (let s = 0; s < node.stackDebt; s += 1) {
+          const offset = (s - node.stackDebt / 2) * 0.015;
+          pushPoint(points, colors, sizes, center.x + offset, center.y - 0.25 - s * 0.008, [1.0, 0.42, 0.38], 4.5);
+        }
+      });
+
+      pulses.forEach((pulse) => {
+        pulse.t += 0.018 + bond * 0.006;
+        const start = pos[pulse.from];
+        const end = pos[pulse.to];
+        const t = Math.min(1, pulse.t);
+        const arch = Math.sin(t * Math.PI) * (0.11 + bond * 0.06);
+        const x = start.x + (end.x - start.x) * t;
+        const y = start.y + (end.y - start.y) * t + arch;
+        pushPoint(points, colors, sizes, x, y, palette[pulse.kind] || palette.PING, pulse.bit === "1" ? 9.5 : 6.5);
+      });
+
+      for (let i = pulses.length - 1; i >= 0; i -= 1) {
+        if (pulses[i].t >= 1.05) pulses.splice(i, 1);
+      }
+
+      decays.forEach((decay) => {
+        decay.x += decay.vx;
+        decay.y += decay.vy;
+        decay.life -= 0.008;
+        pushPoint(points, colors, sizes, decay.x, decay.y, palette.DECAY, 10 * decay.life);
+      });
+      for (let i = decays.length - 1; i >= 0; i -= 1) {
+        if (decays[i].life <= 0) decays.splice(i, 1);
+      }
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.DYNAMIC_DRAW);
+      enableBuffer(positionBuffer, positionLocation, 2);
+      gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.DYNAMIC_DRAW);
+      enableBuffer(colorBuffer, colorLocation, 3);
+      gl.bindBuffer(gl.ARRAY_BUFFER, sizeBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sizes), gl.DYNAMIC_DRAW);
+      enableBuffer(sizeBuffer, sizeLocation, 1);
+      gl.drawArrays(gl.POINTS, 0, points.length / 2);
+
+      readouts.now.textContent = String(tick);
+      readouts.distance.textContent = apparentDistance.toFixed(2);
+      readouts.bond.textContent = bond.toFixed(2);
+      readouts.stack.textContent = String(nodes[0].stackDebt + nodes[1].stackDebt);
+      readouts.messages.innerHTML = logLines.map((line) => `<li>${line}</li>`).join("");
+
+      requestAnimationFrame(renderScene);
+    }
+
+    requestAnimationFrame(renderScene);
+  </script>
+</body>
+</html>
