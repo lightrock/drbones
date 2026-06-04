@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFEM Discrete Particle Engine - Z0 Lorenz Attractor Monitor</title>
+    <style>
+        :root {
+            --bg-color: #05070a;
+            --panel-bg: rgba(10, 15, 24, 0.85);
+            --border-color: #00ffaa;
+            --accent-orange: #ff9900;
+            --accent-cyan: #00e5ff;
+            --accent-magenta: #ff00aa;
+            --text-color: #d0e0f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(90deg, #0a0f18, #05070a);
+            border-bottom: 1px solid rgba(0, 255, 170, 0.3);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 1.1rem;
+            color: var(--border-color);
+            text-shadow: 0 0 10px rgba(0, 255, 170, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 0.75rem;
+            color: #80a0c0;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            position: relative;
+        }
+
+        .sidebar {
+            width: 380px;
+            max-width: 38vw;
+            background: var(--panel-bg);
+            border-right: 1px solid rgba(0, 255, 170, 0.2);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 5;
+            height: 100%;
+            min-height: 0;
+            overflow-y: auto;
+            scrollbar-color: rgba(0, 229, 255, 0.55) rgba(2, 4, 6, 0.85);
+            scrollbar-width: thin;
+        }
+
+        .panel-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--accent-orange);
+            border-bottom: 1px dashed rgba(255, 153, 0, 0.4);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .stat-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.02);
+            padding: 4px 8px;
+            border-radius: 2px;
+        }
+
+        .stat-label { color: #80a0c0; }
+        .stat-value { color: var(--accent-cyan); font-weight: bold; }
+
+        .seed-display {
+            background: #020406;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 10px;
+            font-size: 0.75rem;
+            overflow-wrap: anywhere;
+            color: var(--accent-cyan);
+            border-radius: 4px;
+            line-height: 1.3;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--border-color);
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 170, 0.15);
+            box-shadow: 0 0 10px rgba(0, 255, 170, 0.3);
+        }
+
+        .window-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .window-btn {
+            min-height: 38px;
+            border: 1px solid rgba(0, 229, 255, 0.35);
+            background: rgba(0, 229, 255, 0.05);
+            color: var(--text-color);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.66rem;
+            line-height: 1.2;
+            cursor: pointer;
+            padding: 5px 6px;
+            text-align: left;
+        }
+
+        .window-btn:hover,
+        .window-btn.active {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 229, 255, 0.16);
+            color: #ffffff;
+        }
+
+        .btn-shuffle {
+            border-color: var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        .btn-shuffle:hover {
+            background: rgba(255, 0, 170, 0.15);
+            box-shadow: 0 0 10px rgba(255, 0, 170, 0.3);
+        }
+
+        .btn-random {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .btn-random:hover {
+            background: rgba(255, 153, 0, 0.15);
+            box-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
+        }
+
+        .btn-sweep {
+            border-color: #9db7ff;
+            color: #9db7ff;
+        }
+
+        .btn-sweep:hover {
+            background: rgba(157, 183, 255, 0.14);
+            box-shadow: 0 0 10px rgba(157, 183, 255, 0.28);
+        }
+
+        .stage {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+            background: #010204;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hud-overlay {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            pointer-events: none;
+            background: rgba(5, 7, 10, 0.7);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 10px 15px;
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .hud-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 255, 170, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 255, 170, 0.02) 1px, transparent 1px);
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(1, 2, 4, 0.72);
+            padding: 24px;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .sweep-modal {
+            width: min(760px, 92vw);
+            max-height: 88vh;
+            overflow-y: auto;
+            background: rgba(7, 11, 18, 0.98);
+            border: 1px solid rgba(157, 183, 255, 0.6);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.12);
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .sweep-modal h2 {
+            color: #9db7ff;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .sweep-modal p {
+            font-size: 0.82rem;
+            line-height: 1.45;
+            margin-bottom: 10px;
+        }
+
+        .sweep-modal pre {
+            background: #020406;
+            border: 1px solid rgba(0, 229, 255, 0.25);
+            color: var(--text-color);
+            padding: 12px;
+            white-space: pre-wrap;
+            font-size: 0.76rem;
+            line-height: 1.4;
+            margin: 12px 0;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 980px) {
+            .sidebar {
+                width: 340px;
+                max-width: 46vw;
+                padding: 16px;
+            }
+
+            .window-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>DOCTOR BONES // PFEM METRIC CORE</h1>
+            <div class="subtitle">Discrete Circular-XOR Phase Geometry Attractor</div>
+        </div>
+        <div class="subtitle">RENDER MODE: STABLE_3D_ATTRACTOR</div>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div>
+                <div class="panel-title">1. Boundary Input (Evidence)</div>
+                <div class="stat-group">
+                    <div class="stat-row">
+                        <span class="stat-label">Source Space</span>
+                        <span class="stat-value" id="current-constant">Z0 Vacuum Impedance</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Vector Length</span>
+                        <span class="stat-value">39-Bit Ring</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Ones / Zeros</span>
+                        <span class="stat-value" id="bit-balance">23 / 16</span>
+                    </div>
+                </div>
+                <div style="margin-top: 10px;" class="seed-display" id="seed-bits">
+                    101011110110110111000000110001011110101
+                </div>
+            </div>
+
+            <div>
+                <div class="panel-title">2. Execution Params</div>
+                <div class="stat-group">
+                    <div class="stat-row">
+                        <span class="stat-label">Engine Rule</span>
+                        <span class="stat-value">XOR [i] ^ [i+1]</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Max Period Boundary</span>
+                        <span class="stat-value">4095 Cycles</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Rolling Bit-Window</span>
+                        <span class="stat-value" id="rolling-window">3 Steps</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Window Basis</span>
+                        <span class="stat-value" id="window-basis">gluon index</span>
+                    </div>
+                </div>
+                <div class="window-grid" id="window-controls"></div>
+            </div>
+
+            <div>
+                <div class="panel-title">3. Dynamic Modulators</div>
+                <div class="stat-group">
+                    <div class="stat-row">
+                        <span class="stat-label">Current Density (rho)</span>
+                        <span class="stat-value" id="hud-density">0.5000</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Lorenz Beta</span>
+                        <span class="stat-value">2.6667</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Spectral Gap Target</span>
+                        <span class="stat-value" style="color:var(--border-color);">0.0000 (NULL)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Escape Radius</span>
+                        <span class="stat-value" id="hud-escape">0.00</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Density Variance</span>
+                        <span class="stat-value" id="hud-variance">0.000000</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Orientation Spread</span>
+                        <span class="stat-value" id="hud-spread">0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn" id="btn-toggle-run">Load Z0 Engine</button>
+                <button class="btn btn-shuffle" id="btn-shuffle-control">Run Shuffled Control</button>
+                <button class="btn btn-random" id="btn-random-control">Run True Rando</button>
+                <button class="btn btn-sweep" id="btn-sweep-shuffle">Sweep Shuffles</button>
+                <button class="btn btn-sweep" id="btn-sweep-random">Sweep Randos</button>
+            </div>
+        </div>
+
+        <div class="stage" id="stage-container">
+            <div class="hud-grid"></div>
+            <canvas id="canvas3d"></canvas>
+            
+            <div class="hud-overlay">
+                <div>ENGINE: <span id="hud-status" style="color:var(--border-color)">STABLE ORBIT</span></div>
+                <div>FINDING RATIO: <span id="hud-ratio" style="color:var(--accent-orange)">HIGH COHERENCE</span></div>
+                <div style="margin-bottom: 5px;">ZFA LAYER: ADMISSIBLE</div>
+                <div style="color: #6080a0; font-size: 0.65rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 3px;">CORE: v2.2.0-STABLE_CORE</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="sweep-modal">
+        <div class="sweep-modal" role="dialog" aria-modal="true" aria-labelledby="sweep-title">
+            <h2 id="sweep-title">Sweep Report</h2>
+            <p id="sweep-summary"></p>
+            <pre id="sweep-details"></pre>
+            <div class="modal-actions">
+                <button class="btn btn-sweep" id="btn-close-sweep" style="width: auto;">Close</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+"use strict";
+
+const Z0_STRING = "101011110110110111000000110001011110101";
+const BIT_COUNT = Z0_STRING.length;
+const ORBIT_STEPS = 4095;
+const WINDOW_PRESETS = [
+    { size: 1, label: "1", basis: "raw tap" },
+    { size: 3, label: "3", basis: "gluon index 0-7" },
+    { size: 5, label: "u", basis: "up quark native word" },
+    { size: 6, label: "d", basis: "down quark native word" },
+    { size: 7, label: "s", basis: "strange quark native word" },
+    { size: 9, label: "b", basis: "bottom quark native word" },
+    { size: 11, label: "c/t", basis: "charm/top native word" },
+    { size: 10, label: "u F+B", basis: "up quark 5+5" },
+    { size: 12, label: "d F+B", basis: "down quark 6+6" },
+    { size: 14, label: "s F+B", basis: "strange quark 7+7" },
+    { size: 18, label: "b F+B", basis: "bottom quark 9+9" },
+    { size: 22, label: "c/t F+B", basis: "charm/top quark 11+11" },
+    { size: 11, label: "ud", basis: "light doublet span 5+6" },
+    { size: 12, label: "us", basis: "up/strange doublet span 5+7" },
+    { size: 13, label: "ds", basis: "down/strange doublet span 6+7" },
+    { size: 14, label: "ss", basis: "strange pair span 7+7" },
+    { size: 16, label: "u c/t", basis: "up/charm doublet span 5+11" },
+    { size: 17, label: "d c/t", basis: "down/charm doublet span 6+11" },
+    { size: 18, label: "s c/t", basis: "strange/charm doublet span 7+11" },
+    { size: 22, label: "c c", basis: "charmonium-like pair span 11+11" },
+    { size: 16, label: "uud", basis: "proton mass-word span 5+5+6" },
+    { size: 17, label: "udd", basis: "neutron mass-word span 5+6+6" },
+    { size: 18, label: "uds", basis: "lambda-like span 5+6+7" },
+    { size: 19, label: "uus", basis: "sigma-like span 5+5+7" },
+    { size: 20, label: "dds", basis: "sigma-like span 6+6+7" },
+    { size: 21, label: "uss", basis: "cascade-like span 5+7+7" },
+    { size: 20, label: "udc", basis: "single-charm baryon span 5+6+11" },
+    { size: 23, label: "usc", basis: "strange/charm baryon span 5+7+11" },
+    { size: 24, label: "dsc", basis: "strange/charm baryon span 6+7+11" },
+    { size: 25, label: "ssc", basis: "double-strange charm span 7+7+11" },
+    { size: 33, label: "ccc", basis: "triple charm span 11+11+11" }
+];
+
+const canvas = document.getElementById("canvas3d");
+const ctx = canvas.getContext("2d");
+const container = document.getElementById("stage-container");
+
+let currentSeed = Z0_STRING.split("").map(Number);
+let trajectories = { forward: [], reverse: [], inverse: [], invReverse: [] };
+let angleX = 0.34;
+let angleY = 0.54;
+let zoom = 1;
+let isDragging = false;
+let lastPointer = { x: 0, y: 0 };
+let activeWindowSize = 3;
+let activeWindowBasis = "gluon index 0-7";
+let trajectoryMetrics = {
+    escapeRadius: 0,
+    densityVariance: 0,
+    orientationSpread: 0
+};
+let shuffleRun = 0;
+let randomRun = 0;
+
+function seededRandom(seed) {
+    let state = seed >>> 0;
+    return () => {
+        state = (1664525 * state + 1013904223) >>> 0;
+        return state / 4294967296;
+    };
+}
+
+function xorStep(state) {
+    return state.map((bit, index) => bit ^ state[(index + 1) % state.length]);
+}
+
+function runXorOrbits(seedBits) {
+    const orbits = { forward: [], reverse: [], inverse: [], invReverse: [] };
+    let fState = [...seedBits];
+    let rState = [...seedBits].reverse();
+    let iState = seedBits.map((bit) => bit ^ 1);
+    let irState = [...iState].reverse();
+
+    for (let step = 0; step < ORBIT_STEPS; step += 1) {
+        orbits.forward.push([...fState]);
+        orbits.reverse.push([...rState]);
+        orbits.inverse.push([...iState]);
+        orbits.invReverse.push([...irState]);
+
+        fState = xorStep(fState);
+        rState = xorStep(rState);
+        iState = xorStep(iState);
+        irState = xorStep(irState);
+    }
+
+    return orbits;
+}
+
+function bitDensityWindow(orbitData, start) {
+    let onesCount = 0;
+
+    for (let offset = 0; offset < activeWindowSize; offset += 1) {
+        const state = orbitData[(start + offset) % orbitData.length];
+        for (let bit = 0; bit < state.length; bit += 1) {
+            onesCount += state[bit];
+        }
+    }
+
+    return onesCount / (activeWindowSize * BIT_COUNT);
+}
+
+function computeLorenzTrajectories(allOrbits) {
+    const targetTrajectories = {};
+    const starts = {
+        forward: [0.1, 0.0, 0.0],
+        reverse: [-0.1, 0.18, 0.02],
+        inverse: [0.22, -0.12, 0.06],
+        invReverse: [-0.22, -0.18, -0.04]
+    };
+
+    for (const orientation of Object.keys(allOrbits)) {
+        const orbitData = allOrbits[orientation];
+        const points = [];
+        let [x, y, z] = starts[orientation];
+        const sigma = 10.0;
+        const beta = 8.0 / 3.0;
+        const dt = 0.005;
+
+        for (let i = 0; i < orbitData.length; i += 1) {
+            const density = bitDensityWindow(orbitData, i);
+            const rho = 20.0 + density * 28.0;
+            const dx = sigma * (y - x) * dt;
+            const dy = (x * (rho - z) - y) * dt;
+            const dz = (x * y - beta * z) * dt;
+
+            x += dx;
+            y += dy;
+            z += dz;
+            points.push({ x, y, z, density });
+        }
+
+        targetTrajectories[orientation] = points;
+    }
+
+    return targetTrajectories;
+}
+
+function computeTrajectoryMetrics(sourceTrajectories) {
+    const allRadii = [];
+    const allDensities = [];
+    const terminalPoints = [];
+
+    for (const points of Object.values(sourceTrajectories)) {
+        if (!points.length) {
+            continue;
+        }
+
+        for (const point of points) {
+            allRadii.push(Math.hypot(point.x, point.y, point.z));
+            allDensities.push(point.density);
+        }
+
+        const tail = points[points.length - 1];
+        terminalPoints.push(tail);
+    }
+
+    const escapeRadius = allRadii.length ? Math.max(...allRadii) : 0;
+    const densityMean = allDensities.reduce((sum, density) => sum + density, 0) / Math.max(allDensities.length, 1);
+    const densityVariance = allDensities.reduce((sum, density) => {
+        const delta = density - densityMean;
+        return sum + delta * delta;
+    }, 0) / Math.max(allDensities.length, 1);
+
+    let orientationSpread = 0;
+    for (let i = 0; i < terminalPoints.length; i += 1) {
+        for (let j = i + 1; j < terminalPoints.length; j += 1) {
+            orientationSpread = Math.max(
+                orientationSpread,
+                Math.hypot(
+                    terminalPoints[i].x - terminalPoints[j].x,
+                    terminalPoints[i].y - terminalPoints[j].y,
+                    terminalPoints[i].z - terminalPoints[j].z
+                )
+            );
+        }
+    }
+
+    return { escapeRadius, densityVariance, orientationSpread };
+}
+
+function metricsForSeed(seedBits) {
+    return computeTrajectoryMetrics(computeLorenzTrajectories(runXorOrbits(seedBits)));
+}
+
+function averageMetric(metrics, key) {
+    return metrics.reduce((sum, item) => sum + item[key], 0) / Math.max(metrics.length, 1);
+}
+
+function minMetric(metrics, key) {
+    return Math.min(...metrics.map((item) => item[key]));
+}
+
+function maxMetric(metrics, key) {
+    return Math.max(...metrics.map((item) => item[key]));
+}
+
+function plainRank(beaten, total) {
+    const ratio = beaten / Math.max(total, 1);
+    if (ratio >= 0.94) {
+        return "very high";
+    }
+    if (ratio >= 0.75) {
+        return "high";
+    }
+    if (ratio <= 0.06) {
+        return "very low";
+    }
+    if (ratio <= 0.25) {
+        return "low";
+    }
+    return "normal";
+}
+
+function metricPlainName(key) {
+    return {
+        escapeRadius: "outer reach",
+        densityVariance: "bit rhythm wobble",
+        orientationSpread: "four-way separation"
+    }[key];
+}
+
+function metricFormat(key, value) {
+    return key === "densityVariance" ? value.toFixed(6) : value.toFixed(2);
+}
+
+function resizeCanvas() {
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const width = Math.max(container.clientWidth, 1);
+    const height = Math.max(container.clientHeight, 1);
+
+    canvas.width = Math.floor(width * ratio);
+    canvas.height = Math.floor(height * ratio);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+function project3D(x, y, z) {
+    const zOffset = z - 25.0;
+    const cosY = Math.cos(angleY);
+    const sinY = Math.sin(angleY);
+    const x1 = x * cosY - zOffset * sinY;
+    const z1 = x * sinY + zOffset * cosY;
+    const cosX = Math.cos(angleX);
+    const sinX = Math.sin(angleX);
+    const y2 = y * cosX - z1 * sinX;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    const scale = Math.min(width, height) * 0.015 * zoom;
+
+    return {
+        x: width / 2 + x1 * scale,
+        y: height / 2 - y2 * scale
+    };
+}
+
+function drawTrajectory(name, points, color) {
+    if (!points || points.length < 2) {
+        return;
+    }
+
+    const start = project3D(points[0].x, points[0].y, points[0].z);
+    ctx.beginPath();
+    ctx.moveTo(start.x, start.y);
+
+    for (let i = 1; i < points.length; i += 1) {
+        const point = project3D(points[i].x, points[i].y, points[i].z);
+        ctx.lineTo(point.x, point.y);
+    }
+
+    ctx.lineWidth = name === "forward" || name === "invReverse" ? 1.8 : 0.9;
+    ctx.strokeStyle = color;
+    ctx.stroke();
+}
+
+function animate() {
+    ctx.fillStyle = "rgba(5, 7, 10, 0.22)";
+    ctx.fillRect(0, 0, container.clientWidth, container.clientHeight);
+
+    if (!isDragging) {
+        angleY += 0.0035;
+    }
+
+    const colors = {
+        forward: "#00e5ff",
+        reverse: "#ff9900",
+        inverse: "#ff00aa",
+        invReverse: "#00ffaa"
+    };
+
+    let densityReadout = 0;
+    for (const orientation of Object.keys(trajectories)) {
+        const points = trajectories[orientation];
+        drawTrajectory(orientation, points, colors[orientation]);
+        if (orientation === "forward" && points.length > 2000) {
+            densityReadout = points[2000].density;
+        }
+    }
+
+    document.getElementById("hud-density").innerText = densityReadout.toFixed(4);
+    document.getElementById("hud-escape").innerText = trajectoryMetrics.escapeRadius.toFixed(2);
+    document.getElementById("hud-variance").innerText = trajectoryMetrics.densityVariance.toFixed(6);
+    document.getElementById("hud-spread").innerText = trajectoryMetrics.orientationSpread.toFixed(2);
+    requestAnimationFrame(animate);
+}
+
+function initializeEngine() {
+    ctx.clearRect(0, 0, container.clientWidth, container.clientHeight);
+    trajectories = computeLorenzTrajectories(runXorOrbits(currentSeed));
+    trajectoryMetrics = computeTrajectoryMetrics(trajectories);
+}
+
+function updateWindowReadout() {
+    document.getElementById("rolling-window").innerText = `${activeWindowSize} Steps`;
+    document.getElementById("window-basis").innerText = activeWindowBasis;
+
+    for (const button of document.querySelectorAll(".window-btn")) {
+        const isActive = Number(button.dataset.windowSize) === activeWindowSize
+            && button.dataset.windowBasis === activeWindowBasis;
+        button.classList.toggle("active", isActive);
+    }
+}
+
+function setWindowPreset(preset) {
+    activeWindowSize = preset.size;
+    activeWindowBasis = preset.basis;
+    updateWindowReadout();
+    initializeEngine();
+}
+
+function buildWindowControls() {
+    const controls = document.getElementById("window-controls");
+    controls.innerHTML = "";
+
+    for (const preset of WINDOW_PRESETS) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "window-btn";
+        button.dataset.windowSize = String(preset.size);
+        button.dataset.windowBasis = preset.basis;
+        button.innerHTML = `<strong>${preset.label}</strong><br>${preset.size} steps`;
+        button.title = preset.basis;
+        button.addEventListener("click", () => setWindowPreset(preset));
+        controls.appendChild(button);
+    }
+
+    updateWindowReadout();
+}
+
+function updateBitBalance(bits) {
+    const ones = bits.reduce((sum, bit) => sum + bit, 0);
+    document.getElementById("bit-balance").innerText = `${ones} / ${bits.length - ones}`;
+}
+
+function setZ0Mode() {
+    currentSeed = Z0_STRING.split("").map(Number);
+    updateBitBalance(currentSeed);
+    document.getElementById("current-constant").innerText = "Z0 Vacuum Impedance";
+    document.getElementById("current-constant").style.color = "var(--accent-cyan)";
+    document.getElementById("seed-bits").innerText = Z0_STRING;
+    document.getElementById("seed-bits").style.color = "var(--accent-cyan)";
+    document.getElementById("hud-status").innerText = "STABLE ORBIT";
+    document.getElementById("hud-status").style.color = "var(--border-color)";
+    document.getElementById("hud-ratio").innerText = "HIGH COHERENCE";
+    document.getElementById("hud-ratio").style.color = "var(--accent-orange)";
+    initializeEngine();
+}
+
+function setShuffleMode() {
+    shuffleRun += 1;
+    const shuffled = Z0_STRING.split("").map(Number);
+    const random = seededRandom(0x5a0039 + shuffleRun * 7919 + activeWindowSize * 101);
+    for (let i = shuffled.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    currentSeed = shuffled;
+    updateBitBalance(currentSeed);
+    document.getElementById("current-constant").innerText = `CONTROL SHUFFLE #${shuffleRun}`;
+    document.getElementById("current-constant").style.color = "var(--accent-magenta)";
+    document.getElementById("seed-bits").innerText = shuffled.join("");
+    document.getElementById("seed-bits").style.color = "var(--accent-magenta)";
+    document.getElementById("hud-status").innerText = "ASYMMETRIC COHERENCE LOSS";
+    document.getElementById("hud-status").style.color = "var(--accent-magenta)";
+    document.getElementById("hud-ratio").innerText = "DEGRADED PATTERN";
+    document.getElementById("hud-ratio").style.color = "#80a0c0";
+    initializeEngine();
+}
+
+function setRandomMode() {
+    randomRun += 1;
+    const random = seededRandom(0x3900ff + randomRun * 104729 + activeWindowSize * 313);
+    const randomBits = Array.from({ length: BIT_COUNT }, () => random() >= 0.5 ? 1 : 0);
+
+    currentSeed = randomBits;
+    updateBitBalance(currentSeed);
+    document.getElementById("current-constant").innerText = `TRUE RANDO #${randomRun}`;
+    document.getElementById("current-constant").style.color = "var(--accent-orange)";
+    document.getElementById("seed-bits").innerText = randomBits.join("");
+    document.getElementById("seed-bits").style.color = "var(--accent-orange)";
+    document.getElementById("hud-status").innerText = "RANDOM BIT TRIAL";
+    document.getElementById("hud-status").style.color = "var(--accent-orange)";
+    document.getElementById("hud-ratio").innerText = "UNBOUNDED CONTROL";
+    document.getElementById("hud-ratio").style.color = "#80a0c0";
+    initializeEngine();
+}
+
+function shuffledSeedForSweep(index) {
+    const shuffled = Z0_STRING.split("").map(Number);
+    const random = seededRandom(0x440039 + index * 7919 + activeWindowSize * 101);
+    for (let i = shuffled.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+function randomSeedForSweep(index) {
+    const random = seededRandom(0x3900aa + index * 104729 + activeWindowSize * 313);
+    return Array.from({ length: BIT_COUNT }, () => random() >= 0.5 ? 1 : 0);
+}
+
+function showSweepReport(kind) {
+    const total = 32;
+    const z0Metrics = metricsForSeed(Z0_STRING.split("").map(Number));
+    const generator = kind === "shuffle" ? shuffledSeedForSweep : randomSeedForSweep;
+    const label = kind === "shuffle" ? "same Z0 bits in different orders" : "true random 39-bit seeds";
+    const controls = Array.from({ length: total }, (_unused, index) => metricsForSeed(generator(index + 1)));
+    const keys = ["escapeRadius", "densityVariance", "orientationSpread"];
+    const ranks = {};
+
+    for (const key of keys) {
+        ranks[key] = controls.filter((item) => z0Metrics[key] > item[key]).length;
+    }
+
+    const strongestKey = keys
+        .map((key) => ({ key, distance: Math.abs(ranks[key] / total - 0.5) }))
+        .sort((a, b) => b.distance - a.distance)[0].key;
+    const strongestPlain = plainRank(ranks[strongestKey], total);
+    const strongestName = metricPlainName(strongestKey);
+
+    const summary = `Window ${activeWindowBasis} (${activeWindowSize} steps): Z0 looks ${strongestPlain} for ${strongestName} compared with ${label}. This does not prove a physics claim by itself; it tells us where the XOR-running pattern is separating from the controls.`;
+    const lines = [
+        `Window: ${activeWindowBasis} (${activeWindowSize} steps)`,
+        `Controls: ${total} ${label}`,
+        "",
+        "Plain English:",
+        `Z0 beat ${ranks.escapeRadius} of ${total} controls for outer reach (${plainRank(ranks.escapeRadius, total)}).`,
+        `Z0 beat ${ranks.densityVariance} of ${total} controls for bit rhythm wobble (${plainRank(ranks.densityVariance, total)}).`,
+        `Z0 beat ${ranks.orientationSpread} of ${total} controls for four-way separation (${plainRank(ranks.orientationSpread, total)}).`,
+        "",
+        "Numbers:",
+        `Z0 outer reach:        ${metricFormat("escapeRadius", z0Metrics.escapeRadius)}`,
+        `Z0 bit rhythm wobble:  ${metricFormat("densityVariance", z0Metrics.densityVariance)}`,
+        `Z0 four-way spread:    ${metricFormat("orientationSpread", z0Metrics.orientationSpread)}`,
+        ""
+    ];
+
+    for (const key of keys) {
+        lines.push(`${metricPlainName(key)} controls: avg ${metricFormat(key, averageMetric(controls, key))}, min ${metricFormat(key, minMetric(controls, key))}, max ${metricFormat(key, maxMetric(controls, key))}`);
+    }
+
+    document.getElementById("sweep-summary").innerText = summary;
+    document.getElementById("sweep-details").innerText = lines.join("\n");
+    document.getElementById("sweep-modal").classList.add("open");
+}
+
+canvas.addEventListener("pointerdown", (event) => {
+    isDragging = true;
+    lastPointer = { x: event.clientX, y: event.clientY };
+    canvas.setPointerCapture(event.pointerId);
+});
+
+canvas.addEventListener("pointermove", (event) => {
+    if (!isDragging) {
+        return;
+    }
+
+    const dx = event.clientX - lastPointer.x;
+    const dy = event.clientY - lastPointer.y;
+    angleY += dx * 0.006;
+    angleX = Math.max(-1.2, Math.min(1.2, angleX + dy * 0.006));
+    lastPointer = { x: event.clientX, y: event.clientY };
+});
+
+canvas.addEventListener("pointerup", (event) => {
+    isDragging = false;
+    canvas.releasePointerCapture(event.pointerId);
+});
+
+canvas.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    zoom = Math.max(0.45, Math.min(2.5, zoom - event.deltaY * 0.001));
+}, { passive: false });
+
+document.getElementById("btn-toggle-run").addEventListener("click", setZ0Mode);
+document.getElementById("btn-shuffle-control").addEventListener("click", setShuffleMode);
+document.getElementById("btn-random-control").addEventListener("click", setRandomMode);
+document.getElementById("btn-sweep-shuffle").addEventListener("click", () => showSweepReport("shuffle"));
+document.getElementById("btn-sweep-random").addEventListener("click", () => showSweepReport("random"));
+document.getElementById("btn-close-sweep").addEventListener("click", () => {
+    document.getElementById("sweep-modal").classList.remove("open");
+});
+document.getElementById("sweep-modal").addEventListener("click", (event) => {
+    if (event.target.id === "sweep-modal") {
+        document.getElementById("sweep-modal").classList.remove("open");
+    }
+});
+window.addEventListener("resize", () => {
+    resizeCanvas();
+    initializeEngine();
+});
+
+resizeCanvas();
+buildWindowControls();
+updateBitBalance(currentSeed);
+initializeEngine();
+animate();
+</script>
+</body>
+</html>
