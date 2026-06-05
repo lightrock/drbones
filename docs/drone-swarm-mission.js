@@ -1,6 +1,6 @@
 "use strict";
 
-const canvas = document.getElementById("swarm");
+const canvas = document.getElementById("swarm"); 
 const gl = canvas.getContext("webgl", { antialias: true, alpha: false });
 if (!gl) throw new Error("WebGL is required for this demo.");
 
