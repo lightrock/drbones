@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drone Swarm Mission Boids</title>
+  <style>
+    :root {
+      --bg:#05070a;
+      --panel:#0c121b;
+      --line:#2b4258;
+      --ink:#e9f3ff;
+      --muted:#9eb1c1;
+      --cyan:#39d8ff;
+      --green:#5dff9a;
+      --amber:#ffbc55;
+      --red:#ff5f73;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      min-height:100vh;
+      overflow:hidden;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Consolas, "Courier New", monospace;
+    }
+    canvas {
+      position:fixed;
+      inset:0;
+      width:100vw;
+      height:100vh;
+      display:block;
+      cursor:grab;
+    }
+    canvas:active { cursor:grabbing; }
+    .hud {
+      position:fixed;
+      top:0;
+      left:0;
+      bottom:0;
+      width:min(390px, 38vw);
+      min-width:320px;
+      padding:16px;
+      overflow:auto;
+      background:linear-gradient(90deg, rgba(5,7,10,.96), rgba(5,7,10,.82), rgba(5,7,10,.10));
+      border-right:1px solid rgba(57,216,255,.25);
+      pointer-events:auto;
+    }
+    h1 {
+      margin:0 0 4px;
+      font-size:1.25rem;
+      color:var(--green);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .sub { color:var(--muted); margin:0 0 16px; font-size:.84rem; line-height:1.45; }
+    .panel {
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:rgba(12,18,27,.88);
+      padding:12px;
+      margin-bottom:12px;
+      box-shadow:0 20px 48px rgba(0,0,0,.28);
+    }
+    h2 {
+      margin:0 0 10px;
+      color:var(--amber);
+      font-size:.9rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .grid { display:grid; gap:7px; }
+    .stat {
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) auto;
+      gap:10px;
+      padding:6px 8px;
+      background:rgba(255,255,255,.045);
+      border-radius:5px;
+      font-size:.82rem;
+    }
+    .stat span:first-child { color:var(--muted); }
+    .stat span:last-child { color:var(--cyan); font-weight:700; text-align:right; }
+    .meter {
+      height:8px;
+      margin-top:5px;
+      border:1px solid rgba(57,216,255,.25);
+      border-radius:99px;
+      overflow:hidden;
+      background:#070a10;
+    }
+    .meter i { display:block; height:100%; width:50%; background:var(--green); }
+    button {
+      width:100%;
+      min-height:38px;
+      border:1px solid var(--cyan);
+      border-radius:6px;
+      background:rgba(57,216,255,.08);
+      color:var(--cyan);
+      font:inherit;
+      font-weight:700;
+      cursor:pointer;
+      margin-top:8px;
+    }
+    button:hover { background:rgba(57,216,255,.16); }
+    .field {
+      display:grid;
+      gap:6px;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:.82rem;
+    }
+    select {
+      width:100%;
+      min-height:38px;
+      border:1px solid var(--cyan);
+      border-radius:6px;
+      background:#08131d;
+      color:var(--cyan);
+      font:inherit;
+      font-weight:700;
+      padding:8px;
+    }
+    .warn { color:var(--amber); }
+    .bad { color:var(--red); }
+    .good { color:var(--green); }
+    .log {
+      min-height:132px;
+      max-height:220px;
+      overflow:auto;
+      white-space:pre-wrap;
+      color:#dbeafe;
+      font-size:.8rem;
+      line-height:1.45;
+    }
+    .legend {
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      width:min(360px, calc(100vw - 420px));
+      border:1px solid rgba(57,216,255,.25);
+      border-radius:8px;
+      padding:12px;
+      background:rgba(5,7,10,.74);
+      color:var(--muted);
+      font-size:.8rem;
+      pointer-events:none;
+    }
+    .dot { display:inline-block; width:.75em; height:.75em; border-radius:50%; margin-right:.45em; }
+    @media (max-width: 820px) {
+      .hud { width:100%; height:45vh; bottom:auto; min-width:0; background:rgba(5,7,10,.92); }
+      .legend { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="swarm"></canvas>
+  <aside class="hud">
+    <h1>Swarm Mission Core</h1>
+    <p class="sub">500 boid drones execute a coarse mission from home base to target area. This models command-state cognition: battery, cohesion, degraded GPS/comms, mission phase, and next action.</p>
+
+    <section class="panel">
+      <h2>Mission State</h2>
+      <div class="grid">
+        <div class="stat"><span>Phase</span><span id="phase">launch</span></div>
+        <div class="stat"><span>Cycle</span><span id="cycle">1</span></div>
+        <div class="stat"><span>Elapsed</span><span id="elapsed">0.0 s</span></div>
+        <div class="stat"><span>Units</span><span id="count">500 active</span></div>
+        <div class="stat"><span>Mix</span><span id="mix">-</span></div>
+        <div class="stat"><span>Arrived target</span><span id="arrived">0%</span></div>
+        <div class="stat"><span>Landed complete</span><span id="returned">0%</span></div>
+        <div class="stat"><span>Losses</span><span id="losses">0%</span></div>
+        <div class="stat"><span>Mission effects</span><span id="effects">0</span></div>
+        <div class="stat"><span>Support calls</span><span id="supportCalls">0</span></div>
+        <div class="stat"><span>Coverage</span><span id="coverage">0%</span></div>
+      </div>
+      <label class="field">
+        <span>Target mission area boid behavior</span>
+        <select id="targetBehavior">
+          <option value="efficient">efficient station-keep</option>
+          <option value="bird">bird-like orbit</option>
+          <option value="random">random patrol</option>
+          <option value="wtf">wtf degraded scramble</option>
+        </select>
+      </label>
+      <button id="reset">Reset Mission</button>
+    </section>
+
+    <section class="panel">
+      <h2>Big View Degradation</h2>
+      <div class="grid">
+        <div>
+          <div class="stat"><span>Battery margin</span><span id="battery">100%</span></div>
+          <div class="meter"><i id="batteryMeter"></i></div>
+        </div>
+        <div>
+          <div class="stat"><span>Swarm cohesion</span><span id="cohesion">good</span></div>
+          <div class="meter"><i id="cohesionMeter"></i></div>
+        </div>
+        <div>
+          <div class="stat"><span>Comms quality</span><span id="comms">good</span></div>
+          <div class="meter"><i id="commsMeter"></i></div>
+        </div>
+        <div>
+          <div class="stat"><span>GPS quality</span><span id="gps">good</span></div>
+          <div class="meter"><i id="gpsMeter"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Belief Action Read</h2>
+      <div class="grid">
+        <div class="stat"><span>Belief: mission viable</span><span id="beliefMission">0%</span></div>
+        <div class="stat"><span>Belief: regroup needed</span><span id="beliefRegroup">0%</span></div>
+        <div class="stat"><span>Belief: return needed</span><span id="beliefReturn">0%</span></div>
+        <div class="stat"><span>Recommended action</span><span id="action">observe</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Event Tape</h2>
+      <div class="log" id="log"></div>
+    </section>
+  </aside>
+
+  <div class="legend">
+    <div><span class="dot" style="background:#5dff9a"></span>normal drones</div>
+    <div><span class="dot" style="background:#ffbc55"></span>low battery / uncertain drones</div>
+    <div><span class="dot" style="background:#ff5f73"></span>returning or lost drones</div>
+    <div><span class="dot" style="background:#8ab4ff"></span>landed complete drones</div>
+    <div><span class="dot" style="background:#75ffe9"></span>intermediate RF relay units</div>
+    <div><span class="dot" style="background:#b7ff5d"></span>ground units move low and slow</div>
+    <div><span class="dot" style="background:#ff7ad9"></span>fixed-wing expendable effects</div>
+    <div><span class="dot" style="background:#ffdf6e"></span>abstract ballistic support line/effects</div>
+    <div><span class="dot" style="background:#39d8ff"></span>home base and target area</div>
+    <div style="margin-top:8px;">Mouse drag: orbit. Wheel: zoom. The terrain is deliberately coarse; degradation is modeled as mission knowledge quality.</div>
+  </div>
+  <script src="drone-swarm-mission.js?v=support-origin-relay-trim-5"></script>
+</body>
+</html>
