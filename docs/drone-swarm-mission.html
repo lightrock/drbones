@@ -158,19 +158,19 @@
   <canvas id="swarm"></canvas>
   <aside class="hud">
     <h1>Swarm Mission Core</h1>
-    <p class="sub">500 boid drones execute a coarse mission from home base to target area. This models command-state cognition: battery, cohesion, degraded GPS/comms, mission phase, and next action.</p>
+    <p class="sub">500 heterogeneous units execute a coarse 25-mile mission from home base to target area. This models command-state cognition: battery, cohesion, degraded GPS/comms, mission phase, and next action.</p>
 
     <section class="panel">
       <h2>Mission State</h2>
       <div class="grid">
         <div class="stat"><span>Phase</span><span id="phase">launch</span></div>
         <div class="stat"><span>Cycle</span><span id="cycle">1</span></div>
-        <div class="stat"><span>Elapsed</span><span id="elapsed">0.0 s</span></div>
+        <div class="stat"><span>Mission clock</span><span id="elapsed">0m / 25 mi</span></div>
         <div class="stat"><span>Units</span><span id="count">500 active</span></div>
         <div class="stat"><span>Mix</span><span id="mix">-</span></div>
         <div class="stat"><span>Arrived target</span><span id="arrived">0%</span></div>
         <div class="stat"><span>Landed complete</span><span id="returned">0%</span></div>
-        <div class="stat"><span>Losses</span><span id="losses">0%</span></div>
+        <div class="stat"><span>Attrition queue</span><span id="losses">0%</span></div>
         <div class="stat"><span>Mission effects</span><span id="effects">0</span></div>
         <div class="stat"><span>Support calls</span><span id="supportCalls">0</span></div>
         <div class="stat"><span>Coverage</span><span id="coverage">0%</span></div>
@@ -210,6 +210,16 @@
     </section>
 
     <section class="panel">
+      <h2>Weekly Logistics</h2>
+      <div class="grid">
+        <div class="stat"><span>Attrition this week</span><span id="weekAttrition">0Q 0F 0G</span></div>
+        <div class="stat"><span>Replenished this week</span><span id="weekReplenish">0Q 0F 0G</span></div>
+        <div class="stat"><span>Net platform flow</span><span id="weekNet">0Q 0F 0G</span></div>
+        <div class="stat"><span>Forward staged</span><span id="forwardStage">0X 0G</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
       <h2>Belief Action Read</h2>
       <div class="grid">
         <div class="stat"><span>Belief: mission viable</span><span id="beliefMission">0%</span></div>
@@ -228,15 +238,17 @@
   <div class="legend">
     <div><span class="dot" style="background:#5dff9a"></span>normal drones</div>
     <div><span class="dot" style="background:#ffbc55"></span>low battery / uncertain drones</div>
+    <div><span class="dot" style="background:#ff7a33"></span>expendable package carriers</div>
     <div><span class="dot" style="background:#ff5f73"></span>returning or lost drones</div>
     <div><span class="dot" style="background:#8ab4ff"></span>landed complete drones</div>
-    <div><span class="dot" style="background:#75ffe9"></span>intermediate RF relay units</div>
+    <div><span class="dot" style="background:#75ffe9"></span>fixed-wing intermediate RF relays</div>
     <div><span class="dot" style="background:#b7ff5d"></span>ground units move low and slow</div>
+    <div><span class="dot" style="background:#70ffb8"></span>forward quad swap/cache bumps</div>
     <div><span class="dot" style="background:#ff7ad9"></span>fixed-wing expendable effects</div>
     <div><span class="dot" style="background:#ffdf6e"></span>abstract ballistic support line/effects</div>
     <div><span class="dot" style="background:#39d8ff"></span>home base and target area</div>
-    <div style="margin-top:8px;">Mouse drag: orbit. Wheel: zoom. The terrain is deliberately coarse; degradation is modeled as mission knowledge quality.</div>
+    <div style="margin-top:8px;">Mouse drag: orbit. Wheel: zoom. X units must touch forward service pads node by node; returning X units recover at the nearest forward base instead of running home.</div>
   </div>
-  <script src="drone-swarm-mission.js?v=support-origin-relay-trim-5"></script>
+  <script src="drone-swarm-mission.js?v=mandatory-x-service-pads-20"></script>
 </body>
 </html>
